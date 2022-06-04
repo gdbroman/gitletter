@@ -1,2 +1,3 @@
-# gitletter
-Launch a newsletter using GitHub. Either create or use an existing repo like a markdown blog.
+# GitLetter
+
+Launch a newsletter using GitHub! Issues stored as markdown files in any repository (e.g. your blog).
