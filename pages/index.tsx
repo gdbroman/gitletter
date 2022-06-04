@@ -22,13 +22,13 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.grid}>
-          [demo image]
+          <Image src="/images/demo.png" width={2260} height={1156} />
         </div>
       </main>
 
       <footer className={styles.footer}>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://twitter.com/git_letter"
           target="_blank"
           rel="noopener noreferrer"
         >
