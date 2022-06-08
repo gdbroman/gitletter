@@ -1,9 +1,9 @@
-import React from "react"
-import { GetServerSideProps } from "next"
-import ReactMarkdown from "react-markdown"
-import Layout from "../../components/Layout"
-import { PostProps } from "../../components/Post"
-import prisma from '../../lib/prisma';
+import React from "react";
+import { GetServerSideProps } from "next";
+import ReactMarkdown from "react-markdown";
+import Layout from "../../components/Layout";
+import { PostProps } from "../../components/Post";
+import prisma from "../../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.post.findUnique({
@@ -22,9 +22,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 const Post: React.FC<PostProps> = (props) => {
-  let title = props.title
+  let title = props.title;
   if (!props.published) {
-    title = `${title} (Draft)`
+    title = `${title} (Draft)`;
   }
 
   return (
@@ -56,7 +56,7 @@ const Post: React.FC<PostProps> = (props) => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default Post
+export default Post;

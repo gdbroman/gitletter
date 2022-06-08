@@ -1,8 +1,8 @@
-import React from "react"
-import { GetServerSideProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
-import prisma from '../lib/prisma';
+import React from "react";
+import { GetServerSideProps } from "next";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
+import prisma from "../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const feed = await prisma.post.findMany({
@@ -17,8 +17,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 type Props = {
-  feed: PostProps[]
-}
+  feed: PostProps[];
+};
 
 const Blog: React.FC<Props> = (props) => {
   return (
@@ -48,7 +48,7 @@ const Blog: React.FC<Props> = (props) => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;
