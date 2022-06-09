@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { GetServerSideProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
@@ -20,7 +20,7 @@ type Props = {
   feed: PostProps[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const Blog: FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
