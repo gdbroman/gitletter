@@ -1,5 +1,5 @@
-import { FC } from "react";
 import Router from "next/router";
+import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 
 export type PostProps = {

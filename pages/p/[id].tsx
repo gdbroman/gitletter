@@ -1,8 +1,9 @@
-import { FC } from "react";
 import { GetServerSideProps } from "next";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
+import { FC } from "react";
 import ReactMarkdown from "react-markdown";
+
 import Layout from "../../components/Layout";
 import { PostProps } from "../../components/Post";
 import prisma from "../../lib/prisma";
