@@ -17,13 +17,13 @@ model Post {
 }
 
 model Newsletter {
-  id           String        @id @default(cuid())
-  title        String
-  description  String?
-  issues       Issue[]
-  integrations Integration[]
-  author       User?         @relation(fields: [authorId], references: [id])
-  authorId     String?
+  id                  String             @id @default(cuid())
+  title               String
+  description         String?
+  issues              Issue[]
+  githubIntegration   GithubIntegration?
+  author              User?              @relation(fields: [authorId], references: [id])
+  authorId            String?
 }
 
 model Issue {
@@ -35,12 +35,11 @@ model Issue {
   newletterId String?
 }
 
-model Integration {
-  id          String          @id @default(cuid())
-  type        IntegrationType
-  config      Json
-  newsletter  Newsletter?     @relation(fields: [newletterId], references: [id])
-  newletterId String?
+model GithubIntegration {
+  id             String      @id @default(cuid())
+  installationId String
+  newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
+  newletterId    String?     @unique
 }
 
 model Account {
@@ -98,8 +97,4 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verificationtokens")
-}
-
-enum IntegrationType {
-  GITHUB
 }

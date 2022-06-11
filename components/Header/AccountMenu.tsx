@@ -9,6 +9,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
+import Router from "next/router";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import * as React from "react";
@@ -79,7 +80,7 @@ export default function AccountMenu({ session }: AccountMenuProps) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
+        <MenuItem onClick={() => Router.push("/newsletter")}>
           <Avatar>N</Avatar> Newsletter settings
         </MenuItem>
         <Divider />

@@ -1,39 +1,28 @@
-import { GetServerSideProps } from "next";
-import { FC } from "react";
+import Router from "next/router";
+import { useSession } from "next-auth/react";
+import { FC, useEffect } from "react";
 
 import Layout from "../components/Layout";
-import { PostProps } from "../components/Post";
-import prisma from "../lib/prisma";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const feed = await prisma.post.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true },
-      },
-    },
-  });
-  return { props: { feed } };
-};
+const Home: FC = () => {
+  const session = useSession();
 
-type Props = {
-  feed: PostProps[];
-};
+  useEffect(() => {
+    if (session.data?.user) {
+      Router.push("/newsletter");
+    }
+  }, [session]);
 
-const Blog: FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>Home</h1>
+        <h1>Start a newsletter using GitHub</h1>
         <main>
-          <a href="https://github.com/apps/gitletter-dev/installations/new">
-            <button>Connect your repo</button>
-          </a>
+          <p>It's nice</p>
         </main>
       </div>
     </Layout>
   );
 };
 
-export default Blog;
+export default Home;
