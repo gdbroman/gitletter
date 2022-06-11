@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { FC } from "react";
 
 import Layout from "../components/Layout";
-import { PostProps } from "../components/Post";
+import Post, { PostProps } from "../components/Post";
 import prisma from "../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -25,13 +25,29 @@ const Blog: FC<Props> = (props) => {
   return (
     <Layout>
       <div className="page">
-        <h1>Home</h1>
+        <h1>Public Feed</h1>
         <main>
-          <a href="https://github.com/apps/gitletter-dev/installations/new">
-            <button>Connect your repo</button>
-          </a>
+          {props.feed.map((post) => (
+            <div key={post.id} className="post">
+              <Post post={post} />
+            </div>
+          ))}
         </main>
       </div>
+      <style jsx>{`
+        .post {
+          background: white;
+          transition: box-shadow 0.1s ease-in;
+        }
+
+        .post:hover {
+          box-shadow: 1px 1px 3px #aaa;
+        }
+
+        .post + .post {
+          margin-top: 2rem;
+        }
+      `}</style>
     </Layout>
   );
 };

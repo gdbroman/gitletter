@@ -16,6 +16,33 @@ model Post {
   authorId  String?
 }
 
+model Newsletter {
+  id           String        @id @default(cuid())
+  title        String
+  description  String?
+  issues       Issue[]
+  integrations Integration[]
+  author       User?         @relation(fields: [authorId], references: [id])
+  authorId     String?
+}
+
+model Issue {
+  id          String      @id @default(cuid())
+  title       String
+  content     String?
+  published   Boolean     @default(false)
+  newsletter  Newsletter? @relation(fields: [newletterId], references: [id])
+  newletterId String?
+}
+
+model Integration {
+  id          String          @id @default(cuid())
+  type        IntegrationType
+  config      Json
+  newsletter  Newsletter?     @relation(fields: [newletterId], references: [id])
+  newletterId String?
+}
+
 model Account {
   id                 String  @id @default(cuid())
   userId             String  @map("user_id")
@@ -49,14 +76,15 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  email         String?      @unique
+  emailVerified DateTime?    @map("email_verified")
   image         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  createdAt     DateTime     @default(now()) @map(name: "created_at")
+  updatedAt     DateTime     @updatedAt @map(name: "updated_at")
   posts         Post[]
+  newsletters   Newsletter[]
   accounts      Account[]
   sessions      Session[]
 
@@ -70,4 +98,8 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verificationtokens")
+}
+
+enum IntegrationType {
+  GITHUB
 }
