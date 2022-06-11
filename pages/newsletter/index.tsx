@@ -38,8 +38,8 @@ const Home: FC<Props> = ({ newsletter }) => {
         <div className="page">
           <h1>{newsletter.title}</h1>
           <main>
-            {!newsletter.githubIntegration.installationId && (
-              <a href="https://github.com/apps/gitletter-dev/installations/new">
+            {!newsletter?.githubIntegration?.installationId && (
+              <a href={process.env.GITHUB_APP_URL}>
                 <button>Connect your repo</button>
               </a>
             )}
@@ -54,7 +54,7 @@ const Home: FC<Props> = ({ newsletter }) => {
       <div className="page">
         <h1>Start a newsletter</h1>
         <main>
-          <a href="https://github.com/apps/gitletter-dev/installations/new">
+          <a href={process.env.GITHUB_APP_URL}>
             <button>Connect your repo</button>
           </a>
         </main>
