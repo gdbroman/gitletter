@@ -4,6 +4,7 @@ import { getSession } from "next-auth/react";
 import { FC } from "react";
 
 import Layout from "../../components/Layout";
+import { ProtectedPage } from "../../components/ProtectedPage";
 import { useNewsletterContext } from "../../contexts/NewsletterContext";
 import prisma from "../../lib/prisma";
 
@@ -38,32 +39,36 @@ const Home: FC<Props> = ({ newsletter }) => {
   if (newsletter) {
     setNewsletter(newsletter);
     return (
-      <Layout>
-        <div className="page">
-          <h1>{newsletter.title}</h1>
-          <main>
-            {!newsletter?.githubIntegration?.installationId && (
-              <a href={process.env.GITHUB_APP_URL}>
-                <button>Connect your repo</button>
-              </a>
-            )}
-          </main>
-        </div>
-      </Layout>
+      <ProtectedPage>
+        <Layout>
+          <div className="page">
+            <h1>{newsletter.title}</h1>
+            <main>
+              {!newsletter?.githubIntegration?.installationId && (
+                <a href={process.env.GITHUB_APP_URL}>
+                  <button>Connect your repo</button>
+                </a>
+              )}
+            </main>
+          </div>
+        </Layout>
+      </ProtectedPage>
     );
   }
 
   return (
-    <Layout>
-      <div className="page">
-        <h1>Start a newsletter</h1>
-        <main>
-          <a href={process.env.GITHUB_APP_URL}>
-            <button>Connect your repo</button>
-          </a>
-        </main>
-      </div>
-    </Layout>
+    <ProtectedPage>
+      <Layout>
+        <div className="page">
+          <h1>Start a newsletter</h1>
+          <main>
+            <a href={process.env.GITHUB_APP_URL}>
+              <button>Connect your repo</button>
+            </a>
+          </main>
+        </div>
+      </Layout>
+    </ProtectedPage>
   );
 };
 
