@@ -18,6 +18,7 @@
     "@prisma/client": "^3.15.1",
     "next": "^12.1.6",
     "next-auth": "4",
+    "next-seo": "^5.4.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-markdown": "8.0.0"
