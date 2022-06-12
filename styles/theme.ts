@@ -4,13 +4,25 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#556cd6",
+      main: "#000000",
     },
     secondary: {
-      main: "#19857b",
+      main: "#ffffff",
     },
     error: {
       main: red.A400,
+    },
+  },
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
     },
   },
 });

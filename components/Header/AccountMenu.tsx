@@ -1,4 +1,6 @@
+import AddIcon from "@mui/icons-material/Add";
 import Logout from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
 import Settings from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -11,13 +13,12 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useMemo, useState } from "react";
 
 import { useNewsletterContext } from "../../contexts/NewsletterContext";
 
-export default function AccountMenu() {
+export const AccountMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { newsletter } = useNewsletterContext();
   const open = Boolean(anchorEl);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -27,6 +28,12 @@ export default function AccountMenu() {
     setAnchorEl(null);
   };
 
+  const { newsletter } = useNewsletterContext();
+  const newsletterTitle = useMemo(
+    () => newsletter?.title ?? "Add newsletter",
+    [newsletter]
+  );
+
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -34,13 +41,12 @@ export default function AccountMenu() {
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
+            aria-controls={open ? "account-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-              {newsletter?.title.charAt(0) ?? "+"}
+              {newsletter?.title.charAt(0) ?? <PersonIcon />}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -81,22 +87,14 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Link href="/account">
+        <Link href="/account" passHref>
           <MenuItem>
-            <Avatar>{newsletter?.title.charAt(0) ?? "+"}</Avatar>{" "}
-            <Typography noWrap>
-              {newsletter?.title ?? "Create account"}
-            </Typography>
+            <Avatar>{newsletter?.title.charAt(0) ?? <AddIcon />}</Avatar>{" "}
+            <Typography noWrap>{newsletterTitle}</Typography>
           </MenuItem>
         </Link>
         <Divider />
-        {/* <MenuItem>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add account
-        </MenuItem> */}
-        <Link href="/settings">
+        <Link href="/settings" passHref>
           <MenuItem>
             <ListItemIcon>
               <Settings fontSize="small" />
@@ -113,4 +111,4 @@ export default function AccountMenu() {
       </Menu>
     </>
   );
-}
+};
