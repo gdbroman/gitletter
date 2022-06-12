@@ -8,13 +8,20 @@ import { FC } from "react";
 
 import AccountMenu from "./AccountMenu";
 
-const Nav = styled.nav`
+const StyledNav = styled.nav`
   display: flex;
   gap: 1rem;
   align-items: center;
   p {
     margin: 0;
   }
+`;
+
+const StyledHeader = styled.header`
+  display: flex;
+  padding: 2rem;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 type NavProps = {
@@ -28,7 +35,7 @@ const LeftNav = ({ session }: NavProps) => {
     router.pathname === pathname;
 
   return (
-    <Nav className="left">
+    <StyledNav className="left">
       <Link href="/">
         <a data-active={isActive("/")}>
           <Typography>Home</Typography>
@@ -48,7 +55,7 @@ const LeftNav = ({ session }: NavProps) => {
           </Link>
         </>
       )}
-    </Nav>
+    </StyledNav>
   );
 };
 
@@ -59,26 +66,26 @@ export const RightNav = ({ session, status }: NavProps) => {
 
   if (status === "loading") {
     return (
-      <Nav className="right">
+      <StyledNav className="right">
         <Typography>Validating session...</Typography>
-      </Nav>
+      </StyledNav>
     );
   }
 
   if (session) {
     return (
-      <Nav className="right">
-        <AccountMenu session={session} />
-      </Nav>
+      <StyledNav className="right">
+        <AccountMenu />
+      </StyledNav>
     );
   }
 
   return (
-    <Nav className="right">
+    <StyledNav className="right">
       <Link href="/api/auth/signin">
         <a data-active={isActive("/signup")}>Log in</a>
       </Link>
-    </Nav>
+    </StyledNav>
   );
 };
 
@@ -86,18 +93,10 @@ const Header: FC = () => {
   const { data: session, status } = useSession();
 
   return (
-    <header>
+    <StyledHeader>
       <LeftNav session={session} />
       <RightNav session={session} status={status} />
-      <style jsx>{`
-        header {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-          justify-content: space-between;
-        }
-      `}</style>
-    </header>
+    </StyledHeader>
   );
 };
 

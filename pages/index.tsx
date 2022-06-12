@@ -9,7 +9,7 @@ const Home: FC = () => {
 
   useEffect(() => {
     if (session.data?.user) {
-      Router.push("/newsletter");
+      Router.push("/account");
     }
   }, [session]);
 
@@ -18,7 +18,10 @@ const Home: FC = () => {
       <div className="page">
         <h1>Start a newsletter using GitHub</h1>
         <main>
-          <p>It's nice</p>
+          <p>
+            Host your issues in one repository, like your existing markdown blog
+            – or let GitLetter set one up for you.
+          </p>
         </main>
       </div>
     </Layout>

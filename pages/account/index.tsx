@@ -4,6 +4,7 @@ import { getSession } from "next-auth/react";
 import { FC } from "react";
 
 import Layout from "../../components/Layout";
+import { useNewsletterContext } from "../../contexts/NewsletterContext";
 import prisma from "../../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -32,7 +33,10 @@ type Props = {
 };
 
 const Home: FC<Props> = ({ newsletter }) => {
+  const { setNewsletter } = useNewsletterContext();
+
   if (newsletter) {
+    setNewsletter(newsletter);
     return (
       <Layout>
         <div className="page">

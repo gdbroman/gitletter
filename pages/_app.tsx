@@ -5,6 +5,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 
+import { NewsletterProvider } from "../contexts/NewsletterContext";
 import theme from "../styles/theme";
 import createEmotionCache from "../util/createEmotionCache";
 
@@ -20,12 +21,14 @@ const App = ({
   emotionCache = clientSideEmotionCache,
 }: AppPropsExtended) => (
   <SessionProvider session={pageProps.session}>
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </CacheProvider>
+    <NewsletterProvider>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </CacheProvider>
+    </NewsletterProvider>
   </SessionProvider>
 );
 

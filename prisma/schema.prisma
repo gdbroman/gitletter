@@ -7,23 +7,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
-  id        String  @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  String?
-}
-
 model Newsletter {
-  id                  String             @id @default(cuid())
-  title               String
-  description         String?
-  issues              Issue[]
-  githubIntegration   GithubIntegration?
-  author              User?              @relation(fields: [authorId], references: [id])
-  authorId            String?
+  id                String             @id @default(cuid())
+  title             String
+  description       String?
+  issues            Issue[]
+  githubIntegration GithubIntegration?
+  author            User?              @relation(fields: [authorId], references: [id])
+  authorId          String?
 }
 
 model Issue {
@@ -31,6 +22,8 @@ model Issue {
   title       String
   content     String?
   published   Boolean     @default(false)
+  author      User?       @relation(fields: [authorId], references: [id])
+  authorId    String?
   newsletter  Newsletter? @relation(fields: [newletterId], references: [id])
   newletterId String?
 }
@@ -82,7 +75,7 @@ model User {
   image         String?
   createdAt     DateTime     @default(now()) @map(name: "created_at")
   updatedAt     DateTime     @updatedAt @map(name: "updated_at")
-  posts         Post[]
+  issues        Issue[]
   newsletters   Newsletter[]
   accounts      Account[]
   sessions      Session[]

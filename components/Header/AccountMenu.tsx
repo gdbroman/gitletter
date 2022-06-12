@@ -1,5 +1,4 @@
 import Logout from "@mui/icons-material/Logout";
-import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -9,20 +8,19 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
-import Router from "next/router";
-import { Session } from "next-auth";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
 import { signOut } from "next-auth/react";
-import * as React from "react";
+import { MouseEvent, useState } from "react";
 
-type AccountMenuProps = {
-  session: Session;
-};
+import { useNewsletterContext } from "../../contexts/NewsletterContext";
 
-export default function AccountMenu({ session }: AccountMenuProps) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+export default function AccountMenu() {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { newsletter } = useNewsletterContext();
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -30,7 +28,7 @@ export default function AccountMenu({ session }: AccountMenuProps) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton
@@ -41,7 +39,9 @@ export default function AccountMenu({ session }: AccountMenuProps) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>N</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>
+              {newsletter?.title.charAt(0) ?? "+"}
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -57,6 +57,7 @@ export default function AccountMenu({ session }: AccountMenuProps) {
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
+            maxWidth: 240,
             "& .MuiAvatar-root": {
               width: 32,
               height: 32,
@@ -80,22 +81,29 @@ export default function AccountMenu({ session }: AccountMenuProps) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={() => Router.push("/newsletter")}>
-          <Avatar>N</Avatar> Newsletter settings
-        </MenuItem>
+        <Link href="/account">
+          <MenuItem>
+            <Avatar>{newsletter?.title.charAt(0) ?? "+"}</Avatar>{" "}
+            <Typography noWrap>
+              {newsletter?.title ?? "Create account"}
+            </Typography>
+          </MenuItem>
+        </Link>
         <Divider />
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemIcon>
             <PersonAdd fontSize="small" />
           </ListItemIcon>
           Add account
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
+        </MenuItem> */}
+        <Link href="/settings">
+          <MenuItem>
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+        </Link>
         <MenuItem onClick={() => signOut()}>
           <ListItemIcon>
             <Logout fontSize="small" />
@@ -103,6 +111,6 @@ export default function AccountMenu({ session }: AccountMenuProps) {
           Logout
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </>
   );
 }
