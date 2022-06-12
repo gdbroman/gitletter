@@ -60,7 +60,7 @@ const Home: FC<Props> = ({ newsletter }) => {
     <ProtectedPage>
       <Layout>
         <div className="page">
-          <h1>Start a newsletter</h1>
+          <h1>Your newsletter</h1>
           <main>
             <a href={process.env.GITHUB_APP_URL}>
               <button>Connect your repo</button>

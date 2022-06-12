@@ -12,12 +12,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { MouseEvent, useMemo, useState } from "react";
 
 import { useNewsletterContext } from "../../contexts/NewsletterContext";
 
 export const AccountMenu = () => {
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -26,6 +28,10 @@ export const AccountMenu = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/");
   };
 
   const { newsletter } = useNewsletterContext();
@@ -102,7 +108,7 @@ export const AccountMenu = () => {
             Settings
           </MenuItem>
         </Link>
-        <MenuItem onClick={() => signOut()}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

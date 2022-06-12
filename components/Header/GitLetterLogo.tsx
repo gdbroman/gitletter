@@ -1,5 +1,4 @@
-import { IconButton } from "@mui/material";
-import Image from "next/image";
+import { Button, Typography } from "@mui/material";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
@@ -21,9 +20,18 @@ export const GitLetterLogo = () => {
 
   return (
     <Link href={href} passHref>
-      <IconButton>
-        <Image src="/android-chrome-192x192.png" width={32} height={32} />
-      </IconButton>
+      <Button>
+        <Typography
+          color="secondary"
+          variant="h2"
+          fontWeight="bold"
+          style={{
+            fontSize: "22px",
+          }}
+        >
+          GitLetter
+        </Typography>
+      </Button>
     </Link>
   );
 };

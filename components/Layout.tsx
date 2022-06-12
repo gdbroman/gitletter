@@ -1,21 +1,31 @@
+import styled from "@emotion/styled";
+import { Box } from "@mui/material";
 import { NextSeo } from "next-seo";
 import { FC, ReactNode } from "react";
 
-import Header from "./Header/Header";
+import { siteDescription, siteTagline, siteTitle } from "../util/constants";
+import { Footer } from "./Footer";
+import { Header } from "./Header/Header";
+
+const StyledDiv = styled.div`
+  flex: 1;
+  margin: 16px;
+`;
 
 type Props = {
   children: ReactNode;
 };
 
 const Layout: FC<Props> = (props) => (
-  <div>
+  <Box display="flex" flexDirection="column" height="100%">
     <NextSeo
-      title="GitLetter – Start a newsletter using GitHub"
-      description="Start a newsletter using GitHub"
+      title={`${siteTitle} – ${siteTagline}`}
+      description={siteDescription}
     />
     <Header />
-    <div className="layout">{props.children}</div>
-  </div>
+    <StyledDiv className="layout">{props.children}</StyledDiv>
+    <Footer />
+  </Box>
 );
 
 export default Layout;

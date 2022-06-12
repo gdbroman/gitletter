@@ -1,15 +1,8 @@
-import styled from "@emotion/styled";
 import { Button, IconButton, Skeleton } from "@mui/material";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import { AccountMenu } from "./AccountMenu";
-
-const StyledNav = styled.nav`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-`;
 
 export const HeaderNavRight = () => {
   const { status } = useSession();
@@ -17,28 +10,25 @@ export const HeaderNavRight = () => {
   switch (status) {
     case "loading":
       return (
-        <StyledNav>
+        <nav>
           <IconButton>
             <Skeleton variant="circular" width={32} height={32} />
           </IconButton>
-        </StyledNav>
+        </nav>
       );
     case "authenticated":
       return (
-        <StyledNav>
+        <nav>
           <AccountMenu />
-        </StyledNav>
+        </nav>
       );
     default:
       return (
-        <StyledNav>
+        <nav>
           <Link href="/api/auth/signin" passHref>
-            <Button variant="text">Log in</Button>
+            <Button variant="outlined">Log in</Button>
           </Link>
-          <Link href="/api/auth/signin" passHref>
-            <Button variant="contained">Get started free</Button>
-          </Link>
-        </StyledNav>
+        </nav>
       );
   }
 };

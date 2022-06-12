@@ -11,11 +11,9 @@ const StyledHeader = styled.header`
   justify-content: space-between;
 `;
 
-const Header: FC = () => (
+export const Header: FC = () => (
   <StyledHeader>
     <GitLetterLogo />
     <HeaderNavRight />
   </StyledHeader>
 );
-
-export default Header;
