@@ -1,7 +1,7 @@
 import createEmotionServer from "@emotion/server/create-instance";
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import { Children } from "react";
 
+import theme from "../styles/theme";
 import createEmotionCache from "../util/createEmotionCache";
 
 export default class MyDocument extends Document {
@@ -9,6 +9,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -27,6 +28,8 @@ export default class MyDocument extends Document {
             href="/favicon-16x16.png"
           />
           <link rel="manifest" href="/site.webmanifest" />
+          {/* Inject MUI styles first to match with the prepend: true configuration. */}
+          {(this.props as any)?.emotionStyleTags}
         </Head>
         <body>
           <Main />
@@ -64,7 +67,7 @@ MyDocument.getInitialProps = async (ctx) => {
 
   const originalRenderPage = ctx.renderPage;
 
-  // You can consider sharing the same emotion cache between all the SSR requests to speed up performance.
+  // You can consider sharing the same Emotion cache between all the SSR requests to speed up performance.
   // However, be aware that it can have global side effects.
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
@@ -78,8 +81,8 @@ MyDocument.getInitialProps = async (ctx) => {
     });
 
   const initialProps = await Document.getInitialProps(ctx);
-  // This is important. It prevents emotion to render invalid HTML.
-  // See https://github.com/mui-org/material-ui/issues/26561#issuecomment-855286153
+  // This is important. It prevents Emotion to render invalid HTML.
+  // See https://github.com/mui/material-ui/issues/26561#issuecomment-855286153
   const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
@@ -92,7 +95,6 @@ MyDocument.getInitialProps = async (ctx) => {
 
   return {
     ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
-    styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags],
+    emotionStyleTags,
   };
 };
