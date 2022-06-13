@@ -5,6 +5,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { FC } from "react";
+import { JssProvider } from "react-jss";
 
 import { NewsletterProvider } from "../contexts/NewsletterContext";
 import theme from "../styles/theme";
@@ -22,16 +23,18 @@ const App: FC<AppPropsExtended> = ({
   pageProps,
   emotionCache = clientSideEmotionCache,
 }) => (
-  <CacheProvider value={emotionCache}>
-    <SessionProvider session={pageProps.session}>
-      <NewsletterProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </NewsletterProvider>
-    </SessionProvider>
-  </CacheProvider>
+  <JssProvider>
+    <CacheProvider value={emotionCache}>
+      <SessionProvider session={pageProps.session}>
+        <NewsletterProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </NewsletterProvider>
+      </SessionProvider>
+    </CacheProvider>
+  </JssProvider>
 );
 
 export default App;
