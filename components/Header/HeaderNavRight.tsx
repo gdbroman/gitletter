@@ -12,25 +12,17 @@ export const HeaderNavRight = () => {
   switch (status) {
     case "loading":
       return (
-        <nav>
-          <IconButton style={{ padding: 5 }}>
-            <Skeleton variant="circular" width={32} height={32} />
-          </IconButton>
-        </nav>
+        <IconButton style={{ padding: 5 }}>
+          <Skeleton variant="circular" width={32} height={32} />
+        </IconButton>
       );
     case "authenticated":
-      return (
-        <nav>
-          <AccountMenu />
-        </nav>
-      );
+      return <AccountMenu />;
     default:
       return (
-        <nav>
-          <LoadingButton variant="outlined" loading={loading} onClick={signIn}>
-            Log in
-          </LoadingButton>
-        </nav>
+        <LoadingButton variant="outlined" loading={loading} onClick={signIn}>
+          Log in
+        </LoadingButton>
       );
   }
 };

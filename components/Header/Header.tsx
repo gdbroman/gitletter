@@ -6,14 +6,22 @@ import { HeaderNavRight } from "./HeaderNavRight";
 
 const StyledHeader = styled.header`
   display: flex;
-  padding: 16px;
+  height: 70px;
+  padding: 0 16px;
   align-items: center;
+`;
+
+const StyledNav = styled.nav`
+  flex: 1;
+  display: flex;
   justify-content: space-between;
 `;
 
 export const Header: FC = () => (
   <StyledHeader>
-    <GitLetterLogo />
-    <HeaderNavRight />
+    <StyledNav>
+      <GitLetterLogo />
+      <HeaderNavRight />
+    </StyledNav>
   </StyledHeader>
 );
