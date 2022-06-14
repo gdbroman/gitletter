@@ -18,3 +18,7 @@ body {
 #__next {
   height: 100%;
 }
+
+svg {
+  max-width: 22px;
+}
