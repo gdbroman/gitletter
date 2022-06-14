@@ -1,5 +1,5 @@
-import GitHubIcon from "@mui/icons-material/GitHub";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Box, Typography } from "@mui/material";
 import Router from "next/router";
 import { useSession } from "next-auth/react";
 import { FC, useEffect } from "react";
@@ -37,21 +37,14 @@ const Home: FC = () => {
             >
               {siteDescription}
             </Typography>
-            <Button
+            <LoadingButton
               variant="contained"
               size="large"
-              startIcon={
-                loading ? (
-                  <CircularProgress size={16} color="secondary" />
-                ) : (
-                  <GitHubIcon />
-                )
-              }
+              loading={loading}
               onClick={signIn}
-              disabled={loading}
             >
               Get started free
-            </Button>
+            </LoadingButton>
           </Box>
         </main>
       </div>

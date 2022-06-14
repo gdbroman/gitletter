@@ -12,6 +12,10 @@ const theme = createTheme({
     error: {
       main: red.A400,
     },
+    action: {
+      disabledBackground: "000000",
+      disabled: "#FFFFFF",
+    },
   },
   typography: {
     fontFamily: [

@@ -1,4 +1,5 @@
-import { Button, CircularProgress, IconButton, Skeleton } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { IconButton, Skeleton } from "@mui/material";
 import { useSession } from "next-auth/react";
 
 import { useSignIn } from "../../util/hooks";
@@ -12,7 +13,7 @@ export const HeaderNavRight = () => {
     case "loading":
       return (
         <nav>
-          <IconButton>
+          <IconButton style={{ padding: 5 }}>
             <Skeleton variant="circular" width={32} height={32} />
           </IconButton>
         </nav>
@@ -26,16 +27,9 @@ export const HeaderNavRight = () => {
     default:
       return (
         <nav>
-          <Button
-            variant="outlined"
-            startIcon={
-              loading && <CircularProgress size={16} color="secondary" />
-            }
-            disabled={loading}
-            onClick={signIn}
-          >
+          <LoadingButton variant="outlined" loading={loading} onClick={signIn}>
             Log in
-          </Button>
+          </LoadingButton>
         </nav>
       );
   }
