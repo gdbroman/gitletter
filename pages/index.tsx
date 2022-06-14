@@ -1,14 +1,16 @@
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import Router from "next/router";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { FC, useEffect } from "react";
 
 import Layout from "../components/Layout";
 import { siteDescription, siteTagline } from "../util/constants";
+import { useSignIn } from "../util/hooks";
 
 const Home: FC = () => {
   const session = useSession();
+  const { signIn, loading } = useSignIn();
 
   useEffect(() => {
     if (session.data?.user) {
@@ -38,8 +40,15 @@ const Home: FC = () => {
             <Button
               variant="contained"
               size="large"
-              startIcon={<GitHubIcon />}
-              onClick={() => signIn("github", { callbackUrl: "/account" })}
+              startIcon={
+                loading ? (
+                  <CircularProgress size={16} color="secondary" />
+                ) : (
+                  <GitHubIcon />
+                )
+              }
+              onClick={signIn}
+              disabled={loading}
             >
               Get started free
             </Button>

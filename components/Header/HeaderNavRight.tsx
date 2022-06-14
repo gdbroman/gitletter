@@ -1,10 +1,12 @@
-import { Button, IconButton, Skeleton } from "@mui/material";
-import { signIn, useSession } from "next-auth/react";
+import { Button, CircularProgress, IconButton, Skeleton } from "@mui/material";
+import { useSession } from "next-auth/react";
 
+import { useSignIn } from "../../util/hooks";
 import { AccountMenu } from "./AccountMenu";
 
 export const HeaderNavRight = () => {
   const { status } = useSession();
+  const { signIn, loading } = useSignIn();
 
   switch (status) {
     case "loading":
@@ -26,7 +28,11 @@ export const HeaderNavRight = () => {
         <nav>
           <Button
             variant="outlined"
-            onClick={() => signIn("github", { callbackUrl: "/account" })}
+            startIcon={
+              loading && <CircularProgress size={16} color="secondary" />
+            }
+            disabled={loading}
+            onClick={signIn}
           >
             Log in
           </Button>
