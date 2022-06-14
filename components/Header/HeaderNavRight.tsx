@@ -1,9 +1,16 @@
+import styled from "@emotion/styled";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { IconButton, Skeleton } from "@mui/material";
 import { useSession } from "next-auth/react";
 
 import { useSignIn } from "../../util/hooks";
 import { AccountMenu } from "./AccountMenu";
+
+const StyledLoadingButton = styled(LoadingButton)`
+  &:disabled .MuiLoadingButton-loadingIndicator {
+    color: #000000;
+  }
+`;
 
 export const HeaderNavRight = () => {
   const { status } = useSession();
@@ -20,9 +27,13 @@ export const HeaderNavRight = () => {
       return <AccountMenu />;
     default:
       return (
-        <LoadingButton variant="outlined" loading={loading} onClick={signIn}>
+        <StyledLoadingButton
+          variant="outlined"
+          loading={loading}
+          onClick={signIn}
+        >
           Log in
-        </LoadingButton>
+        </StyledLoadingButton>
       );
   }
 };
