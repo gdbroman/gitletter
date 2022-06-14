@@ -29,10 +29,6 @@ export const AccountMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleLogout = async () => {
-    await signOut();
-    router.push("/");
-  };
 
   const { newsletter } = useNewsletterContext();
   const newsletterTitle = useMemo(
@@ -108,7 +104,7 @@ export const AccountMenu = () => {
             Settings
           </MenuItem>
         </Link>
-        <MenuItem onClick={handleLogout}>
+        <MenuItem onClick={() => signOut()}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
