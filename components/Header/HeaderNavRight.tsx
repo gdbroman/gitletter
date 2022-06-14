@@ -1,6 +1,5 @@
 import { Button, IconButton, Skeleton } from "@mui/material";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import { AccountMenu } from "./AccountMenu";
 
@@ -25,9 +24,12 @@ export const HeaderNavRight = () => {
     default:
       return (
         <nav>
-          <Link href="/api/auth/signin" passHref>
-            <Button variant="outlined">Log in</Button>
-          </Link>
+          <Button
+            variant="outlined"
+            onClick={() => signIn("github", { callbackUrl: "/account" })}
+          >
+            Log in
+          </Button>
         </nav>
       );
   }

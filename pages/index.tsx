@@ -1,8 +1,7 @@
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { Box, Button, Typography } from "@mui/material";
-import Link from "next/link";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { FC, useEffect } from "react";
 
 import Layout from "../components/Layout";
@@ -36,15 +35,14 @@ const Home: FC = () => {
             >
               {siteDescription}
             </Typography>
-            <Link href="/api/auth/signin" passHref>
-              <Button
-                variant="contained"
-                size="large"
-                startIcon={<GitHubIcon />}
-              >
-                Get started free
-              </Button>
-            </Link>
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<GitHubIcon />}
+              onClick={() => signIn("github", { callbackUrl: "/account" })}
+            >
+              Get started free
+            </Button>
           </Box>
         </main>
       </div>
