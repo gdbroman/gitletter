@@ -20,6 +20,7 @@ const HeaderMenuItem = styled(MenuItem)`
   && {
     &:hover {
       background-color: transparent;
+      cursor: initial;
     }
   }
 `;
@@ -30,7 +31,7 @@ type ProfileAvatarProps = {
 };
 
 const ProfileAvatar = ({ sessionData, size = 32 }: ProfileAvatarProps) => (
-  <Avatar sx={{ width: size, height: size }}>
+  <Avatar sx={{ width: size, height: size }} key={size}>
     {sessionData?.user?.image ? (
       <Image src={sessionData?.user?.image} width={size} height={size} />
     ) : (
@@ -81,10 +82,9 @@ export const AccountMenu = () => {
             mt: 1.5,
             maxWidth: 240,
             "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
+              width: 38,
+              height: 38,
+              mr: 1.5,
             },
             "&:before": {
               content: '""',
@@ -108,7 +108,7 @@ export const AccountMenu = () => {
           disableTouchRipple
           onClick={(event) => event.stopPropagation()}
         >
-          <ProfileAvatar sessionData={session.data} size={40} />
+          <ProfileAvatar size={38} sessionData={session.data} />
           <Box>
             <Typography
               variant="body2"
