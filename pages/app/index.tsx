@@ -41,16 +41,14 @@ const Home: FC<Props> = ({ newsletter }) => {
     return (
       <ProtectedPage>
         <Layout>
-          <div className="page">
-            <h1>{newsletter.title}</h1>
-            <main>
-              {!newsletter?.githubIntegration?.installationId && (
-                <a href={process.env.GITHUB_APP_URL}>
-                  <button>Connect your repo</button>
-                </a>
-              )}
-            </main>
-          </div>
+          <h1>{newsletter.title}</h1>
+          <main>
+            {!newsletter?.githubIntegration?.installationId && (
+              <a href={process.env.GITHUB_APP_URL}>
+                <button>Connect your repo</button>
+              </a>
+            )}
+          </main>
         </Layout>
       </ProtectedPage>
     );
