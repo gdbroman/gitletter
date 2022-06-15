@@ -17,10 +17,16 @@ export const Footer: FC = () => (
       Questions, feedback? Reach out on Twitter or Email :)
     </Typography>
     <Box>
-      <IconButton href={gitLetterSocialLinks.twitter}>
+      <IconButton
+        href={gitLetterSocialLinks.twitter}
+        title="@GitLetterCo on Twitter"
+      >
         <TwitterIcon />
       </IconButton>
-      <IconButton href={`mailto:${gitLetterSocialLinks.email}`}>
+      <IconButton
+        href={`mailto:${gitLetterSocialLinks.email}`}
+        title="GitLetter email"
+      >
         <AlternateEmailIcon />
       </IconButton>
     </Box>
