@@ -14,7 +14,7 @@ const StyledFooter = styled.footer`
 export const Footer: FC = () => (
   <StyledFooter>
     <Typography variant="body2" color="secondary">
-      Have questions or feedback? Reach out on Twitter or Email
+      Questions, feedback? Reach out on Twitter or Email :)
     </Typography>
     <Box>
       <IconButton href={gitLetterSocialLinks.twitter}>
