@@ -1,7 +1,6 @@
-import AddIcon from "@mui/icons-material/Add";
+import styled from "@emotion/styled";
+import HomeIcon from "@mui/icons-material/Home";
 import Logout from "@mui/icons-material/Logout";
-import PersonIcon from "@mui/icons-material/Person";
-import Settings from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -11,11 +10,34 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import Image from "next/image";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { MouseEvent, useMemo, useState } from "react";
+import { Session } from "next-auth/core/types";
+import { signOut, useSession } from "next-auth/react";
+import { MouseEvent, useState } from "react";
 
-import { useNewsletterContext } from "../../contexts/NewsletterContext";
+const HeaderMenuItem = styled(MenuItem)`
+  && {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+`;
+
+type ProfileAvatarProps = {
+  sessionData: Session;
+  size?: number;
+};
+
+const ProfileAvatar = ({ sessionData, size = 32 }: ProfileAvatarProps) => (
+  <Avatar sx={{ width: size, height: size }}>
+    {sessionData?.user?.image ? (
+      <Image src={sessionData?.user?.image} width={size} height={size} />
+    ) : (
+      sessionData?.user?.name.charAt(0)
+    )}
+  </Avatar>
+);
 
 export const AccountMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -28,11 +50,7 @@ export const AccountMenu = () => {
     setAnchorEl(null);
   };
 
-  const { newsletter } = useNewsletterContext();
-  const newsletterTitle = useMemo(
-    () => newsletter?.title ?? "Add newsletter",
-    [newsletter]
-  );
+  const session = useSession();
 
   return (
     <>
@@ -45,9 +63,7 @@ export const AccountMenu = () => {
             aria-controls={open ? "account-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>
-              {newsletter?.title.charAt(0) ?? <PersonIcon />}
-            </Avatar>
+            <ProfileAvatar sessionData={session.data} />
           </IconButton>
         </Tooltip>
       </Box>
@@ -87,21 +103,43 @@ export const AccountMenu = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
+        <HeaderMenuItem
+          disableRipple
+          disableTouchRipple
+          onClick={(event) => event.stopPropagation()}
+        >
+          <ProfileAvatar sessionData={session.data} size={40} />
+          <Box>
+            <Typography
+              variant="body2"
+              lineHeight={1.25}
+              fontWeight={600}
+              noWrap
+            >
+              {session.data?.user.name}
+            </Typography>
+            <Typography variant="body2" noWrap lineHeight={1.25}>
+              {session.data?.user.email}
+            </Typography>
+          </Box>
+        </HeaderMenuItem>
+        <Divider />
         <Link href="/app" passHref>
           <MenuItem>
-            <Avatar>{newsletter?.title.charAt(0) ?? <AddIcon />}</Avatar>{" "}
-            <Typography noWrap>{newsletterTitle}</Typography>
+            <ListItemIcon>
+              <HomeIcon fontSize="small" />
+            </ListItemIcon>
+            Your letter
           </MenuItem>
         </Link>
-        <Divider />
-        <Link href="/settings" passHref>
+        {/* <Link href="/settings" passHref>
           <MenuItem>
             <ListItemIcon>
               <Settings fontSize="small" />
             </ListItemIcon>
             Settings
           </MenuItem>
-        </Link>
+        </Link> */}
         <MenuItem onClick={() => signOut()}>
           <ListItemIcon>
             <Logout fontSize="small" />
