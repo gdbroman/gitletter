@@ -7,7 +7,7 @@ export const useSignIn = () => {
   const signIn = async () => {
     setLoading(true);
     try {
-      nextAuthSignIn("github", { callbackUrl: "/account" });
+      nextAuthSignIn("github", { callbackUrl: "/app" });
     } catch {
       setLoading(false);
     }

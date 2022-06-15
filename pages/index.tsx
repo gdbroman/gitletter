@@ -14,7 +14,7 @@ const Home: FC = () => {
 
   useEffect(() => {
     if (session.data?.user) {
-      Router.push("/account");
+      Router.push("/app");
     }
   }, [session]);
 

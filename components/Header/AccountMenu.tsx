@@ -12,14 +12,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { MouseEvent, useMemo, useState } from "react";
 
 import { useNewsletterContext } from "../../contexts/NewsletterContext";
 
 export const AccountMenu = () => {
-  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -89,7 +87,7 @@ export const AccountMenu = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Link href="/account" passHref>
+        <Link href="/app" passHref>
           <MenuItem>
             <Avatar>{newsletter?.title.charAt(0) ?? <AddIcon />}</Avatar>{" "}
             <Typography noWrap>{newsletterTitle}</Typography>

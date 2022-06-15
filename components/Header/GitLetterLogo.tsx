@@ -9,7 +9,7 @@ const getLogoHref = (status) => {
     case "loading":
       return "#";
     case "authenticated":
-      return "/account";
+      return "/app";
     default:
       return "/";
   }
