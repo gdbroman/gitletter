@@ -6,5 +6,5 @@ export const siteURL = "https://gitletter.co";
 
 export const gitLetterSocialLinks = {
   twitter: "https://twitter.com/gitletterco",
-  email: "notyeast@proton.me",
+  email: "hello@gitletter.co",
 };
