@@ -1,15 +1,17 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
-import { GithubIntegration, Newsletter } from "@prisma/client";
+import { GithubIntegration, Issue, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC, useState } from "react";
 
+import { Dropdown } from "../../components/Dropdown";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import prisma from "../../lib/prisma";
+import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -22,6 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     where: { author: { email: session.user.email } },
     include: {
       githubIntegration: true,
+      issues: true,
     },
   });
 
@@ -30,14 +33,36 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   };
 };
 
+async function getRepos(githubInstallationId: string): Promise<any> {
+  const res = await fetch(
+    `${process.env.APP_URL}/api/github/${githubInstallationId}`,
+    {
+      method: "GET",
+    }
+  );
+  const repos = await res.json();
+  console.log(repos);
+  return repos;
+}
+
+async function deleteIntegration(githubInstallationId: string): Promise<any> {
+  await fetch(`${process.env.APP_URL}/api/github/${githubInstallationId}`, {
+    method: "DELETE",
+  });
+}
+
 type Props = {
   newsletter: Newsletter & {
     githubIntegration?: GithubIntegration;
+    issues: Issue[];
   };
 };
 
 const Home: FC<Props> = ({ newsletter }) => {
+  const { title, githubIntegration, issues } = newsletter;
   const [value, setValue] = useState(0);
+  const repos = getRepos(githubIntegration?.installationId);
+  console.log(repos);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -46,7 +71,7 @@ const Home: FC<Props> = ({ newsletter }) => {
   return (
     <ProtectedPage>
       <Layout>
-        <h1>{newsletter ? newsletter.title : "Your newsletter"}</h1>
+        <h1>{title ? title : "Your newsletter"}</h1>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
             value={value}
@@ -63,16 +88,35 @@ const Home: FC<Props> = ({ newsletter }) => {
             Publish
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Capture
+            Use this to capture email addresses from your newsletter.
           </TabPanel>
           <TabPanel value={value} index={2}>
-            Settings
+            <Typography variant="h6" mb={2}>
+              Connect to GitHub
+            </Typography>
+            {githubIntegration?.installationId ? (
+              <>
+                <Dropdown />
+                <Button
+                  variant="contained"
+                  color="warning"
+                  onClick={() =>
+                    deleteIntegration(githubIntegration?.installationId)
+                  }
+                >
+                  Disconnect
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                href={process.env.GITHUB_APP_URL}
+              >
+                Connect your repo
+              </Button>
+            )}
           </TabPanel>
-          {!newsletter?.githubIntegration?.installationId && (
-            <a href={process.env.GITHUB_APP_URL}>
-              <button>Connect your repo</button>
-            </a>
-          )}
         </main>
       </Layout>
     </ProtectedPage>

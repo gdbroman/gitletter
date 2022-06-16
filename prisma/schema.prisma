@@ -30,7 +30,7 @@ model Issue {
 
 model GithubIntegration {
   id             String      @id @default(cuid())
-  installationId String
+  installationId String      @unique
   newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
   newletterId    String?     @unique
 }

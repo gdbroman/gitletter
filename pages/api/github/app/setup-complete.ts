@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 
-import prisma from "../../../../lib/prisma";
+import prisma from "../../../../util/prisma";
 
 // POST /api/github/app/setup-complete
 export default async function handle(req, res) {
@@ -48,5 +48,5 @@ export default async function handle(req, res) {
     );
   }
 
-  res.redirect("/");
+  res.redirect("/app");
 }
