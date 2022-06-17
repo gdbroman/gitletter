@@ -46,8 +46,8 @@ const Home: FC<Props> = ({ newsletter, githubRepos }) => {
   return (
     <ProtectedPage>
       <Layout>
-        <Dashboard title={title} value={0}>
-          Publish
+        <Dashboard title={title} value={1}>
+          Use this to capture email addresses from your newsletter.
         </Dashboard>
       </Layout>
     </ProtectedPage>

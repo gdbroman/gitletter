@@ -1,12 +1,14 @@
+import Button from "@mui/material/Button";
 import { GithubIntegration, Issue, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
 
 import { Dashboard } from "../../components/Dashboard/Dashboard";
+import { Dropdown } from "../../components/Dropdown";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import { getRepos } from "../../util/githubClient";
+import { deleteIntegration, getRepos } from "../../util/githubClient";
 import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -46,8 +48,29 @@ const Home: FC<Props> = ({ newsletter, githubRepos }) => {
   return (
     <ProtectedPage>
       <Layout>
-        <Dashboard title={title} value={0}>
-          Publish
+        <Dashboard title={title} value={2}>
+          {githubIntegration?.installationId ? (
+            <>
+              <Dropdown />
+              <Button
+                variant="contained"
+                color="warning"
+                onClick={() =>
+                  deleteIntegration(githubIntegration?.installationId)
+                }
+              >
+                Disconnect
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              href={process.env.GITHUB_APP_URL}
+            >
+              Connect your repo
+            </Button>
+          )}
         </Dashboard>
       </Layout>
     </ProtectedPage>
