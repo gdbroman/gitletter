@@ -26,8 +26,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
 
-  const reposRes = await getRepos(newsletter.githubIntegration.installationId);
-  const repos = await reposRes.json();
+  let repos = [];
+  if (newsletter.githubIntegration) {
+    try {
+      const reposRes = await getRepos(
+        newsletter.githubIntegration.installationId
+      );
+      repos = await reposRes.json();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return {
     props: { newsletter, githubRepos: repos },
