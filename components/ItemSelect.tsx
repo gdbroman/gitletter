@@ -18,19 +18,6 @@ const MenuProps = {
   },
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
 const getStyles = (item: string, selectedItem: string, theme: Theme) => {
   return {
     fontWeight:
@@ -55,29 +42,27 @@ export const ItemSelect: FC<Props> = ({ items, label, helperText }) => {
   };
 
   return (
-    <div>
-      <FormControl sx={{ mb: 2, width: 300 }}>
-        <InputLabel id="item-select-label">{label}</InputLabel>
-        <Select
-          labelId="item-select-label"
-          id="item-select"
-          value={selectedItem}
-          onChange={handleChange}
-          input={<OutlinedInput label={label} />}
-          MenuProps={MenuProps}
-        >
-          {items.map((item) => (
-            <MenuItem
-              key={item}
-              value={item}
-              style={getStyles(item, selectedItem, theme)}
-            >
-              {item}
-            </MenuItem>
-          ))}
-        </Select>
-        {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      </FormControl>
-    </div>
+    <FormControl sx={{ width: 300 }}>
+      <InputLabel id="item-select-label">{label}</InputLabel>
+      <Select
+        labelId="item-select-label"
+        id="item-select"
+        value={selectedItem}
+        onChange={handleChange}
+        input={<OutlinedInput label={label} />}
+        MenuProps={MenuProps}
+      >
+        {items.map((item) => (
+          <MenuItem
+            key={item}
+            value={item}
+            style={getStyles(item, selectedItem, theme)}
+          >
+            {item}
+          </MenuItem>
+        ))}
+      </Select>
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+    </FormControl>
   );
 };

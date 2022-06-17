@@ -1,6 +1,9 @@
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { GithubIntegration, Newsletter } from "@prisma/client";
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC, useMemo } from "react";
@@ -9,7 +12,7 @@ import { Dashboard } from "../../components/Dashboard/Dashboard";
 import { ItemSelect } from "../../components/ItemSelect";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import { getRepos } from "../../util/githubClient";
+import { deleteIntegration, getRepos } from "../../util/githubClient";
 import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -51,31 +54,47 @@ type Props = {
 };
 
 const AppSettings: FC<Props> = ({ newsletter, githubRepos }) => {
+  const router = useRouter();
+
   const { title, githubIntegration } = newsletter;
+  const githubIntegrationInstallationId = useMemo(
+    () => githubIntegration?.installationId,
+    [githubIntegration?.installationId]
+  );
   const repos = useMemo(
     () => githubRepos.map((repo) => repo.name),
     [githubRepos]
   );
 
+  const handleCloseConnection = () => {
+    deleteIntegration(githubIntegrationInstallationId);
+    router.replace(router.asPath); // refresh props!
+  };
+
   return (
     <ProtectedPage>
       <Layout>
         <Dashboard title={title} value={2}>
-          {githubIntegration?.installationId ? (
-            <>
-              <ItemSelect items={repos} label="Repository" />
-              <Typography variant="body2" color="GrayText">
-                Can't find your repository?{" "}
-                <a
-                  href={process.env.GITHUB_APP_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Add it
-                </a>{" "}
-                to your installation configuration.
-              </Typography>
-            </>
+          {githubIntegrationInstallationId ? (
+            <Box display="flex" flexDirection="column" gap={4}>
+              <Alert severity="success" onClose={handleCloseConnection}>
+                Connected to GitHub!
+              </Alert>
+              <Box>
+                <ItemSelect items={repos} label="Repository" />
+                <Typography variant="body2" color="GrayText" mt={2}>
+                  Can't find your repository?{" "}
+                  <a
+                    href={process.env.GITHUB_APP_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Add it
+                  </a>{" "}
+                  to your installation configuration.
+                </Typography>
+              </Box>
+            </Box>
           ) : (
             <Button
               variant="contained"

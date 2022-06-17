@@ -48,5 +48,5 @@ export default async function handle(req, res) {
     );
   }
 
-  res.redirect("/app");
+  res.redirect("/app/settings");
 }

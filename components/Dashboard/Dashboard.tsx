@@ -10,17 +10,16 @@ type Props = {
 };
 
 export const Dashboard: FC<Props> = ({ title, value, children }) => (
-  <>
+  <main>
     <h1>{title ? title : "Your newsletter"}</h1>
     <NavBar value={value} />
-    <main>
-      <div
-        role="tabpanel"
-        id={`simple-tabpanel-${value}`}
-        aria-labelledby={`simple-tab-${value}`}
-      >
-        <Box sx={{ p: 3 }}>{children}</Box>
-      </div>
-    </main>
-  </>
+    <div
+      role="tabpanel"
+      id={`simple-tabpanel-${value}`}
+      aria-labelledby={`simple-tab-${value}`}
+      style={{ maxWidth: 780 }}
+    >
+      <Box sx={{ p: 3 }}>{children}</Box>
+    </div>
+  </main>
 );
