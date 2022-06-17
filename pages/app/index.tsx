@@ -40,7 +40,7 @@ type Props = {
   githubRepos: any[];
 };
 
-const Home: FC<Props> = ({ newsletter, githubRepos }) => {
+const AppPublish: FC<Props> = ({ newsletter, githubRepos }) => {
   const { title, githubIntegration, issues } = newsletter;
 
   return (
@@ -54,4 +54,4 @@ const Home: FC<Props> = ({ newsletter, githubRepos }) => {
   );
 };
 
-export default Home;
+export default AppPublish;

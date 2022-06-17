@@ -20,12 +20,14 @@ export const Footer: FC = () => (
       <IconButton
         href={gitLetterSocialLinks.twitter}
         title="@GitLetterCo on Twitter"
+        target="_blank"
       >
         <TwitterIcon />
       </IconButton>
       <IconButton
         href={`mailto:${gitLetterSocialLinks.email}`}
         title="GitLetter email"
+        target="_blank"
       >
         <AlternateEmailIcon />
       </IconButton>

@@ -1,14 +1,15 @@
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import { GithubIntegration, Issue, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import { Dashboard } from "../../components/Dashboard/Dashboard";
-import { Dropdown } from "../../components/Dropdown";
+import { ItemSelect } from "../../components/ItemSelect";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import { deleteIntegration, getRepos } from "../../util/githubClient";
+import { getRepos } from "../../util/githubClient";
 import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -42,8 +43,12 @@ type Props = {
   githubRepos: any[];
 };
 
-const Home: FC<Props> = ({ newsletter, githubRepos }) => {
-  const { title, githubIntegration, issues } = newsletter;
+const AppSettings: FC<Props> = ({ newsletter, githubRepos }) => {
+  const { title, githubIntegration } = newsletter;
+  const repos = useMemo(
+    () => githubRepos.map((repo) => repo.name),
+    [githubRepos]
+  );
 
   return (
     <ProtectedPage>
@@ -51,16 +56,18 @@ const Home: FC<Props> = ({ newsletter, githubRepos }) => {
         <Dashboard title={title} value={2}>
           {githubIntegration?.installationId ? (
             <>
-              <Dropdown />
-              <Button
-                variant="contained"
-                color="warning"
-                onClick={() =>
-                  deleteIntegration(githubIntegration?.installationId)
-                }
-              >
-                Disconnect
-              </Button>
+              <ItemSelect items={repos} label="Repository" />
+              <Typography variant="body2" color="GrayText">
+                Can't find your repository?{" "}
+                <a
+                  href={process.env.GITHUB_APP_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Add it
+                </a>{" "}
+                to your installation configuration.
+              </Typography>
             </>
           ) : (
             <Button
@@ -77,4 +84,4 @@ const Home: FC<Props> = ({ newsletter, githubRepos }) => {
   );
 };
 
-export default Home;
+export default AppSettings;

@@ -1,7 +1,7 @@
+import Box from "@mui/material/Box";
 import { FC, ReactNode } from "react";
 
-import { NavBar } from "./Navbar";
-import { TabPanel } from "./Tabpanel";
+import { NavBar } from "./NavBar";
 
 type Props = {
   title?: string;
@@ -14,9 +14,13 @@ export const Dashboard: FC<Props> = ({ title, value, children }) => (
     <h1>{title ? title : "Your newsletter"}</h1>
     <NavBar value={value} />
     <main>
-      <TabPanel value={value} index={value}>
-        {children}
-      </TabPanel>
+      <div
+        role="tabpanel"
+        id={`simple-tabpanel-${value}`}
+        aria-labelledby={`simple-tab-${value}`}
+      >
+        <Box sx={{ p: 3 }}>{children}</Box>
+      </div>
     </main>
   </>
 );
