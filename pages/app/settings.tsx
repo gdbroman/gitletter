@@ -66,8 +66,8 @@ const AppSettings: FC<Props> = ({ newsletter, githubRepos }) => {
     [githubRepos]
   );
 
-  const handleCloseConnection = () => {
-    deleteIntegration(githubIntegrationInstallationId);
+  const handleCloseConnection = async () => {
+    await deleteIntegration(githubIntegrationInstallationId);
     router.replace(router.asPath); // refresh props!
   };
 
