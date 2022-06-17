@@ -18,7 +18,7 @@ const Home: FC = () => {
     if (session.data?.user) {
       router.push("/app");
     }
-  }, [router, session]);
+  }, [router, session.data?.user]);
 
   return (
     <Layout>
