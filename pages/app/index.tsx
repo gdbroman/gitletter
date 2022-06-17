@@ -1,4 +1,4 @@
-import { GithubIntegration, Issue, Newsletter } from "@prisma/client";
+import { Issue, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
@@ -6,7 +6,6 @@ import { FC } from "react";
 import { Dashboard } from "../../components/Dashboard/Dashboard";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import { getRepos } from "../../util/githubClient";
 import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -19,29 +18,23 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const newsletter = await prisma.newsletter.findFirst({
     where: { author: { email: session.user.email } },
     include: {
-      githubIntegration: true,
       issues: true,
     },
   });
 
-  const reposRes = await getRepos(newsletter.githubIntegration.installationId);
-  const repos = await reposRes.json();
-
   return {
-    props: { newsletter, githubRepos: repos },
+    props: { newsletter },
   };
 };
 
 type Props = {
   newsletter: Newsletter & {
-    githubIntegration?: GithubIntegration;
     issues: Issue[];
   };
-  githubRepos: any[];
 };
 
-const AppPublish: FC<Props> = ({ newsletter, githubRepos }) => {
-  const { title, githubIntegration, issues } = newsletter;
+const AppPublish: FC<Props> = ({ newsletter }) => {
+  const { title, issues } = newsletter;
 
   return (
     <ProtectedPage>

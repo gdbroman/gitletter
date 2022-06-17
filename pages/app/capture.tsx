@@ -1,4 +1,4 @@
-import { GithubIntegration, Issue, Newsletter } from "@prisma/client";
+import { Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
@@ -6,7 +6,6 @@ import { FC } from "react";
 import { Dashboard } from "../../components/Dashboard/Dashboard";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import { getRepos } from "../../util/githubClient";
 import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -24,24 +23,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
 
-  const reposRes = await getRepos(newsletter.githubIntegration.installationId);
-  const repos = await reposRes.json();
-
   return {
-    props: { newsletter, githubRepos: repos },
+    props: { newsletter },
   };
 };
 
 type Props = {
-  newsletter: Newsletter & {
-    githubIntegration?: GithubIntegration;
-    issues: Issue[];
-  };
-  githubRepos: any[];
+  newsletter: Newsletter;
 };
 
-const AppCapture: FC<Props> = ({ newsletter, githubRepos }) => {
-  const { title, githubIntegration, issues } = newsletter;
+const AppCapture: FC<Props> = ({ newsletter }) => {
+  const { title } = newsletter;
 
   return (
     <ProtectedPage>

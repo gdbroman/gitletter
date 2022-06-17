@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { GithubIntegration, Issue, Newsletter } from "@prisma/client";
+import { GithubIntegration, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC, useMemo } from "react";
@@ -23,7 +23,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     where: { author: { email: session.user.email } },
     include: {
       githubIntegration: true,
-      issues: true,
     },
   });
 
@@ -38,7 +37,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 type Props = {
   newsletter: Newsletter & {
     githubIntegration?: GithubIntegration;
-    issues: Issue[];
   };
   githubRepos: any[];
 };
