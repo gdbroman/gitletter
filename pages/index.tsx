@@ -1,24 +1,25 @@
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Typography } from "@mui/material";
-import { useRouter } from "next/router";
+import Button from "@mui/material/Button";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 
 import Layout from "../components/Layout";
 import { siteDescription, siteTagline } from "../util/constants";
 import { useSignIn } from "../util/hooks";
 
 const Home: FC = () => {
-  const router = useRouter();
   const session = useSession();
   const { signIn, loading } = useSignIn();
 
-  useEffect(() => {
-    if (session.data?.user) {
-      router.push("/app");
-    }
-  }, [router, session.data?.user]);
+  // useEffect(() => {
+  //   if (session.data?.user) {
+  //     router.push("/app");
+  //   }
+  // }, [router, session.data?.user]);
 
   return (
     <Layout>
@@ -38,15 +39,27 @@ const Home: FC = () => {
           >
             {siteDescription}
           </Typography>
-          <LoadingButton
-            startIcon={<GitHubIcon />}
-            variant="contained"
-            size="large"
-            loading={loading}
-            onClick={signIn}
-          >
-            Get started free
-          </LoadingButton>
+          {session.status === "authenticated" ? (
+            <Link href="/app" passHref>
+              <Button
+                variant="contained"
+                size="large"
+                endIcon={<ArrowForwardIcon />}
+              >
+                Go to app
+              </Button>
+            </Link>
+          ) : (
+            <LoadingButton
+              startIcon={<GitHubIcon />}
+              variant="contained"
+              size="large"
+              loading={loading}
+              onClick={signIn}
+            >
+              Get started free
+            </LoadingButton>
+          )}
         </Box>
       </main>
     </Layout>
