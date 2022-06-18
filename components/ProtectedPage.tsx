@@ -1,6 +1,10 @@
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo } from "react";
+
+import Layout from "./Layout";
 
 export const ProtectedPage = ({ children }) => {
   const router = useRouter();
@@ -14,7 +18,20 @@ export const ProtectedPage = ({ children }) => {
     }
   }, [router, unauthenticated]);
 
-  if (loading || unauthenticated) return null;
+  if (loading || unauthenticated)
+    return (
+      <Layout>
+        <Box mt={6}>
+          <Skeleton variant="rectangular" width={380} height={56} />
+        </Box>
+        <Box mt={4}>
+          <Skeleton variant="rectangular" width={780} height={48} />
+        </Box>
+        <Box mt={2}>
+          <Skeleton variant="rectangular" width={780} height={100} />
+        </Box>
+      </Layout>
+    );
 
   return <>{children}</>;
 };
