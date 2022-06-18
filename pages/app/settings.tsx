@@ -56,7 +56,8 @@ type Props = {
 const AppSettings: FC<Props> = ({ newsletter, githubRepos }) => {
   const router = useRouter();
 
-  const { title, githubIntegration } = newsletter;
+  const title = newsletter?.title;
+  const githubIntegration = newsletter?.githubIntegration;
   const githubIntegrationInstallationId = useMemo(
     () => githubIntegration?.installationId,
     [githubIntegration?.installationId]

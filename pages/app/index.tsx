@@ -28,13 +28,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 type Props = {
-  newsletter: Newsletter & {
+  newsletter?: Newsletter & {
     issues: Issue[];
   };
 };
 
 const AppPublish: FC<Props> = ({ newsletter }) => {
-  const { title, issues } = newsletter;
+  const title = newsletter?.title;
 
   return (
     <ProtectedPage>

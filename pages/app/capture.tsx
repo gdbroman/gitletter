@@ -33,7 +33,7 @@ type Props = {
 };
 
 const AppCapture: FC<Props> = ({ newsletter }) => {
-  const { title } = newsletter;
+  const title = newsletter?.title;
 
   return (
     <ProtectedPage>
