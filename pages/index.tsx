@@ -42,19 +42,21 @@ const Home: FC = () => {
           {session.status === "authenticated" ? (
             <Link href="/app" passHref>
               <Button
-                variant="contained"
                 size="large"
+                variant="contained"
                 endIcon={<ArrowForwardIcon />}
+                style={{ fontSize: "1rem" }}
               >
                 Go to app
               </Button>
             </Link>
           ) : (
             <LoadingButton
-              startIcon={<GitHubIcon />}
-              variant="contained"
               size="large"
-              loading={loading}
+              variant="contained"
+              startIcon={<GitHubIcon />}
+              style={{ fontSize: "1rem" }}
+              loading={loading || session.status === "loading"}
               onClick={signIn}
             >
               Get started free
