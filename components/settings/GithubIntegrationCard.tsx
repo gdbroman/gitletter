@@ -91,7 +91,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     setRepo(githubIntegration?.repoName ?? "");
     setDir(githubIntegration?.repoDir ?? "");
   };
-  const handleCloseConnection = async () => {
+  const handleDisconnect = async () => {
     disconnecting.toggleOn();
     try {
       await deleteIntegration(githubIntegration?.installationId);
@@ -99,10 +99,10 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
       setError(
         "Failed to disconnect from GitHub. Please refresh the page and try again."
       );
+      disconnecting.toggleOff();
     } finally {
       router.replace(router.asPath);
       setSuccess("GitHub integration disconnected successfully!");
-      disconnecting.toggleOff();
     }
   };
 
@@ -125,7 +125,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
         setSuccess={setSuccess}
         handleSave={handleSave}
         handleCancelEdit={handleCancelEdit}
-        handleCloseConnection={handleCloseConnection}
+        handleDisconnect={handleDisconnect}
       />
     );
   }
@@ -149,7 +149,7 @@ type GithubIntegrationSettingsCardProps = {
   setSuccess: (success: string | null) => void;
   handleSave: () => void;
   handleCancelEdit: () => void;
-  handleCloseConnection: () => void;
+  handleDisconnect: () => void;
 };
 
 const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
@@ -169,7 +169,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
   setSuccess,
   handleSave,
   handleCancelEdit,
-  handleCloseConnection,
+  handleDisconnect,
 }) => (
   <>
     <CustomSnackbar
@@ -188,7 +188,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
     <Card variant="outlined">
       <Alert
         severity="success"
-        onClose={handleCloseConnection}
+        onClose={handleDisconnect}
         closeText={"Disconnect from GitHub"}
       >
         Connected to GitHub!
