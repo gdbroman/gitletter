@@ -1,7 +1,12 @@
 import { createAppAuth } from "@octokit/auth-app";
-import { Octokit } from "@octokit/rest";
+import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
+import { OctokitResponse } from "@octokit/types";
 
 import prisma from "../../../../util/prisma";
+
+type GithubRepoData =
+  RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
+export type GithubReposDirs = [string, string[]][];
 
 // DELETE & GET/api/github/app/:id
 export default async function handler(req, res) {
@@ -15,8 +20,26 @@ export default async function handler(req, res) {
     const repos = await client.paginate(
       client.apps.listReposAccessibleToInstallation
     );
+    const githubReposDirs: GithubReposDirs = await Promise.all(
+      repos.map(async (repo) => {
+        let directories: string[] = [];
+        const repoContent: OctokitResponse<GithubRepoData> =
+          await client.repos.getContent({
+            repo: repo.name,
+            owner: repo.owner.login,
+            path: "",
+          });
+        if (Array.isArray(repoContent.data)) {
+          directories = repoContent.data
+            .filter(({ type }) => type === "dir")
+            .map(({ path }) => path);
+        }
 
-    res.json(repos);
+        return [repo.name, directories];
+      })
+    );
+
+    res.send(githubReposDirs);
   }
 }
 

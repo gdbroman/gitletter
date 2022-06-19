@@ -19,7 +19,7 @@ export const Dashboard: FC<Props> = ({ title, value, children }) => (
       aria-labelledby={`simple-tab-${value}`}
       style={{ maxWidth: 780 }}
     >
-      <Box sx={{ p: 3 }}>{children}</Box>
+      <Box my={3}>{children}</Box>
     </div>
   </main>
 );

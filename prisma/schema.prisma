@@ -31,6 +31,8 @@ model Issue {
 model GithubIntegration {
   id             String      @id @default(cuid())
   installationId String      @unique
+  repoName       String?
+  repoDir        String?
   newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
   newletterId    String?     @unique
 }

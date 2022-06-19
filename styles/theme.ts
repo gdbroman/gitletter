@@ -60,6 +60,15 @@ const theme = createTheme({
       defaultProps: {
         disableElevation: true,
       },
+      styleOverrides: {
+        root: {
+          "&:disabled": {
+            opacity: 0.5,
+            cursor: "not-allowed",
+            color: "#000000",
+          },
+        },
+      },
     },
   },
 });

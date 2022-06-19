@@ -35,12 +35,18 @@ type Props = {
 
 const AppPublish: FC<Props> = ({ newsletter }) => {
   const title = newsletter?.title;
+  const issues = newsletter?.issues;
 
   return (
     <ProtectedPage>
       <Layout>
         <Dashboard title={title} value={0}>
-          Publish
+          {!issues.length && <p>No issues found</p>}
+          {issues.map((issue) => (
+            <div key={issue.id}>
+              <h3>{issue.title}</h3>
+            </div>
+          ))}
         </Dashboard>
       </Layout>
     </ProtectedPage>

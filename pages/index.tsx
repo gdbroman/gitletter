@@ -56,7 +56,7 @@ const Home: FC = () => {
               variant="contained"
               startIcon={<GitHubIcon />}
               style={{ fontSize: "1rem" }}
-              loading={loading || session.status === "loading"}
+              loading={loading}
               onClick={signIn}
             >
               Get started free

@@ -1,11 +1,11 @@
 import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 import { Theme, useTheme } from "@mui/material/styles";
-import { FC, ReactNode, useState } from "react";
+import Typography from "@mui/material/Typography";
+import { FC, ReactNode } from "react";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -27,42 +27,56 @@ const getStyles = (item: string, selectedItem: string, theme: Theme) => {
   };
 };
 
-type Props = {
+type Props = Omit<SelectProps, "onChange"> & {
   items: string[];
   label: string;
   helperText?: ReactNode;
+  value: string | undefined;
+  onChange: (value: string) => void;
 };
 
-export const ItemSelect: FC<Props> = ({ items, label, helperText }) => {
+export const ItemSelect: FC<Props> = ({
+  items,
+  label,
+  helperText,
+  value,
+  onChange,
+  ...rest
+}) => {
   const theme = useTheme();
-  const [selectedItem, setSelectedItem] = useState<string | undefined>();
 
-  const handleChange = (event: SelectChangeEvent<typeof selectedItem>) => {
-    setSelectedItem(event.target.value);
+  const handleChange = (event: SelectChangeEvent<typeof value>) => {
+    onChange(event.target.value);
   };
 
   return (
-    <FormControl sx={{ width: 300 }}>
+    <FormControl>
       <InputLabel id="item-select-label">{label}</InputLabel>
       <Select
-        labelId="item-select-label"
         id="item-select"
-        value={selectedItem}
-        onChange={handleChange}
-        input={<OutlinedInput label={label} />}
+        labelId="item-select-label"
         MenuProps={MenuProps}
+        input={<OutlinedInput label={label} fullWidth />}
+        sx={{ width: 300 }}
+        value={value}
+        onChange={handleChange}
+        {...rest}
       >
         {items.map((item) => (
           <MenuItem
             key={item}
             value={item}
-            style={getStyles(item, selectedItem, theme)}
+            style={getStyles(item, value, theme)}
           >
             {item}
           </MenuItem>
         ))}
       </Select>
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {helperText && (
+        <Typography variant="body2" color="gray" mt={1}>
+          {helperText}
+        </Typography>
+      )}
     </FormControl>
   );
 };
