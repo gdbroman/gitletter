@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
     res.statusCode = 403;
-    return { props: { drafts: [] } };
+    return { props: { newsletter: {} } };
   }
 
   const newsletter = await prisma.newsletter.findFirst({
@@ -33,7 +33,7 @@ type Props = {
 };
 
 const AppCapture: FC<Props> = ({ newsletter }) => {
-  const title = newsletter?.title;
+  const title = newsletter.title;
 
   return (
     <ProtectedPage>

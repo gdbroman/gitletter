@@ -18,6 +18,19 @@ export async function getReposDirs(
   return responseHandler(response);
 }
 
+export async function getRepoContent(
+  githubInstallationId: string
+): Promise<GithubReposDirs | null> {
+  const response = await fetch(
+    `${process.env.APP_URL}/api/github/${githubInstallationId}`,
+    {
+      method: "GET",
+    }
+  );
+
+  return responseHandler(response);
+}
+
 export async function deleteIntegration(
   githubInstallationId: string
 ): Promise<GithubIntegration | null> {

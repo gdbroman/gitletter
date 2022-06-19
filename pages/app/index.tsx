@@ -8,51 +8,63 @@ import { FC } from "react";
 import { Dashboard } from "../../components/Dashboard/Dashboard";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
+import { getRepoContent } from "../../util/githubClient";
 import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
     res.statusCode = 403;
-    return { props: { drafts: [] } };
+    return { props: { newsletter: {}, files: {} } };
   }
 
   const newsletter = await prisma.newsletter.findFirst({
     where: { author: { email: session.user.email } },
     include: {
       issues: true,
+      githubIntegration: true,
     },
   });
 
+  let files = null;
+  if (newsletter.githubIntegration) {
+    try {
+      files = await getRepoContent(newsletter.githubIntegration.installationId);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return {
-    props: { newsletter },
+    props: { newsletter, files },
   };
 };
 
 type Props = {
-  newsletter?: Newsletter & {
+  newsletter: Newsletter & {
     issues: Issue[];
   };
+  files: any;
 };
 
-const AppPublish: FC<Props> = ({ newsletter }) => {
-  const title = newsletter?.title;
-  const issues = newsletter?.issues;
+const AppPublish: FC<Props> = ({ newsletter, files }) => {
+  const title = newsletter.title;
+  console.log("FE", files);
 
   return (
     <ProtectedPage>
       <Layout>
         <Dashboard title={title} value={0}>
-          {!issues?.length && (
+          {!files.length && (
             <Typography variant="body1">
               No issues found. Make sure that you have{" "}
               <Link href="/app/settings">connected to a GitHub repository</Link>{" "}
               with issues in it.
             </Typography>
           )}
-          {issues?.map((issue) => (
-            <div key={issue.id}>
-              <h3>{issue.title}</h3>
+          {files.map((issue) => (
+            <div key={issue.name}>
+              <h3>{issue.name}</h3>
             </div>
           ))}
         </Dashboard>

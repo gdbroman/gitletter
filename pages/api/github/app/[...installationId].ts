@@ -5,7 +5,7 @@ import { GithubIntegration } from "@prisma/client";
 
 import prisma from "../../../../util/prisma";
 
-type GithubRepoData =
+export type GithubRepoData =
   RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
 export type GithubReposDirs = [string, string[]][];
 export type UpdateGithubIntegrationInput = Pick<
@@ -15,7 +15,7 @@ export type UpdateGithubIntegrationInput = Pick<
 
 // GET, PUT, DELETE /api/github/app/:id
 export default async function handler(req, res) {
-  const installationId = req.query.installationId[0];
+  const installationId = req.query.installationId;
 
   if (req.method === "DELETE") {
     const integration = await deleteIntegration(installationId);
@@ -86,7 +86,7 @@ function deleteIntegration(installationId: string) {
   }
 }
 
-function createOctokitClient(installationId?: string): Octokit {
+export function createOctokitClient(installationId?: string): Octokit {
   const appId = process.env.GITHUB_APP_ID;
   const privateKeyBase64 = process.env.GITHUB_APP_PRIVATE_KEY as string;
   const privateKey = Buffer.from(privateKeyBase64, "base64").toString();
