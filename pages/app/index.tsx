@@ -30,8 +30,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (newsletter.githubIntegration) {
     try {
       files =
-        (await getRepoContent(newsletter.githubIntegration.installationId)) ??
-        [];
+        (
+          await getRepoContent(newsletter.githubIntegration.installationId)
+        ).filter((f) => f.type === "file") ?? [];
     } catch (e) {
       console.error(e);
     }
