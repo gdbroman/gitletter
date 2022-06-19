@@ -59,9 +59,9 @@ const AppPublish: FC<Props> = ({ newsletter, files }) => {
         <Dashboard title={title} value={0}>
           {!files.length && (
             <Typography variant="body1">
-              No issues found. Make sure that you have{" "}
-              <Link href="/app/settings">connected to a GitHub repository</Link>{" "}
-              with markdown files in it.
+              No issues found. Have you{" "}
+              <Link href="/app/settings">connected to a repository</Link> with
+              markdown files in it?
             </Typography>
           )}
           {files.map((issue) => (
