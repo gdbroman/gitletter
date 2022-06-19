@@ -21,7 +21,7 @@ export async function getReposInfo(
 export async function getRepoContent(
   githubInstallationId: string,
   fileSlug?: string
-): Promise<any | null> {
+): Promise<any[] | null> {
   const response = await fetch(
     `${process.env.APP_URL}/api/github/${githubInstallationId}${
       fileSlug ? `?fileSlug=${fileSlug}` : ""

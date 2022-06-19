@@ -32,12 +32,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       files =
         (
           await getRepoContent(newsletter.githubIntegration.installationId)
-        ).filter((f) => f.type === "file") ?? [];
+        ).filter(({ type, name }) => type === "file" && name.endsWith(".md")) ??
+        [];
     } catch (e) {
       console.error(e);
     }
   }
-
   return {
     props: { newsletter, files },
   };
@@ -52,7 +52,6 @@ type Props = {
 
 const AppPublish: FC<Props> = ({ newsletter, files }) => {
   const title = newsletter.title;
-  console.log("FE", files);
 
   return (
     <ProtectedPage>
@@ -62,7 +61,7 @@ const AppPublish: FC<Props> = ({ newsletter, files }) => {
             <Typography variant="body1">
               No issues found. Make sure that you have{" "}
               <Link href="/app/settings">connected to a GitHub repository</Link>{" "}
-              with issues in it.
+              with markdown files in it.
             </Typography>
           )}
           {files.map((issue) => (
