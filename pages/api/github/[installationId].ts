@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   const repoContent: OctokitResponse<GithubRepoData> =
     await client.repos.getContent({
       repo: githubIntegration.repoName,
-      owner: "gdbroman",
+      owner: githubIntegration.repoOwner,
       path: `${githubIntegration.repoDir}${filePath}`,
     });
   res.send(repoContent.data);

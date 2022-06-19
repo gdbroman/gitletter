@@ -7,9 +7,9 @@ import { Dashboard } from "../../components/Dashboard/Dashboard";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
 import { GithubIntegrationSettings } from "../../components/settings/GithubIntegrationCard";
-import { getReposDirs } from "../../util/githubClient";
+import { getReposInfo } from "../../util/githubClient";
 import prisma from "../../util/prisma";
-import { GithubReposDirs } from "../api/github/app/[...installationId]";
+import { GithubReposInfo } from "../api/github/app/[...installationId]";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -25,10 +25,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
 
-  let githubReposDirs = null;
+  let githubReposInfo = null;
   if (newsletter.githubIntegration) {
     try {
-      githubReposDirs = await getReposDirs(
+      githubReposInfo = await getReposInfo(
         newsletter.githubIntegration.installationId
       );
     } catch (e) {
@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: { newsletter, githubReposDirs },
+    props: { newsletter, githubReposInfo },
   };
 };
 
@@ -45,10 +45,10 @@ type Props = {
   newsletter: Newsletter & {
     githubIntegration?: GithubIntegration;
   };
-  githubReposDirs: GithubReposDirs | null;
+  githubReposInfo: GithubReposInfo | null;
 };
 
-const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
+const AppSettings: FC<Props> = ({ newsletter, githubReposInfo }) => {
   const title = newsletter?.title;
   const githubIntegration = newsletter?.githubIntegration;
 
@@ -58,7 +58,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
         <Dashboard title={title} value={2}>
           <GithubIntegrationSettings
             githubIntegration={githubIntegration}
-            githubReposDirs={githubReposDirs}
+            githubReposInfo={githubReposInfo}
           />
         </Dashboard>
       </Layout>

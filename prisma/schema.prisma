@@ -33,6 +33,7 @@ model GithubIntegration {
   installationId String      @unique
   repoName       String?
   repoDir        String?
+  repoOwner      String?
   newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
   newletterId    String?     @unique
 }

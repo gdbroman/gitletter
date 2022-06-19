@@ -7,15 +7,19 @@ import prisma from "../../../../util/prisma";
 
 export type GithubRepoData =
   RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
-export type GithubReposDirs = [string, string[]][];
+export type RepoInfo = {
+  dir: string;
+  owner: string;
+};
+export type GithubReposInfo = [string, RepoInfo[]][];
 export type UpdateGithubIntegrationInput = Pick<
   GithubIntegration,
-  "repoName" | "repoDir"
+  "repoName" | "repoDir" | "repoOwner"
 >;
 
 // GET, PUT, DELETE /api/github/app/:id
 export default async function handler(req, res) {
-  const installationId = req.query.installationId;
+  const installationId = req.query.installationId[0];
 
   if (req.method === "DELETE") {
     const integration = await deleteIntegration(installationId);
@@ -27,19 +31,20 @@ export default async function handler(req, res) {
     );
     res.json(integration);
   } else {
-    const githubReposDirs = await getGithubReposDirs(installationId);
-    res.send(githubReposDirs);
+    const githubReposInfo = await getGithubReposInfo(installationId);
+    res.send(githubReposInfo);
   }
 }
 
-async function getGithubReposDirs(installationId: string) {
+async function getGithubReposInfo(installationId: string) {
   const client = createOctokitClient(installationId);
   const repos = await client.paginate(
     client.apps.listReposAccessibleToInstallation
   );
-  const githubReposDirs: GithubReposDirs = await Promise.all(
+
+  const githubReposInfo: GithubReposInfo = await Promise.all(
     repos.map(async (repo) => {
-      let directories: string[] = [];
+      let infos: RepoInfo[] = [];
       const repoContent: OctokitResponse<GithubRepoData> =
         await client.repos.getContent({
           repo: repo.name,
@@ -47,15 +52,15 @@ async function getGithubReposDirs(installationId: string) {
           path: "",
         });
       if (Array.isArray(repoContent.data)) {
-        directories = repoContent.data
+        infos = repoContent.data
           .filter(({ type }) => type === "dir")
-          .map(({ path }) => path);
+          .map(({ path }) => ({ dir: path, owner: repo.owner.login }));
       }
 
-      return [repo.name, directories];
+      return [repo.name, infos];
     })
   );
-  return githubReposDirs;
+  return githubReposInfo;
 }
 
 function updateIntegration(

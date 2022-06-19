@@ -1,13 +1,13 @@
 import { GithubIntegration } from "@prisma/client";
 
 import {
-  GithubReposDirs,
+  GithubReposInfo,
   UpdateGithubIntegrationInput,
 } from "../pages/api/github/app/[...installationId]";
 
-export async function getReposDirs(
+export async function getReposInfo(
   githubInstallationId: string
-): Promise<GithubReposDirs | null> {
+): Promise<GithubReposInfo | null> {
   const response = await fetch(
     `${process.env.APP_URL}/api/github/app/${githubInstallationId}`,
     {
@@ -21,7 +21,7 @@ export async function getReposDirs(
 export async function getRepoContent(
   githubInstallationId: string,
   fileSlug?: string
-): Promise<GithubReposDirs | null> {
+): Promise<GithubReposInfo | null> {
   const response = await fetch(
     `${process.env.APP_URL}/api/github/${githubInstallationId}${
       fileSlug ? `?fileSlug=${fileSlug}` : ""

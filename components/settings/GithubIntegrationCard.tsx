@@ -13,7 +13,10 @@ import { FC, useMemo, useState } from "react";
 
 import { ItemSelect } from "../../components/ItemSelect";
 import { CustomSnackbar } from "../../components/Snackbar";
-import { GithubReposDirs } from "../../pages/api/github/app/[...installationId]";
+import {
+  GithubReposInfo,
+  RepoInfo,
+} from "../../pages/api/github/app/[...installationId]";
 import { deleteIntegration, updateIntegration } from "../../util/githubClient";
 import { useToggle } from "../../util/hooks";
 import { Nullable } from "../../util/types";
@@ -30,12 +33,12 @@ const StyledAlert = styled(Alert)`
 
 type Props = {
   githubIntegration: GithubIntegration;
-  githubReposDirs: GithubReposDirs;
+  githubReposInfo: GithubReposInfo;
 };
 
 export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
   githubIntegration,
-  githubReposDirs,
+  githubReposInfo,
 }) => {
   const router = useRouter();
 
@@ -49,16 +52,16 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
   const [repo, setRepo] = useState<string>(initialValues.repo);
   const [dir, setDir] = useState<string>(initialValues.dir);
 
-  const githubReposData: Map<string, string[]> = useMemo(
-    () => new Map(githubReposDirs),
-    [githubReposDirs]
+  const githubReposData: Map<string, RepoInfo[]> = useMemo(
+    () => new Map(githubReposInfo),
+    [githubReposInfo]
   );
   const repos = useMemo(
     () => Array.from(githubReposData?.keys() ?? []),
     [githubReposData]
   );
   const dirs = useMemo(
-    () => [...(githubReposData?.get(repo) ?? []), "./"],
+    () => [...(githubReposData?.get(repo)?.map((d) => d.dir) ?? []), "./"],
     [githubReposData, repo]
   );
   const isChanged = useMemo(
@@ -84,10 +87,14 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     setError(null);
     setSuccess(null);
     try {
-      await updateIntegration(githubIntegration?.installationId, {
+      const res = await updateIntegration(githubIntegration?.installationId, {
         repoName: repo,
-        repoDir: dir,
+        repoDir: dir === "./" ? "" : dir,
+        repoOwner: githubReposData.get(repo)?.[0]?.owner,
       });
+      if (res == null) {
+        throw new Error("No response");
+      }
     } catch (e) {
       setError(
         "Failed to update GitHub integration. Please refresh the page and try again."
@@ -105,7 +112,10 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
   const handleDisconnect = async () => {
     disconnecting.toggleOn();
     try {
-      await deleteIntegration(githubIntegration?.installationId);
+      const res = await deleteIntegration(githubIntegration?.installationId);
+      if (res == null) {
+        throw new Error("No response");
+      }
     } catch (e) {
       setError(
         "Failed to disconnect from GitHub. Please refresh the page and try again."
@@ -117,7 +127,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     }
   };
 
-  if (!!githubIntegration && !!githubReposDirs) {
+  if (!!githubIntegration && !!githubReposData) {
     return (
       <GithubIntegrationSettingsCard
         repo={repo}
