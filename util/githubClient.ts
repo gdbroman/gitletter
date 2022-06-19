@@ -19,10 +19,13 @@ export async function getReposDirs(
 }
 
 export async function getRepoContent(
-  githubInstallationId: string
+  githubInstallationId: string,
+  fileSlug?: string
 ): Promise<GithubReposDirs | null> {
   const response = await fetch(
-    `${process.env.APP_URL}/api/github/${githubInstallationId}`,
+    `${process.env.APP_URL}/api/github/${githubInstallationId}${
+      fileSlug ? `?fileSlug=${fileSlug}` : ""
+    }`,
     {
       method: "GET",
     }

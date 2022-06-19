@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
     res.statusCode = 403;
-    return { props: { newsletter: {}, files: {} } };
+    return { props: { newsletter: {}, files: [] } };
   }
 
   const newsletter = await prisma.newsletter.findFirst({
@@ -26,10 +26,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
 
-  let files = null;
+  let files = [];
   if (newsletter.githubIntegration) {
     try {
-      files = await getRepoContent(newsletter.githubIntegration.installationId);
+      files =
+        (await getRepoContent(newsletter.githubIntegration.installationId)) ??
+        [];
     } catch (e) {
       console.error(e);
     }
@@ -44,7 +46,7 @@ type Props = {
   newsletter: Newsletter & {
     issues: Issue[];
   };
-  files: any;
+  files: any[];
 };
 
 const AppPublish: FC<Props> = ({ newsletter, files }) => {
@@ -63,9 +65,9 @@ const AppPublish: FC<Props> = ({ newsletter, files }) => {
             </Typography>
           )}
           {files.map((issue) => (
-            <div key={issue.name}>
+            <Link key={issue.name} href={`/app/publish/${issue.name}`}>
               <h3>{issue.name}</h3>
-            </div>
+            </Link>
           ))}
         </Dashboard>
       </Layout>
