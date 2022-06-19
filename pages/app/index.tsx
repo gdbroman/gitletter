@@ -43,14 +43,14 @@ const AppPublish: FC<Props> = ({ newsletter }) => {
     <ProtectedPage>
       <Layout>
         <Dashboard title={title} value={0}>
-          {!issues.length && (
+          {!issues?.length && (
             <Typography variant="body1">
               No issues found. Make sure that you have{" "}
-              <Link href="/app/settings">connected to a Github repository</Link>{" "}
+              <Link href="/app/settings">connected to a GitHub repository</Link>{" "}
               with issues in it.
             </Typography>
           )}
-          {issues.map((issue) => (
+          {issues?.map((issue) => (
             <div key={issue.id}>
               <h3>{issue.title}</h3>
             </div>
