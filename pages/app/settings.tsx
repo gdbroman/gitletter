@@ -1,4 +1,5 @@
 import GitHubIcon from "@mui/icons-material/GitHub";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -14,7 +15,12 @@ import { Dashboard } from "../../components/Dashboard/Dashboard";
 import { ItemSelect } from "../../components/ItemSelect";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import { deleteIntegration, getReposDirs } from "../../util/githubClient";
+import { CustomSnackbar } from "../../components/Snackbar";
+import {
+  deleteIntegration,
+  getReposDirs,
+  updateIntegration,
+} from "../../util/githubClient";
 import prisma from "../../util/prisma";
 import { GithubReposDirs } from "../api/github/app/[...installationId]";
 
@@ -65,6 +71,9 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
 
   const [repo, setRepo] = useState<string>(githubIntegration?.repoName ?? "");
   const [dir, setDir] = useState<string>(githubIntegration?.repoDir ?? "");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const githubReposData: Map<string, string[]> = useMemo(
     () => new Map(githubReposDirs),
@@ -89,14 +98,40 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
     [dir, isChanged, repo]
   );
 
-  const handleCancelEdit = () => {
-    setRepo(githubIntegration?.repoName);
-    setDir(githubIntegration?.repoDir);
+  const handleSave = async () => {
+    setIsLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      await updateIntegration(githubIntegrationInstallationId, {
+        repoName: repo,
+        repoDir: dir,
+      });
+    } catch (e) {
+      setError(
+        "Failed to update GitHub integration. Please refresh the page and try again."
+      );
+    } finally {
+      router.replace(router.asPath);
+      setSuccess("GitHub integration updated successfully!");
+      setIsLoading(false);
+    }
   };
-
+  const handleCancelEdit = () => {
+    setRepo(githubIntegration?.repoName ?? "");
+    setDir(githubIntegration?.repoDir ?? "");
+  };
   const handleCloseConnection = async () => {
-    await deleteIntegration(githubIntegrationInstallationId);
-    router.replace(router.asPath); // refresh props!
+    try {
+      await deleteIntegration(githubIntegrationInstallationId);
+    } catch (e) {
+      setError(
+        "Failed to disconnect from GitHub. Please refresh the page and try again."
+      );
+    } finally {
+      router.replace(router.asPath);
+      setSuccess("GitHub integration disconnected successfully!");
+    }
   };
 
   return (
@@ -131,6 +166,8 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                     items={repos}
                     value={repo}
                     onChange={setRepo}
+                    helperText="Select a repository."
+                    disabled={isLoading}
                   />
                   {repo && (
                     <Box marginBottom={1}>
@@ -140,8 +177,9 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                         value={dir}
                         onChange={setDir}
                         helperText={
-                          "Select the directory where the issues are stored in the repository."
+                          "Select the directory where issues are stored in your repository."
                         }
+                        disabled={isLoading}
                       />
                     </Box>
                   )}
@@ -169,7 +207,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                     "This is necessary for the app to work (takes ~1 minute)"
                   )}
                 </Typography>
-                <Box display="flex" columnGap={2}>
+                <Box display="flex" columnGap={1}>
                   {githubIntegration ? (
                     <>
                       {isChanged && (
@@ -181,12 +219,14 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                           Cancel
                         </Button>
                       )}
-                      <Button
+                      <LoadingButton
                         variant={isValid ? "contained" : "outlined"}
                         disabled={!isValid}
+                        loading={isLoading}
+                        onClick={handleSave}
                       >
                         Save
-                      </Button>
+                      </LoadingButton>
                     </>
                   ) : (
                     <Button
@@ -201,6 +241,19 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
               </Box>
             </Box>
           </Card>
+          <CustomSnackbar
+            message={success}
+            severity="success"
+            isOpen={!!success}
+            onClose={() => setSuccess(null)}
+          />
+          <CustomSnackbar
+            message={error}
+            severity="error"
+            autoHideDuration={6000}
+            isOpen={!!error}
+            onClose={() => setError(null)}
+          />
         </Dashboard>
       </Layout>
     </ProtectedPage>

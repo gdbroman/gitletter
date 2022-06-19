@@ -1,4 +1,6 @@
+import Typography from "@mui/material/Typography";
 import { Issue, Newsletter } from "@prisma/client";
+import Link from "next/link";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
@@ -41,7 +43,13 @@ const AppPublish: FC<Props> = ({ newsletter }) => {
     <ProtectedPage>
       <Layout>
         <Dashboard title={title} value={0}>
-          {!issues.length && <p>No issues found</p>}
+          {!issues.length && (
+            <Typography variant="body1">
+              No issues found. Make sure that you have{" "}
+              <Link href="/app/settings">connected to a Github repository</Link>{" "}
+              with issues in it.
+            </Typography>
+          )}
           {issues.map((issue) => (
             <div key={issue.id}>
               <h3>{issue.title}</h3>

@@ -1,6 +1,9 @@
 import { GithubIntegration } from "@prisma/client";
 
-import { GithubReposDirs } from "../pages/api/github/app/[...installationId]";
+import {
+  GithubReposDirs,
+  UpdateGithubIntegrationInput,
+} from "../pages/api/github/app/[...installationId]";
 
 export async function getReposDirs(
   githubInstallationId: string
@@ -11,12 +14,8 @@ export async function getReposDirs(
       method: "GET",
     }
   );
-  if (response.ok) {
-    return response.json();
-  } else {
-    console.error(response.statusText);
-    return null;
-  }
+
+  return responseHandler(response);
 }
 
 export async function deleteIntegration(
@@ -28,10 +27,30 @@ export async function deleteIntegration(
       method: "DELETE",
     }
   );
+
+  return responseHandler(response);
+}
+
+export async function updateIntegration(
+  githubInstallationId: string,
+  updateGithubIntegrationInput: UpdateGithubIntegrationInput
+): Promise<GithubIntegration | null> {
+  const response = await fetch(
+    `${process.env.APP_URL}/api/github/app/${githubInstallationId}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(updateGithubIntegrationInput),
+    }
+  );
+
+  return responseHandler(response);
+}
+
+const responseHandler = (response: Response) => {
   if (response.ok) {
     return response.json();
   } else {
     console.error(response.statusText);
     return null;
   }
-}
+};

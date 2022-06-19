@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { useSignIn } from "../../util/hooks";
 import { AccountMenu } from "./AccountMenu";
 
-const StyledLoadingButton = styled(LoadingButton)`
+const LoadingButtonWithBlackSpinner = styled(LoadingButton)`
   &:disabled .MuiLoadingButton-loadingIndicator {
     color: #000000;
   }
@@ -27,13 +27,13 @@ export const HeaderNavRight = () => {
       return <AccountMenu />;
     default:
       return (
-        <StyledLoadingButton
+        <LoadingButtonWithBlackSpinner
           variant="outlined"
           loading={loading}
           onClick={signIn}
         >
           Log in
-        </StyledLoadingButton>
+        </LoadingButtonWithBlackSpinner>
       );
   }
 };
