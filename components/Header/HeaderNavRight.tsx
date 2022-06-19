@@ -6,9 +6,10 @@ import { useSession } from "next-auth/react";
 import { useSignIn } from "../../util/hooks";
 import { AccountMenu } from "./AccountMenu";
 
-const LoadingButtonWithBlackSpinner = styled(LoadingButton)`
+export const LoadingButtonWithBlackSpinner = styled(LoadingButton)`
   &:disabled .MuiLoadingButton-loadingIndicator {
     color: #000000;
+    background-color: transparent;
   }
 `;
 

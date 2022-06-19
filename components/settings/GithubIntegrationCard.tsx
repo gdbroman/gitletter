@@ -15,6 +15,7 @@ import { GithubReposDirs } from "../../pages/api/github/app/[...installationId]"
 import { deleteIntegration, updateIntegration } from "../../util/githubClient";
 import { useToggle } from "../../util/hooks";
 import { Nullable } from "../../util/types";
+import { LoadingButtonWithBlackSpinner } from "../Header/HeaderNavRight";
 
 type Props = {
   githubIntegration: GithubIntegration;
@@ -27,8 +28,15 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
 }) => {
   const router = useRouter();
 
-  const [repo, setRepo] = useState<string>(githubIntegration?.repoName ?? "");
-  const [dir, setDir] = useState<string>(githubIntegration?.repoDir ?? "");
+  const initialValues = useMemo(
+    () => ({
+      repo: githubIntegration?.repoName ?? "",
+      dir: githubIntegration?.repoDir ?? "",
+    }),
+    [githubIntegration]
+  );
+  const [repo, setRepo] = useState<string>(initialValues.repo);
+  const [dir, setDir] = useState<string>(initialValues.dir);
 
   const githubReposData: Map<string, string[]> = useMemo(
     () => new Map(githubReposDirs),
@@ -43,10 +51,8 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     [githubReposData, repo]
   );
   const isChanged = useMemo(
-    () =>
-      repo !== githubIntegration?.repoName ||
-      dir !== githubIntegration?.repoDir,
-    [repo, dir, githubIntegration?.repoName, githubIntegration?.repoDir]
+    () => repo !== initialValues.repo || dir !== initialValues.dir,
+    [dir, repo, initialValues.dir, initialValues.repo]
   );
   const isValid = useMemo(
     () => isChanged && repo !== "" && dir !== "",
@@ -231,14 +237,17 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
             to your installation configuration.
           </Typography>
           <Box display="flex" columnGap={1}>
-            {submitting || disconnecting ? (
-              <LoadingButton
-                variant={submitting ? "contained" : "outlined"}
-                loading
-              >
+            {submitting && (
+              <LoadingButton variant="contained" loading>
                 Save
               </LoadingButton>
-            ) : (
+            )}
+            {disconnecting && (
+              <LoadingButtonWithBlackSpinner variant="outlined" loading>
+                Save
+              </LoadingButtonWithBlackSpinner>
+            )}
+            {!(submitting || disconnecting) && (
               <>
                 {isChanged && !success && (
                   <Button
