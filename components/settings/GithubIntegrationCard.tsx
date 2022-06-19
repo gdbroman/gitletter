@@ -53,7 +53,8 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     [dir, isChanged, repo]
   );
 
-  const loading = useToggle(false);
+  const submitting = useToggle(false);
+  const disconnecting = useToggle(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -62,7 +63,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     setDir("");
   };
   const handleSave = async () => {
-    loading.toggleOn();
+    submitting.toggleOn();
     setError(null);
     setSuccess(null);
     try {
@@ -77,7 +78,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     } finally {
       router.replace(router.asPath);
       setSuccess("GitHub integration updated successfully!");
-      loading.toggleOff();
+      submitting.toggleOff();
     }
   };
   const handleCancelEdit = () => {
@@ -85,6 +86,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     setDir(githubIntegration?.repoDir ?? "");
   };
   const handleCloseConnection = async () => {
+    disconnecting.toggleOn();
     try {
       await deleteIntegration(githubIntegration?.installationId);
     } catch (e) {
@@ -94,6 +96,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     } finally {
       router.replace(router.asPath);
       setSuccess("GitHub integration disconnected successfully!");
+      disconnecting.toggleOff();
     }
   };
 
@@ -106,7 +109,8 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
         dirs={dirs}
         isValid={isValid}
         isChanged={isChanged}
-        loading={loading.isOn}
+        submitting={submitting.isOn}
+        disconnecting={disconnecting.isOn}
         error={error}
         success={success}
         setRepo={handleSetRepo}
@@ -129,7 +133,8 @@ type GithubIntegrationSettingsCardProps = {
   dirs: string[];
   isValid: boolean;
   isChanged: boolean;
-  loading: boolean;
+  submitting: boolean;
+  disconnecting: boolean;
   error: string | null;
   success: string | null;
   setRepo: (repo: string) => void;
@@ -148,7 +153,8 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
   dirs,
   isValid,
   isChanged,
-  loading,
+  submitting,
+  disconnecting,
   error,
   success,
   setRepo,
@@ -194,7 +200,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
           value={repo}
           onChange={setRepo}
           helperText="Select a repository."
-          disabled={loading}
+          disabled={submitting || disconnecting}
           required
         />
         {repo && (
@@ -207,7 +213,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
               helperText={
                 "Select the directory where issues are stored in your repository."
               }
-              disabled={loading}
+              disabled={submitting || disconnecting}
               required
             />
           </Box>
@@ -225,8 +231,11 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
             to your installation configuration.
           </Typography>
           <Box display="flex" columnGap={1}>
-            {loading ? (
-              <LoadingButton variant="contained" loading>
+            {submitting || disconnecting ? (
+              <LoadingButton
+                variant={submitting ? "contained" : "outlined"}
+                loading
+              >
                 Save
               </LoadingButton>
             ) : (
@@ -270,7 +279,7 @@ const GithubIntegrationConnectionCard: FC = () => (
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="caption" color="gray">
-          Set up in less than 1 minute
+          Setup takes less than a minute
         </Typography>
         <Box display="flex" columnGap={1}>
           <Button
