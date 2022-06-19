@@ -21,6 +21,7 @@ import {
   getReposDirs,
   updateIntegration,
 } from "../../util/githubClient";
+import { useToggle } from "../../util/hooks";
 import prisma from "../../util/prisma";
 import { GithubReposDirs } from "../api/github/app/[...installationId]";
 
@@ -71,7 +72,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
 
   const [repo, setRepo] = useState<string>(githubIntegration?.repoName ?? "");
   const [dir, setDir] = useState<string>(githubIntegration?.repoDir ?? "");
-  const [isLoading, setIsLoading] = useState(false);
+  const loading = useToggle(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -94,12 +95,12 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
     [dir, githubIntegration?.repoName, githubIntegration?.repoDir, repo]
   );
   const isValid = useMemo(
-    () => isChanged && repo && dir,
+    () => isChanged && repo !== "" && dir !== "",
     [dir, isChanged, repo]
   );
 
   const handleSave = async () => {
-    setIsLoading(true);
+    loading.toggleOn();
     setError(null);
     setSuccess(null);
     try {
@@ -114,7 +115,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
     } finally {
       router.replace(router.asPath);
       setSuccess("GitHub integration updated successfully!");
-      setIsLoading(false);
+      loading.toggleOff();
     }
   };
   const handleCancelEdit = () => {
@@ -167,7 +168,8 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                     value={repo}
                     onChange={setRepo}
                     helperText="Select a repository."
-                    disabled={isLoading}
+                    disabled={loading.isOn}
+                    required
                   />
                   {repo && (
                     <Box marginBottom={1}>
@@ -179,7 +181,8 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                         helperText={
                           "Select the directory where issues are stored in your repository."
                         }
-                        disabled={isLoading}
+                        disabled={loading.isOn}
+                        required
                       />
                     </Box>
                   )}
@@ -204,7 +207,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                       to your installation configuration.
                     </>
                   ) : (
-                    "This is necessary for the app to work (takes ~1 minute)"
+                    "Takes less than 1 minute to set up"
                   )}
                 </Typography>
                 <Box display="flex" columnGap={1}>
@@ -222,7 +225,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposDirs }) => {
                       <LoadingButton
                         variant={isValid ? "contained" : "outlined"}
                         disabled={!isValid}
-                        loading={isLoading}
+                        loading={loading.isOn}
                         onClick={handleSave}
                       >
                         Save
