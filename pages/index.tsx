@@ -76,6 +76,12 @@ const Home: FC = () => {
         </Box>
         <Box textAlign="center">
           <Image src={"/demo/screen1.png"} width={603} height={360} />
+          {/* <Image
+            src={"/demo/screen2.png"}
+            width={620}
+            height={320}
+            style={{ borderRadius: 8 }}
+          /> */}
         </Box>
       </main>
     </Layout>
