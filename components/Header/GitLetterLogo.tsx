@@ -1,4 +1,5 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import Box from "@mui/system/Box";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -20,20 +21,21 @@ export const GitLetterLogo = () => {
   const href = useMemo(() => getLogoHref(status), [status]);
 
   return (
-    <Link href={href} passHref>
-      <Button
-        style={{
-          display: "flex",
-          gap: 4,
-        }}
+    <Link href={href}>
+      <Box
+        display="flex"
+        alignItems="center"
+        gap={1}
+        style={{ cursor: "pointer" }}
       >
         <Image
           src="/logo.svg"
-          alt="Git Letter logo"
+          alt="GitLetter logo"
           width={32}
           height={32}
           layout="fixed"
         />
+
         <Typography
           color="secondary"
           variant="h2"
@@ -44,7 +46,7 @@ export const GitLetterLogo = () => {
         >
           GitLetter
         </Typography>
-      </Button>
+      </Box>
     </Link>
   );
 };

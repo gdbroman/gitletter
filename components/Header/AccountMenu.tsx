@@ -1,11 +1,8 @@
 import styled from "@emotion/styled";
-import HomeIcon from "@mui/icons-material/Home";
-import Logout from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
@@ -14,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Session } from "next-auth/core/types";
 import { signOut, useSession } from "next-auth/react";
-import { MouseEvent, useState } from "react";
+import { FC, MouseEvent, useState } from "react";
 
 const HeaderMenuItem = styled(MenuItem)`
   && {
@@ -55,8 +52,14 @@ export const AccountMenu = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-        <Tooltip title="Account settings">
+      <Box
+        mr={0.5}
+        sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
+      >
+        <AvatarToolTip
+          userName={session.data.user?.name}
+          userEmail={session.data.user?.email}
+        >
           <IconButton
             onClick={handleClick}
             size="small"
@@ -66,7 +69,7 @@ export const AccountMenu = () => {
           >
             <ProfileAvatar sessionData={session.data} />
           </IconButton>
-        </Tooltip>
+        </AvatarToolTip>
       </Box>
       <Menu
         anchorEl={anchorEl}
@@ -112,41 +115,69 @@ export const AccountMenu = () => {
           <Box>
             <Typography
               variant="body2"
-              lineHeight={1.25}
+              lineHeight={1.3}
               fontWeight={600}
               noWrap
             >
               {session.data?.user.name}
             </Typography>
-            <Typography variant="body2" noWrap lineHeight={1.25}>
+            <Typography variant="body2" noWrap lineHeight={1.3}>
               {session.data?.user.email}
             </Typography>
           </Box>
         </HeaderMenuItem>
         <Divider />
         <Link href="/app" passHref>
-          <MenuItem>
-            <ListItemIcon>
-              <HomeIcon fontSize="small" />
-            </ListItemIcon>
-            Your letter
-          </MenuItem>
+          <MenuItem>Dashboard</MenuItem>
         </Link>
-        {/* <Link href="/settings" passHref>
-          <MenuItem>
-            <ListItemIcon>
-              <Settings fontSize="small" />
-            </ListItemIcon>
-            Settings
-          </MenuItem>
-        </Link> */}
-        <MenuItem onClick={() => signOut()}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
+        <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
       </Menu>
     </>
   );
 };
+
+type AvatarToolTipProps = {
+  userName: string;
+  userEmail: string;
+  children: JSX.Element;
+};
+
+const AvatarToolTip: FC<AvatarToolTipProps> = ({
+  userName,
+  userEmail,
+  children,
+}) => (
+  <Tooltip
+    enterDelay={500}
+    title={
+      <>
+        <Typography
+          variant="caption"
+          fontWeight="bold"
+          lineHeight="16px"
+          style={{ display: "block", margin: 0 }}
+        >
+          GitLetter account
+        </Typography>
+        <Typography
+          variant="caption"
+          lineHeight="16px"
+          letterSpacing={0.5}
+          style={{ display: "block", margin: 0 }}
+        >
+          {userName}
+        </Typography>
+        <Typography
+          variant="caption"
+          lineHeight="16px"
+          letterSpacing={0.5}
+          style={{ display: "block", margin: 0 }}
+        >
+          {userEmail}
+        </Typography>
+      </>
+    }
+  >
+    {children}
+  </Tooltip>
+);

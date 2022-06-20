@@ -7,9 +7,13 @@ import { siteDescription, siteTagline, siteTitle } from "../util/constants";
 import { Footer } from "./Footer";
 import { Header } from "./Header/Header";
 
+const maxContentWidth = "1000px";
+
 const StyledDiv = styled.div`
   flex: 1;
-  margin: 16px;
+  width: 100%;
+  max-width: ${maxContentWidth};
+  margin: 16px auto;
 `;
 
 type Props = {

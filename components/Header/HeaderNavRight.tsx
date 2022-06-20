@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { IconButton, Skeleton } from "@mui/material";
+import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
 
 import { useSignIn } from "../../util/hooks";
@@ -25,13 +26,18 @@ export const HeaderNavRight = () => {
         </IconButton>
       );
     case "authenticated":
-      return <AccountMenu />;
+      return (
+        <Box display="flex" alignItems="center" gap={1}>
+          <AccountMenu />
+        </Box>
+      );
     default:
       return (
         <LoadingButtonWithBlackSpinner
           variant="outlined"
           loading={loading}
           onClick={signIn}
+          style={{ marginRight: "6px" }}
         >
           Log in
         </LoadingButtonWithBlackSpinner>

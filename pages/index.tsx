@@ -4,17 +4,30 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FC } from "react";
 
 import Layout from "../components/Layout";
 import { calendlyLink, siteDescription, siteTagline } from "../util/constants";
-import { useSignIn } from "../util/hooks";
+import { useSignIn, useToggle } from "../util/hooks";
 
 const Home: FC = () => {
+  const router = useRouter();
   const session = useSession();
   const { signIn, loading } = useSignIn();
+
+  const redirecting = useToggle(false);
+
+  const goToApp = () => {
+    redirecting.toggleOn();
+    try {
+      router.push("/app");
+    } catch (e) {
+      console.error(e);
+      redirecting.toggleOff();
+    }
+  };
 
   // useEffect(() => {
   //   if (session.data?.user) {
@@ -50,16 +63,16 @@ const Home: FC = () => {
               Book demo
             </Button>
             {session.status === "authenticated" ? (
-              <Link href="/app" passHref>
-                <Button
-                  size="large"
-                  variant="contained"
-                  endIcon={<ArrowForwardIcon />}
-                  style={{ fontSize: "1rem" }}
-                >
-                  Go to app
-                </Button>
-              </Link>
+              <LoadingButton
+                size="large"
+                variant="contained"
+                endIcon={<ArrowForwardIcon />}
+                style={{ fontSize: "1rem" }}
+                loading={redirecting.isOn}
+                onClick={goToApp}
+              >
+                Go to app
+              </LoadingButton>
             ) : (
               <LoadingButton
                 size="large"

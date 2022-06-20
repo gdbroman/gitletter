@@ -50,13 +50,13 @@ type Props = {
   files: any[];
 };
 
-const Drafts: FC<Props> = ({ newsletter, files }) => {
+const Sent: FC<Props> = ({ newsletter, files }) => {
   const title = newsletter.title;
 
   return (
     <ProtectedPage>
       <Layout>
-        <Dashboard title={title} value={0}>
+        <Dashboard title={title} value={1}>
           {!files.length && (
             <Typography variant="body1">No issues found.</Typography>
           )}
@@ -73,4 +73,4 @@ const Drafts: FC<Props> = ({ newsletter, files }) => {
   );
 };
 
-export default Drafts;
+export default Sent;

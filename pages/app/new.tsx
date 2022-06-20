@@ -1,9 +1,10 @@
-import { Newsletter } from "@prisma/client";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { Issue, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
 
-import { Dashboard } from "../../components/Dashboard/Dashboard";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
 import prisma from "../../util/prisma";
@@ -12,38 +13,42 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
     res.statusCode = 403;
-    return { props: { newsletter: {} } };
+    return { props: { newsletter: {}, files: [] } };
   }
 
   const newsletter = await prisma.newsletter.findFirst({
     where: { author: { email: session.user.email } },
     include: {
-      githubIntegration: true,
       issues: true,
+      githubIntegration: true,
     },
   });
-
   return {
     props: { newsletter },
   };
 };
 
 type Props = {
-  newsletter: Newsletter;
+  newsletter: Newsletter & {
+    issues: Issue[];
+  };
 };
 
-const AppCapture: FC<Props> = ({ newsletter }) => {
+const New: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
 
   return (
     <ProtectedPage>
       <Layout>
-        <Dashboard title={title} value={1}>
-          Use this to capture email addresses from your newsletter.
-        </Dashboard>
+        <main>
+          <Typography variant="h1" fontWeight="bold">
+            New issue
+          </Typography>
+          <TextField placeholder="write something here" />
+        </main>
       </Layout>
     </ProtectedPage>
   );
 };
 
-export default AppCapture;
+export default New;

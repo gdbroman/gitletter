@@ -55,7 +55,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposInfo }) => {
   return (
     <ProtectedPage>
       <Layout>
-        <Dashboard title={title} value={2}>
+        <Dashboard title={title} value={3}>
           <GithubIntegrationSettings
             githubIntegration={githubIntegration}
             githubReposInfo={githubReposInfo}
