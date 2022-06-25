@@ -5,7 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix",
+    "generate": "prisma generate --schema ./src/prisma/schema.prisma"
   },
   "license": "MIT",
   "dependencies": {
@@ -26,7 +27,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-jss": "^10.9.0",
-    "react-markdown": "8.0.0"
+    "react-markdown": "^8.0.3"
   },
   "devDependencies": {
     "@octokit/types": "^6.35.0",

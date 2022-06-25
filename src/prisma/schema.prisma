@@ -24,8 +24,8 @@ model Issue {
   published   Boolean     @default(false)
   author      User        @relation(fields: [authorId], references: [id])
   authorId    String
-  newsletter  Newsletter? @relation(fields: [newletterId], references: [id])
-  newletterId String?
+  newsletter  Newsletter  @relation(fields: [newletterId], references: [id])
+  newletterId String
 }
 
 model GithubIntegration {

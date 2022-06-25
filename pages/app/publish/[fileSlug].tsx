@@ -55,11 +55,12 @@ type Props = {
 
 const AppPublish: FC<Props> = ({ newsletter, file }) => {
   const title = newsletter.title;
+  const newsletterId = newsletter.id;
 
   return (
     <ProtectedPage>
       <Layout>
-        <Dashboard title={title} value={0}>
+        <Dashboard title={title} value={0} newsletterId={newsletterId}>
           {file ? (
             <>
               <Typography variant="h2">{file.name}</Typography>

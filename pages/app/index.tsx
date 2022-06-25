@@ -40,17 +40,21 @@ type Props = {
 const Drafts: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
   const issues = newsletter.issues;
+  const newsletterId = newsletter.id;
 
   return (
     <ProtectedPage>
       <Layout>
         <NextSeo title="Drafts" />
-        <Dashboard title={title} value={0}>
+        <Dashboard title={title} value={0} newsletterId={newsletterId}>
           {!issues.length && (
             <Typography variant="body1">No issues found.</Typography>
           )}
           {issues.map((issue) => (
-            <Link key={issue.id} href={`/app/publish/${issue.id}`}>
+            <Link
+              key={issue.id}
+              href={`/app/compose?n=${newsletterId}&i=${issue.id}`}
+            >
               <Typography variant="h5" fontWeight="bold">
                 {issue.title}
               </Typography>

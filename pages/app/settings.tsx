@@ -52,12 +52,13 @@ type Props = {
 const AppSettings: FC<Props> = ({ newsletter, githubReposInfo }) => {
   const title = newsletter?.title;
   const githubIntegration = newsletter?.githubIntegration;
+  const newsletterId = newsletter.id;
 
   return (
     <ProtectedPage>
       <Layout>
         <NextSeo title="Settings" />
-        <Dashboard title={title} value={3}>
+        <Dashboard title={title} value={3} newsletterId={newsletterId}>
           <GithubIntegrationSettings
             githubIntegration={githubIntegration}
             githubReposInfo={githubReposInfo}

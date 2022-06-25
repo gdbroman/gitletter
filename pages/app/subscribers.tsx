@@ -35,12 +35,13 @@ type Props = {
 
 const AppCapture: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
+  const newsletterId = newsletter.id;
 
   return (
     <ProtectedPage>
       <Layout>
         <NextSeo title="Subscribers" />
-        <Dashboard title={title} value={2}>
+        <Dashboard title={title} value={2} newsletterId={newsletterId}>
           Use this to capture email addresses from your newsletter.
         </Dashboard>
       </Layout>

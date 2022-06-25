@@ -8,8 +8,14 @@ import Button from "@mui/material/Button";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Link from "next/link";
+import { FC } from "react";
 
-export const NavBar = ({ value }) => (
+import { DashboardProps } from "./Dashboard";
+
+export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
+  value,
+  newsletterId,
+}) => (
   <Box
     display="flex"
     alignItems="center"
@@ -62,7 +68,7 @@ export const NavBar = ({ value }) => (
         />
       </Link>
     </Tabs>
-    <Link href="/app/compose" passHref>
+    <Link href={`/app/compose/${newsletterId}`} passHref>
       <Button variant="contained" color="success" startIcon={<AddIcon />}>
         Compose
       </Button>

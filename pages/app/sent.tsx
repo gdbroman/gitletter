@@ -53,12 +53,13 @@ type Props = {
 
 const Sent: FC<Props> = ({ newsletter, files }) => {
   const title = newsletter.title;
+  const newsletterId = newsletter.id;
 
   return (
     <ProtectedPage>
       <Layout>
         <NextSeo title="Sent" />
-        <Dashboard title={title} value={1}>
+        <Dashboard title={title} value={1} newsletterId={newsletterId}>
           {!files.length && (
             <Typography variant="body1">No issues found.</Typography>
           )}
