@@ -1,5 +1,4 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
@@ -142,70 +141,50 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
 }
 
-const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Drafts
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-};
+const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
+  <Toolbar
+    sx={{
+      pl: { sm: 2 },
+      pr: { xs: 1, sm: 1 },
+      ...(numSelected > 0 && {
+        bgcolor: (theme) =>
+          alpha(
+            theme.palette.primary.main,
+            theme.palette.action.activatedOpacity
+          ),
+      }),
+    }}
+  >
+    {numSelected > 0 && (
+      <Typography
+        sx={{ flex: "1 1 100%" }}
+        color="inherit"
+        variant="subtitle1"
+        component="div"
+      >
+        {numSelected} selected
+      </Typography>
+    )}
+    {numSelected > 0 && (
+      <Tooltip title="Delete">
+        <IconButton>
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    )}
+  </Toolbar>
+);
 
 type Props = {
   issues: IssueRow[];
 };
 
 export const EnhancedTable: FC<Props> = ({ issues }) => {
-  const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof IssueRow>("title");
+  const [order, setOrder] = useState<Order>("desc");
+  const [orderBy, setOrderBy] = useState<keyof IssueRow>("updatedAt");
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  console.log(issues[0]);
 
   const handleRequestSort = (
     _: MouseEvent<unknown>,
