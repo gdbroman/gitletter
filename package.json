@@ -5,10 +5,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix",
-    "format": "prisma format --schema ./src/prisma/schema.prisma",
-    "generate": "prisma generate --schema ./src/prisma/schema.prisma",
-    "db:push": "prisma db push --schema ./src/prisma/schema.prisma"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix"
   },
   "license": "MIT",
   "dependencies": {

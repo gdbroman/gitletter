@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
 
-import prisma from "../../../../src/prisma/prisma";
+import prisma from "../../../../prisma/prisma";
 
 // POST /api/github/app/setup-complete
 export default async function handle(req, res) {

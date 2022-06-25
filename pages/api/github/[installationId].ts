@@ -1,6 +1,6 @@
 import { OctokitResponse } from "@octokit/types";
 
-import prisma from "../../../src/prisma/prisma";
+import prisma from "../../../prisma/prisma";
 import { createOctokitClient, GithubRepoData } from "./app/[...installationId]";
 
 // GET /api/github/:installationId?fileSlug=:fileSlug

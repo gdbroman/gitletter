@@ -10,9 +10,9 @@ import { NextSeo } from "next-seo";
 import { ChangeEvent, FC, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
+import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
-import prisma from "../../src/prisma/prisma";
 import { dateStripped } from "../../src/types/helpers";
 import { useToggle } from "../../src/util/hooks";
 

@@ -3,7 +3,7 @@ import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 import { OctokitResponse } from "@octokit/types";
 import { GithubIntegration } from "@prisma/client";
 
-import prisma from "../../../../src/prisma/prisma";
+import prisma from "../../../../prisma/prisma";
 
 export type GithubRepoData =
   RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
