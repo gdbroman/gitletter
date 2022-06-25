@@ -170,9 +170,7 @@ export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
               .map((issue) => (
                 <StyledTableRow hover role="checkbox" key={issue.id}>
                   <TableCell component="th" scope="row" style={{ flex: 7 }}>
-                    <Link
-                      href={`/app/compose?n=${newsletterId}&=i=${issue.id}`}
-                    >
+                    <Link href={`/app/compose?n=${newsletterId}&i=${issue.id}`}>
                       {issue.title}
                     </Link>
                   </TableCell>
