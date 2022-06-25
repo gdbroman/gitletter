@@ -38,7 +38,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       data: {
         title: "Hello world!",
         content: "I say unto you...",
-        sent: false,
         newsletter: { connect: { id: newsletterId } },
         author: { connect: { email: session?.user?.email } },
       },
@@ -61,7 +60,8 @@ const Compose: FC<Props> = ({ issue }) => {
 
   const [title, setTitle] = useState(issue.title);
   const [content, setContent] = useState(issue.content);
-  const preview = useToggle(false);
+  const isSent = issue.sentAt ? true : false;
+  const preview = useToggle(isSent);
 
   const handleTitleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -75,9 +75,9 @@ const Compose: FC<Props> = ({ issue }) => {
     setContent(e.target.value);
   };
 
-  const handleSend = async () => {
+  const handleSave = async () => {
     try {
-      await fetch("/api/issue", {
+      await fetch(`${process.env.APP_URL}/api/issue`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -87,6 +87,21 @@ const Compose: FC<Props> = ({ issue }) => {
         }),
       });
       await router.push("/app");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSend = async () => {
+    try {
+      await fetch(`${process.env.APP_URL}/api/issue/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          issueId: issue.id,
+        }),
+      });
+      await router.push("/app/sent");
     } catch (error) {
       console.error(error);
     }
@@ -127,14 +142,23 @@ const Compose: FC<Props> = ({ issue }) => {
             )}
           </Box>
         </article>
-        <Box display="flex" justifyContent="end" my={4} gap={2}>
-          <Button variant="text" color="primary" onClick={preview.toggle}>
-            {preview.isOn ? "Edit" : "Preview"}
-          </Button>
-          <Button variant="contained" color="primary" onClick={handleSend}>
-            Save
-          </Button>
-        </Box>
+        {isSent ? (
+          <Typography variant="body1" color="textSecondary" my={4}>
+            {`Sent on ${issue.sentAt}`}
+          </Typography>
+        ) : (
+          <Box display="flex" justifyContent="end" my={4} gap={2}>
+            <Button variant="text" color="primary" onClick={preview.toggle}>
+              {preview.isOn ? "Edit" : "Preview"}
+            </Button>
+            <Button variant="text" color="primary" onClick={handleSend}>
+              Send
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleSave}>
+              Save
+            </Button>
+          </Box>
+        )}
       </Layout>
     </ProtectedPage>
   );

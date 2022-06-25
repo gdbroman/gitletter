@@ -21,13 +21,13 @@ model Issue {
   id          String     @id @default(cuid())
   title       String
   content     String
-  sent        Boolean    @default(false)
   author      User       @relation(fields: [authorId], references: [id])
   authorId    String
   newsletter  Newsletter @relation(fields: [newletterId], references: [id])
   newletterId String
   createdAt   DateTime   @default(now()) @map(name: "created_at")
   updatedAt   DateTime   @updatedAt @map(name: "updated_at")
+  sentAt      DateTime?
 }
 
 model GithubIntegration {

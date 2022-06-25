@@ -49,7 +49,7 @@ type Props = {
 
 const Drafts: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
-  const drafts = newsletter.issues?.filter((issue) => !issue.sent) ?? [];
+  const drafts = newsletter.issues?.filter((issue) => !issue.sentAt) ?? [];
   const newsletterId = newsletter.id;
 
   return (

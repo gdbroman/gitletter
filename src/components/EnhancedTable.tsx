@@ -22,8 +22,6 @@ const StyledTableRow = styled(TableRow)`
   width: 100%;
 `;
 
-type IssueRow = Omit<IssueWithStrippedDate, "sent">;
-
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -40,8 +38,8 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
+  a: { [key in Key]: number | string | Date },
+  b: { [key in Key]: number | string | Date }
 ) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -49,40 +47,49 @@ function getComparator<Key extends keyof any>(
 }
 
 interface HeadCell {
-  id: keyof IssueRow;
+  id: keyof IssueWithStrippedDate;
   label: string;
-  numeric: boolean;
   flex: number;
 }
 
 const headCells: readonly HeadCell[] = [
   {
     id: "title",
-    numeric: false,
     label: "Title",
     flex: 7,
   },
-  {
-    id: "updatedAt",
-    numeric: false,
-    label: "Updated",
-    flex: 1,
-  },
 ];
 
+const updatedAtHeadCell: HeadCell = {
+  id: "updatedAt",
+  label: "Updated",
+  flex: 1,
+};
+
+const sentAtHeadCell: HeadCell = {
+  id: "sentAt",
+  label: "Sent",
+  flex: 1,
+};
+
 interface EnhancedTableProps {
+  headCells: readonly HeadCell[];
   order: Order;
   orderBy: string;
-  onRequestSort: (event: MouseEvent, property: keyof IssueRow) => void;
+  onRequestSort: (
+    event: MouseEvent,
+    property: keyof IssueWithStrippedDate
+  ) => void;
 }
 
 function EnhancedTableHead({
+  headCells,
   order,
   orderBy,
   onRequestSort,
 }: EnhancedTableProps) {
   const createSortHandler =
-    (property: keyof IssueRow) => (event: MouseEvent) => {
+    (property: keyof IssueWithStrippedDate) => (event: MouseEvent) => {
       onRequestSort(event, property);
     };
 
@@ -117,14 +124,16 @@ function EnhancedTableHead({
 
 type Props = {
   newsletterId: string;
-  issues: IssueRow[];
+  issues: IssueWithStrippedDate[];
+  sentAt?: boolean;
 };
 
-export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
+export const EnhancedTable: FC<Props> = ({ newsletterId, issues, sentAt }) => {
   const router = useRouter();
 
   const [order, setOrder] = useState<Order>("desc");
-  const [orderBy, setOrderBy] = useState<keyof IssueRow>("updatedAt");
+  const [orderBy, setOrderBy] =
+    useState<keyof IssueWithStrippedDate>("updatedAt");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -134,7 +143,7 @@ export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
 
   const handleRequestSort = (
     _: MouseEvent<unknown>,
-    property: keyof IssueRow
+    property: keyof IssueWithStrippedDate
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -162,6 +171,10 @@ export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
             order={order}
             orderBy={orderBy}
             onRequestSort={handleRequestSort}
+            headCells={[
+              ...headCells,
+              ...(sentAt ? [sentAtHeadCell] : [updatedAtHeadCell]),
+            ]}
           />
           <TableBody>
             {issues

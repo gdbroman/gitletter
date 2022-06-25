@@ -1,11 +1,11 @@
 import Typography from "@mui/material/Typography";
-import Link from "next/link";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import prisma from "../../prisma/prisma";
+import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
@@ -40,7 +40,7 @@ type Props = {
 
 const Sent: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
-  const sentIssues = newsletter.issues.filter((issue) => issue.sent);
+  const sentIssues = newsletter.issues.filter((issue) => !!issue.sentAt);
   const newsletterId = newsletter.id;
 
   return (
@@ -48,19 +48,15 @@ const Sent: FC<Props> = ({ newsletter }) => {
       <Layout>
         <NextSeo title="Sent" />
         <Dashboard title={title} value={1} newsletterId={newsletterId}>
-          {!sentIssues.length && (
+          {!sentIssues.length ? (
             <Typography variant="body1">No sent issues found.</Typography>
+          ) : (
+            <EnhancedTable
+              newsletterId={newsletterId}
+              issues={sentIssues}
+              sentAt
+            />
           )}
-          {sentIssues.map((issue) => (
-            <Link
-              key={issue.id}
-              href={`/app/sent?n=${newsletterId}&i=${issue.id}`}
-            >
-              <Typography variant="h5" fontWeight="bold">
-                {issue.title}
-              </Typography>
-            </Link>
-          ))}
         </Dashboard>
       </Layout>
     </ProtectedPage>
