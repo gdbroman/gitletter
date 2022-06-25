@@ -11,7 +11,6 @@ import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
 import { dateStripped } from "../../src/types/helpers";
-import { getWordCount } from "../../src/util/strings";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -35,14 +34,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   };
 };
 
-export type IssueWithStrippedDateAndWordCount = Issue & {
-  wordCount: number;
+export type IssueWithStrippedDate = Issue & {
   createdAt: string;
   updatedAt: string;
 };
 
 export type NewsletterWithIssues = Pick<Newsletter, "id" | "title"> & {
-  issues: IssueWithStrippedDateAndWordCount[];
+  issues: IssueWithStrippedDate[];
 };
 
 type Props = {
@@ -51,11 +49,7 @@ type Props = {
 
 const Drafts: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
-  const drafts =
-    newsletter.issues
-      ?.filter((issue) => !issue.sent)
-      .map((issue) => ({ ...issue, wordCount: getWordCount(issue.content) })) ??
-    [];
+  const drafts = newsletter.issues?.filter((issue) => !issue.sent) ?? [];
   const newsletterId = newsletter.id;
 
   return (

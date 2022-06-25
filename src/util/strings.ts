@@ -1,9 +1,3 @@
-export const getWordCount = (str: string) => {
-  const arr = str.split(" ");
-
-  return arr.filter((word) => word !== "").length;
-};
-
 export const getTimeAgoString = (dateString: Date) => {
   const date = new Date(dateString);
   const now = new Date();

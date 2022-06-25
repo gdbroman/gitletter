@@ -121,7 +121,6 @@ const Compose: FC<Props> = ({ issue }) => {
               <TextField
                 fullWidth
                 multiline
-                maxRows={999}
                 value={content}
                 onChange={handleContentChange}
               />

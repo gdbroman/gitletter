@@ -10,10 +10,10 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { visuallyHidden } from "@mui/utils";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { ChangeEvent, FC, MouseEvent, useState } from "react";
 
-import { IssueWithStrippedDateAndWordCount } from "../../pages/app";
+import { IssueWithStrippedDate } from "../../pages/app";
 import { getTimeAgoString } from "../util/strings";
 
 const StyledTableRow = styled(TableRow)`
@@ -22,7 +22,7 @@ const StyledTableRow = styled(TableRow)`
   width: 100%;
 `;
 
-type IssueRow = Omit<IssueWithStrippedDateAndWordCount, "sent">;
+type IssueRow = Omit<IssueWithStrippedDate, "sent">;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -63,16 +63,10 @@ const headCells: readonly HeadCell[] = [
     flex: 7,
   },
   {
-    id: "content",
-    numeric: true,
-    label: "Words",
-    flex: 1,
-  },
-  {
     id: "updatedAt",
     numeric: false,
     label: "Updated",
-    flex: 2,
+    flex: 1,
   },
 ];
 
@@ -95,10 +89,11 @@ function EnhancedTableHead({
   return (
     <TableHead>
       <StyledTableRow>
-        {headCells.map((headCell) => (
+        {headCells.map((headCell, index) => (
           <TableCell
             key={headCell.id}
-            style={{ flex: headCell.flex }}
+            style={{ flex: index === 0 ? 1 : "none" }}
+            align={index === 0 ? "left" : "right"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -126,10 +121,16 @@ type Props = {
 };
 
 export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
+  const router = useRouter();
+
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<keyof IssueRow>("updatedAt");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleOnClick = (issueId: string) => {
+    router.push(`/app/compose?n=${newsletterId}&i=${issueId}`);
+  };
 
   const handleRequestSort = (
     _: MouseEvent<unknown>,
@@ -168,14 +169,16 @@ export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
               .sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((issue) => (
-                <StyledTableRow hover role="checkbox" key={issue.id}>
-                  <TableCell component="th" scope="row" style={{ flex: 7 }}>
-                    <Link href={`/app/compose?n=${newsletterId}&i=${issue.id}`}>
-                      {issue.title}
-                    </Link>
+                <StyledTableRow
+                  hover
+                  key={issue.id}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleOnClick(issue.id)}
+                >
+                  <TableCell component="th" scope="row" style={{ flex: 1 }}>
+                    {issue.title}
                   </TableCell>
-                  <TableCell style={{ flex: 1 }}>{issue.wordCount}</TableCell>
-                  <TableCell style={{ flex: 2 }}>
+                  <TableCell align="right">
                     {getTimeAgoString(issue.updatedAt)}
                   </TableCell>
                 </StyledTableRow>
