@@ -1,4 +1,3 @@
-import { Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
@@ -18,9 +17,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   const newsletter = await prisma.newsletter.findFirst({
     where: { author: { email: session.user.email } },
-    include: {
-      githubIntegration: true,
-      issues: true,
+    select: {
+      id: true,
+      title: true,
     },
   });
 
@@ -30,10 +29,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 type Props = {
-  newsletter: Newsletter;
+  newsletter: {
+    id: string;
+    title: string;
+  };
 };
 
-const AppCapture: FC<Props> = ({ newsletter }) => {
+const Subscribers: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
   const newsletterId = newsletter.id;
 
@@ -49,4 +51,4 @@ const AppCapture: FC<Props> = ({ newsletter }) => {
   );
 };
 
-export default AppCapture;
+export default Subscribers;
