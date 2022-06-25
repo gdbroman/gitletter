@@ -5,7 +5,7 @@ import prisma from "../../../src/prisma/prisma";
 // POST & PUT /api/issue
 // Required fields in body: title, content, newsletterId
 export default async function handle(req, res) {
-  const { title, content, newsletterId, published } = req.body;
+  const { title, content, newsletterId, sent } = req.body;
 
   const session = await getSession({ req });
   if (req.method === "POST") {
@@ -13,7 +13,7 @@ export default async function handle(req, res) {
       data: {
         title,
         content,
-        published: false,
+        sent: false,
         newsletter: { connect: { id: newsletterId } },
         author: { connect: { email: session?.user?.email } },
       },
@@ -25,7 +25,7 @@ export default async function handle(req, res) {
       data: {
         title,
         content,
-        published,
+        sent,
       },
     });
     res.json(result);

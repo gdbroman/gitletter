@@ -18,14 +18,16 @@ model Newsletter {
 }
 
 model Issue {
-  id          String      @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
   content     String
-  published   Boolean     @default(false)
-  author      User        @relation(fields: [authorId], references: [id])
+  sent        Boolean    @default(false)
+  author      User       @relation(fields: [authorId], references: [id])
   authorId    String
-  newsletter  Newsletter  @relation(fields: [newletterId], references: [id])
+  newsletter  Newsletter @relation(fields: [newletterId], references: [id])
   newletterId String
+  createdAt   DateTime   @default(now()) @map(name: "created_at")
+  updatedAt   DateTime   @updatedAt @map(name: "updated_at")
 }
 
 model GithubIntegration {

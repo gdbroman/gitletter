@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     res.statusCode = 403;
     return { props: { issue: {} } };
   }
-  let issue: Issue | null = null;
+  let issue: Issue = {} as Issue;
   const urlSearchParams = new URLSearchParams(
     req.url.substring(req.url.indexOf("?"))
   );
@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       data: {
         title: "Hello world!",
         content: "I say unto you...",
-        published: false,
+        sent: false,
         newsletter: { connect: { id: newsletterId } },
         author: { connect: { email: session?.user?.email } },
       },
@@ -48,16 +48,17 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     });
   }
 
-  return { props: { issue } };
+  return { props: { issueString: JSON.stringify(issue) } };
 };
 
 type Props = {
-  issue: Issue | null;
+  issueString: string;
 };
 
-const Compose: FC<Props> = ({ issue }) => {
+const Compose: FC<Props> = ({ issueString }) => {
   const router = useRouter();
 
+  const issue = JSON.parse(issueString) as Issue;
   const [title, setTitle] = useState(issue.title);
   const [content, setContent] = useState(issue.content);
   const preview = useToggle(false);

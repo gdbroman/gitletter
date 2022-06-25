@@ -69,7 +69,12 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
       </Link>
     </Tabs>
     <Link href={`/app/compose?n=${newsletterId}`} passHref>
-      <Button variant="contained" color="success" startIcon={<AddIcon />}>
+      <Button
+        variant="contained"
+        color="success"
+        startIcon={<AddIcon />}
+        style={{ minWidth: "119px" }}
+      >
         Compose
       </Button>
     </Link>

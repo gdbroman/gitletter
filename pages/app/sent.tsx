@@ -10,7 +10,6 @@ import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
 import prisma from "../../src/prisma/prisma";
-import { getRepoContent } from "../../src/util/githubClient";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -19,40 +18,31 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return { props: { newsletter: {}, files: [] } };
   }
 
-  const newsletter = await prisma.newsletter.findFirst({
-    where: { author: { email: session.user.email } },
-    include: {
-      issues: true,
-      githubIntegration: true,
-    },
-  });
+  const newsletter =
+    (await prisma.newsletter.findFirst({
+      where: { author: { email: session.user.email } },
+      select: {
+        id: true,
+        title: true,
+        issues: true,
+      },
+    })) ?? {};
 
-  let files = [];
-  if (newsletter.githubIntegration) {
-    try {
-      files =
-        (
-          await getRepoContent(newsletter.githubIntegration.installationId)
-        ).filter(({ type, name }) => type === "file" && name.endsWith(".md")) ??
-        [];
-    } catch (e) {
-      console.error(e);
-    }
-  }
   return {
-    props: { newsletter, files },
+    props: { newsletterString: JSON.stringify(newsletter) },
   };
 };
 
 type Props = {
-  newsletter: Newsletter & {
-    issues: Issue[];
-  };
-  files: any[];
+  newsletterString: string;
 };
 
-const Sent: FC<Props> = ({ newsletter, files }) => {
+const Sent: FC<Props> = ({ newsletterString }) => {
+  const newsletter = JSON.parse(newsletterString) as Newsletter & {
+    issues: Issue[];
+  };
   const title = newsletter.title;
+  const sentIssues = newsletter.issues.filter((issue) => issue.sent);
   const newsletterId = newsletter.id;
 
   return (
@@ -60,13 +50,16 @@ const Sent: FC<Props> = ({ newsletter, files }) => {
       <Layout>
         <NextSeo title="Sent" />
         <Dashboard title={title} value={1} newsletterId={newsletterId}>
-          {!files.length && (
-            <Typography variant="body1">No issues found.</Typography>
+          {!sentIssues.length && (
+            <Typography variant="body1">No sent issues found.</Typography>
           )}
-          {files.map((issue) => (
-            <Link key={issue.name} href={`/app/publish/${issue.name}`}>
+          {sentIssues.map((issue) => (
+            <Link
+              key={issue.id}
+              href={`/app/sent?n=${newsletterId}&i=${issue.id}`}
+            >
               <Typography variant="h5" fontWeight="bold">
-                {issue.name}
+                {issue.title}
               </Typography>
             </Link>
           ))}
