@@ -1,5 +1,4 @@
 import Typography from "@mui/material/Typography";
-import { Issue, Newsletter } from "@prisma/client";
 import Link from "next/link";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
@@ -10,6 +9,8 @@ import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
 import prisma from "../../src/prisma/prisma";
+import { dateStripped } from "../../src/types/helpers";
+import { NewsletterWithIssues } from "./index";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -29,18 +30,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     })) ?? {};
 
   return {
-    props: { newsletterString: JSON.stringify(newsletter) },
+    props: { newsletter: dateStripped(newsletter) },
   };
 };
 
 type Props = {
-  newsletterString: string;
+  newsletter: NewsletterWithIssues;
 };
 
-const Sent: FC<Props> = ({ newsletterString }) => {
-  const newsletter = JSON.parse(newsletterString) as Newsletter & {
-    issues: Issue[];
-  };
+const Sent: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
   const sentIssues = newsletter.issues.filter((issue) => issue.sent);
   const newsletterId = newsletter.id;

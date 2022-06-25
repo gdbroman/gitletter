@@ -13,6 +13,7 @@ import ReactMarkdown from "react-markdown";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import prisma from "../../src/prisma/prisma";
+import { dateStripped } from "../../src/types/helpers";
 import { useToggle } from "../../src/util/hooks";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -48,17 +49,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     });
   }
 
-  return { props: { issueString: JSON.stringify(issue) } };
+  return { props: { issue: dateStripped(issue) } };
 };
 
 type Props = {
-  issueString: string;
+  issue: Issue;
 };
 
-const Compose: FC<Props> = ({ issueString }) => {
+const Compose: FC<Props> = ({ issue }) => {
   const router = useRouter();
 
-  const issue = JSON.parse(issueString) as Issue;
   const [title, setTitle] = useState(issue.title);
   const [content, setContent] = useState(issue.content);
   const preview = useToggle(false);

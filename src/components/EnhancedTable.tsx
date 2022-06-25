@@ -17,12 +17,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
-import { Issue } from "@prisma/client";
 import { ChangeEvent, FC, MouseEvent, useState } from "react";
 
-import { getWordCount, stringDateToReadableDate } from "../util/strings";
+import { IssueWithStrippedDate } from "../../pages/app";
+import { getTimeAgoString, getWordCount } from "../util/strings";
 
-type IssueRow = Omit<Issue, "sent">;
+type IssueRow = Omit<IssueWithStrippedDate, "sent">;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -40,8 +40,8 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
 ): (
-  a: { [key in Key]: number | string | Date },
-  b: { [key in Key]: number | string | Date }
+  a: { [key in Key]: number | string },
+  b: { [key in Key]: number | string }
 ) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -312,9 +312,7 @@ export const EnhancedTable: FC<Props> = ({ issues }) => {
                     <TableCell align="right">
                       {getWordCount(issue.content)}
                     </TableCell>
-                    <TableCell>
-                      {stringDateToReadableDate(issue.updatedAt as any)}
-                    </TableCell>
+                    <TableCell>{getTimeAgoString(issue.updatedAt)}</TableCell>
                   </TableRow>
                 );
               })}

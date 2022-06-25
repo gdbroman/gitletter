@@ -10,6 +10,7 @@ import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
 import prisma from "../../src/prisma/prisma";
+import { dateStripped } from "../../src/types/helpers";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -29,18 +30,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     })) ?? {};
 
   return {
-    props: { newsletterString: JSON.stringify(newsletter) },
+    props: { newsletter: dateStripped(newsletter) },
   };
+};
+
+export type IssueWithStrippedDate = Issue & {
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type NewsletterWithIssues = Pick<Newsletter, "id" | "title"> & {
+  issues: IssueWithStrippedDate[];
 };
 
 type Props = {
-  newsletterString: string;
+  newsletter: NewsletterWithIssues;
 };
 
-const Drafts: FC<Props> = ({ newsletterString }) => {
-  const newsletter = JSON.parse(newsletterString) as Newsletter & {
-    issues: Issue[];
-  };
+const Drafts: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
   const drafts = newsletter.issues?.filter((issue) => !issue.sent) ?? [];
   const newsletterId = newsletter.id;
