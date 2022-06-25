@@ -17,7 +17,6 @@ export const Dashboard: FC<Props> = ({ title, value, children }) => (
       role="tabpanel"
       id={`simple-tabpanel-${value}`}
       aria-labelledby={`simple-tab-${value}`}
-      style={{ maxWidth: 780 }}
     >
       <Box my={3}>{children}</Box>
     </div>

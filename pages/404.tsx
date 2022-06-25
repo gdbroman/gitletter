@@ -7,7 +7,7 @@ import Layout from "../components/Layout";
 const FourOhFour: FC = () => (
   <Layout>
     <main>
-      <Box maxWidth={780} mx="auto" my="64px" textAlign="center">
+      <Box mx="auto" my="64px" textAlign="center">
         <Typography variant="h1" fontWeight="bold" mb="32px">
           404 Not found
         </Typography>

@@ -8,7 +8,6 @@ import { FC } from "react";
 import { Dashboard } from "../../components/Dashboard/Dashboard";
 import Layout from "../../components/Layout";
 import { ProtectedPage } from "../../components/ProtectedPage";
-import { getRepoContent } from "../../util/githubClient";
 import prisma from "../../util/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -26,20 +25,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     },
   });
 
-  let files = [];
-  if (newsletter.githubIntegration) {
-    try {
-      files =
-        (
-          await getRepoContent(newsletter.githubIntegration.installationId)
-        ).filter(({ type, name }) => type === "file" && name.endsWith(".md")) ??
-        [];
-    } catch (e) {
-      console.error(e);
-    }
-  }
   return {
-    props: { newsletter, files },
+    props: { newsletter },
   };
 };
 
@@ -47,23 +34,23 @@ type Props = {
   newsletter: Newsletter & {
     issues: Issue[];
   };
-  files: any[];
 };
 
-const Drafts: FC<Props> = ({ newsletter, files }) => {
+const Drafts: FC<Props> = ({ newsletter }) => {
   const title = newsletter.title;
+  const issues = newsletter.issues;
 
   return (
     <ProtectedPage>
       <Layout>
         <Dashboard title={title} value={0}>
-          {!files.length && (
+          {!issues.length && (
             <Typography variant="body1">No issues found.</Typography>
           )}
-          {files.map((issue) => (
-            <Link key={issue.name} href={`/app/publish/${issue.name}`}>
+          {issues.map((issue) => (
+            <Link key={issue.id} href={`/app/publish/${issue.id}`}>
               <Typography variant="h5" fontWeight="bold">
-                {issue.name}
+                {issue.title}
               </Typography>
             </Link>
           ))}

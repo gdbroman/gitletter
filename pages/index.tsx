@@ -38,7 +38,7 @@ const Home: FC = () => {
   return (
     <Layout>
       <main>
-        <Box maxWidth={780} mx="auto" my={4} textAlign="center">
+        <Box mx="auto" my={4} textAlign="center">
           <Typography variant="h1" fontWeight="bold">
             {siteTagline}
           </Typography>

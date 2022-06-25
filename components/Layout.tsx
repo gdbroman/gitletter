@@ -7,13 +7,17 @@ import { siteDescription, siteTagline, siteTitle } from "../util/constants";
 import { Footer } from "./Footer";
 import { Header } from "./Header/Header";
 
-const maxContentWidth = "1000px";
+const maxContentWidth = 780;
 
 const StyledDiv = styled.div`
   flex: 1;
   width: 100%;
-  max-width: ${maxContentWidth};
-  margin: 16px auto;
+  max-width: ${maxContentWidth}px;
+  margin: 0 auto;
+  padding: 16px 0;
+  @media (max-width: ${maxContentWidth - 32}px) {
+    padding: 16px;
+  }
 `;
 
 type Props = {
@@ -27,7 +31,7 @@ const Layout: FC<Props> = (props) => (
       description={siteDescription}
     />
     <Header />
-    <StyledDiv className="layout">{props.children}</StyledDiv>
+    <StyledDiv>{props.children}</StyledDiv>
     <Footer />
   </Box>
 );
