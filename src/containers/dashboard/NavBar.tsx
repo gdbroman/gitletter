@@ -22,7 +22,7 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
     justifyContent="space-between"
     sx={{ borderBottom: 1, borderColor: "divider" }}
   >
-    <Tabs value={value} aria-label="basic tabs example">
+    <Tabs value={value} variant="scrollable" scrollButtons="auto">
       <Link href="/app" passHref>
         <Tab
           label={
