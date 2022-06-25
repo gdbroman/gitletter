@@ -11,16 +11,16 @@ import { GithubIntegration } from "@prisma/client";
 import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
-import { ItemSelect } from "../../components/ItemSelect";
-import { CustomSnackbar } from "../../components/Snackbar";
 import {
   GithubReposInfo,
   RepoInfo,
-} from "../../pages/api/github/app/[...installationId]";
+} from "../../../pages/api/github/app/[...installationId]";
+import { ItemSelect } from "../../components/ItemSelect";
+import { CustomSnackbar } from "../../components/Snackbar";
+import { Nullable } from "../../types/general";
 import { deleteIntegration, updateIntegration } from "../../util/githubClient";
 import { useToggle } from "../../util/hooks";
-import { Nullable } from "../../util/types";
-import { LoadingButtonWithBlackSpinner } from "../Header/HeaderNavRight";
+import { LoadingButtonWithBlackSpinner } from "../header/HeaderNavRight";
 
 const StyledAlert = styled(Alert)`
   .MuiAlert-message {
@@ -237,9 +237,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
               items={dirs}
               value={dir}
               onChange={setDir}
-              helperText={
-                "Select the directory where issues are stored in your repository."
-              }
+              helperText={"Select the directory you want to store your issues."}
               disabled={submitting || disconnecting}
               required
             />

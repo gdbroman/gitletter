@@ -8,9 +8,13 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FC } from "react";
 
-import Layout from "../components/Layout";
-import { calendlyLink, siteDescription, siteTagline } from "../util/constants";
-import { useSignIn, useToggle } from "../util/hooks";
+import Layout from "../src/components/Layout";
+import {
+  calendlyLink,
+  siteDescription,
+  siteTagline,
+} from "../src/util/constants";
+import { useSignIn, useToggle } from "../src/util/hooks";
 
 const Home: FC = () => {
   const router = useRouter();

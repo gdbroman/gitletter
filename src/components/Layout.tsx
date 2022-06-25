@@ -3,9 +3,9 @@ import { Box } from "@mui/material";
 import { NextSeo } from "next-seo";
 import { FC, ReactNode } from "react";
 
+import { Header } from "../containers/header/Header";
 import { siteDescription, siteTagline, siteTitle } from "../util/constants";
 import { Footer } from "./Footer";
-import { Header } from "./Header/Header";
 
 const maxContentWidth = 780;
 

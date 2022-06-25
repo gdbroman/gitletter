@@ -3,7 +3,7 @@ import { NextApiHandler } from "next";
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 
-import prisma from "../../../util/prisma";
+import prisma from "../../../src/prisma/prisma";
 
 const options = {
   providers: [

@@ -62,7 +62,7 @@ export const NavBar = ({ value }) => (
         />
       </Link>
     </Tabs>
-    <Link href="/app/new" passHref>
+    <Link href="/app/compose" passHref>
       <Button variant="contained" color="success" startIcon={<AddIcon />}>
         Compose
       </Button>

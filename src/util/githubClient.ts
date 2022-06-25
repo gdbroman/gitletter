@@ -3,7 +3,7 @@ import { GithubIntegration } from "@prisma/client";
 import {
   GithubReposInfo,
   UpdateGithubIntegrationInput,
-} from "../pages/api/github/app/[...installationId]";
+} from "../../pages/api/github/app/[...installationId]";
 
 export async function getReposInfo(
   githubInstallationId: string

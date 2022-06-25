@@ -22,12 +22,12 @@ const HeaderMenuItem = styled(MenuItem)`
   }
 `;
 
-type ProfileAvatarProps = {
+type AccountAvatarProps = {
   sessionData: Session;
   size?: number;
 };
 
-const ProfileAvatar = ({ sessionData, size = 32 }: ProfileAvatarProps) => (
+const AccountAvatar = ({ sessionData, size = 32 }: AccountAvatarProps) => (
   <Avatar sx={{ width: size, height: size }} key={size}>
     {sessionData?.user?.image ? (
       <Image src={sessionData?.user?.image} width={size} height={size} />
@@ -37,7 +37,7 @@ const ProfileAvatar = ({ sessionData, size = 32 }: ProfileAvatarProps) => (
   </Avatar>
 );
 
-export const AccountMenu = () => {
+export const AccountAvatarMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -67,7 +67,7 @@ export const AccountMenu = () => {
             aria-controls={open ? "account-menu" : undefined}
             aria-expanded={open ? "true" : undefined}
           >
-            <ProfileAvatar sessionData={session.data} />
+            <AccountAvatar sessionData={session.data} />
           </IconButton>
         </AvatarToolTip>
       </Box>
@@ -111,7 +111,7 @@ export const AccountMenu = () => {
           disableTouchRipple
           onClick={(event) => event.stopPropagation()}
         >
-          <ProfileAvatar size={38} sessionData={session.data} />
+          <AccountAvatar size={38} sessionData={session.data} />
           <Box>
             <Typography
               variant="body2"

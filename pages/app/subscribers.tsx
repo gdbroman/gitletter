@@ -3,10 +3,10 @@ import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
 
-import { Dashboard } from "../../components/Dashboard/Dashboard";
-import Layout from "../../components/Layout";
-import { ProtectedPage } from "../../components/ProtectedPage";
-import prisma from "../../util/prisma";
+import Layout from "../../src/components/Layout";
+import { ProtectedPage } from "../../src/components/ProtectedPage";
+import { Dashboard } from "../../src/containers/dashboard/Dashboard";
+import prisma from "../../src/prisma/prisma";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });

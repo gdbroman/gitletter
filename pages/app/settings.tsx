@@ -3,12 +3,12 @@ import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
 
-import { Dashboard } from "../../components/Dashboard/Dashboard";
-import Layout from "../../components/Layout";
-import { ProtectedPage } from "../../components/ProtectedPage";
-import { GithubIntegrationSettings } from "../../components/settings/GithubIntegrationCard";
-import { getReposInfo } from "../../util/githubClient";
-import prisma from "../../util/prisma";
+import Layout from "../../src/components/Layout";
+import { ProtectedPage } from "../../src/components/ProtectedPage";
+import { Dashboard } from "../../src/containers/dashboard/Dashboard";
+import { GithubIntegrationSettings } from "../../src/containers/settings/GithubIntegrationCard";
+import prisma from "../../src/prisma/prisma";
+import { getReposInfo } from "../../src/util/githubClient";
 import { GithubReposInfo } from "../api/github/app/[...installationId]";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {

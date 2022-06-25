@@ -5,7 +5,7 @@ import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
 
 import { useSignIn } from "../../util/hooks";
-import { AccountMenu } from "./AccountMenu";
+import { AccountAvatarMenu } from "./AccountAvatarMenu";
 
 export const LoadingButtonWithBlackSpinner = styled(LoadingButton)`
   &:disabled .MuiLoadingButton-loadingIndicator {
@@ -28,7 +28,7 @@ export const HeaderNavRight = () => {
     case "authenticated":
       return (
         <Box display="flex" alignItems="center" gap={1}>
-          <AccountMenu />
+          <AccountAvatarMenu />
         </Box>
       );
     default:

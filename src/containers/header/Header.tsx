@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import Box from "@mui/system/Box";
 import { FC } from "react";
 
-import { GitLetterLogo } from "./GitLetterLogo";
+import { GitLetterLogo } from "../../components/GitLetterLogo";
 import { HeaderNavRight } from "./HeaderNavRight";
 
 const StyledHeader = styled.header`
