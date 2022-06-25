@@ -3,6 +3,7 @@ import { Issue, Newsletter } from "@prisma/client";
 import Link from "next/link";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import Layout from "../../src/components/Layout";
@@ -56,6 +57,7 @@ const Sent: FC<Props> = ({ newsletter, files }) => {
   return (
     <ProtectedPage>
       <Layout>
+        <NextSeo title="Sent" />
         <Dashboard title={title} value={1}>
           {!files.length && (
             <Typography variant="body1">No issues found.</Typography>

@@ -1,6 +1,7 @@
 import { Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import Layout from "../../src/components/Layout";
@@ -38,6 +39,7 @@ const AppCapture: FC<Props> = ({ newsletter }) => {
   return (
     <ProtectedPage>
       <Layout>
+        <NextSeo title="Subscribers" />
         <Dashboard title={title} value={2}>
           Use this to capture email addresses from your newsletter.
         </Dashboard>
