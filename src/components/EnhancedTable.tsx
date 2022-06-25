@@ -13,8 +13,8 @@ import { visuallyHidden } from "@mui/utils";
 import Link from "next/link";
 import { ChangeEvent, FC, MouseEvent, useState } from "react";
 
-import { IssueWithStrippedDate } from "../../pages/app";
-import { getTimeAgoString, getWordCount } from "../util/strings";
+import { IssueWithStrippedDateAndWordCount } from "../../pages/app";
+import { getTimeAgoString } from "../util/strings";
 
 const StyledTableRow = styled(TableRow)`
   flex: 1;
@@ -22,7 +22,7 @@ const StyledTableRow = styled(TableRow)`
   width: 100%;
 `;
 
-type IssueRow = Omit<IssueWithStrippedDate, "sent">;
+type IssueRow = Omit<IssueWithStrippedDateAndWordCount, "sent">;
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -174,9 +174,7 @@ export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
                       {issue.title}
                     </Link>
                   </TableCell>
-                  <TableCell style={{ flex: 1 }}>
-                    {getWordCount(issue.content)}
-                  </TableCell>
+                  <TableCell style={{ flex: 1 }}>{issue.wordCount}</TableCell>
                   <TableCell style={{ flex: 2 }}>
                     {getTimeAgoString(issue.updatedAt)}
                   </TableCell>
