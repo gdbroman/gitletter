@@ -22,7 +22,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return { props: { issue: {} } };
   }
   let issue: Issue | null = null;
-  const urlSearchParams = new URLSearchParams(req.url);
+  const urlSearchParams = new URLSearchParams(
+    req.url.substring(req.url.indexOf("?"))
+  );
   const issueId = urlSearchParams.get("i");
   const newsletterId = urlSearchParams.get("n");
 

@@ -68,7 +68,7 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
         />
       </Link>
     </Tabs>
-    <Link href={`/app/compose/${newsletterId}`} passHref>
+    <Link href={`/app/compose?n=${newsletterId}`} passHref>
       <Button variant="contained" color="success" startIcon={<AddIcon />}>
         Compose
       </Button>
