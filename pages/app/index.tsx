@@ -60,7 +60,7 @@ const Drafts: FC<Props> = ({ newsletter }) => {
           {!drafts.length ? (
             <Typography variant="body1">No drafts found.</Typography>
           ) : (
-            <EnhancedTable issues={drafts} />
+            <EnhancedTable newsletterId={newsletterId} issues={drafts} />
           )}
         </Dashboard>
       </Layout>

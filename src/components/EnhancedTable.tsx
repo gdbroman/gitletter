@@ -1,9 +1,6 @@
-import DeleteIcon from "@mui/icons-material/Delete";
+import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
-import IconButton from "@mui/material/IconButton";
-import { alpha } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,14 +9,18 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import { visuallyHidden } from "@mui/utils";
+import Link from "next/link";
 import { ChangeEvent, FC, MouseEvent, useState } from "react";
 
 import { IssueWithStrippedDate } from "../../pages/app";
 import { getTimeAgoString, getWordCount } from "../util/strings";
+
+const StyledTableRow = styled(TableRow)`
+  flex: 1;
+  display: flex;
+  width: 100%;
+`;
 
 type IssueRow = Omit<IssueWithStrippedDate, "sent">;
 
@@ -51,46 +52,40 @@ interface HeadCell {
   id: keyof IssueRow;
   label: string;
   numeric: boolean;
-  disablePadding: boolean;
+  flex: number;
 }
 
 const headCells: readonly HeadCell[] = [
   {
     id: "title",
     numeric: false,
-    disablePadding: true,
     label: "Title",
+    flex: 7,
   },
   {
     id: "content",
     numeric: true,
-    disablePadding: false,
     label: "Words",
+    flex: 1,
   },
   {
     id: "updatedAt",
     numeric: false,
-    disablePadding: false,
     label: "Updated",
+    flex: 2,
   },
 ];
 
 interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: MouseEvent, property: keyof IssueRow) => void;
-  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
-  rowCount: number;
+  onRequestSort: (event: MouseEvent, property: keyof IssueRow) => void;
 }
 
 function EnhancedTableHead({
   order,
   orderBy,
-  numSelected,
-  rowCount,
   onRequestSort,
-  onSelectAllClick,
 }: EnhancedTableProps) {
   const createSortHandler =
     (property: keyof IssueRow) => (event: MouseEvent) => {
@@ -99,23 +94,11 @@ function EnhancedTableHead({
 
   return (
     <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
+      <StyledTableRow>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            style={{ flex: headCell.flex }}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -132,57 +115,19 @@ function EnhancedTableHead({
             </TableSortLabel>
           </TableCell>
         ))}
-      </TableRow>
+      </StyledTableRow>
     </TableHead>
   );
 }
 
-interface EnhancedTableToolbarProps {
-  numSelected: number;
-}
-
-const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => (
-  <Toolbar
-    sx={{
-      pl: { sm: 2 },
-      pr: { xs: 1, sm: 1 },
-      ...(numSelected > 0 && {
-        bgcolor: (theme) =>
-          alpha(
-            theme.palette.primary.main,
-            theme.palette.action.activatedOpacity
-          ),
-      }),
-    }}
-  >
-    {numSelected > 0 && (
-      <Typography
-        sx={{ flex: "1 1 100%" }}
-        color="inherit"
-        variant="subtitle1"
-        component="div"
-      >
-        {numSelected} selected
-      </Typography>
-    )}
-    {numSelected > 0 && (
-      <Tooltip title="Delete">
-        <IconButton>
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
-    )}
-  </Toolbar>
-);
-
 type Props = {
+  newsletterId: string;
   issues: IssueRow[];
 };
 
-export const EnhancedTable: FC<Props> = ({ issues }) => {
+export const EnhancedTable: FC<Props> = ({ newsletterId, issues }) => {
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<keyof IssueRow>("updatedAt");
-  const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -195,35 +140,6 @@ export const EnhancedTable: FC<Props> = ({ issues }) => {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = issues.map((n) => n.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (_: MouseEvent<unknown>, id: string) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -233,72 +149,45 @@ export const EnhancedTable: FC<Props> = ({ issues }) => {
     setPage(0);
   };
 
-  const isSelected = (id: string) => selected.indexOf(id) !== -1;
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - issues.length) : 0;
 
   return (
     <Card variant="outlined">
-      <EnhancedTableToolbar numSelected={selected.length} />
       <TableContainer>
-        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+        <Table aria-labelledby="tableTitle">
           <EnhancedTableHead
-            numSelected={selected.length}
             order={order}
             orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={issues.length}
           />
           <TableBody>
             {issues
               .slice()
               .sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((issue, index) => {
-                const isItemSelected = isSelected(issue.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, issue.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={issue.id}
-                    selected={isItemSelected}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
+              .map((issue) => (
+                <StyledTableRow hover role="checkbox" key={issue.id}>
+                  <TableCell component="th" scope="row" style={{ flex: 7 }}>
+                    <Link
+                      href={`/app/compose?n=${newsletterId}&=i=${issue.id}`}
                     >
                       {issue.title}
-                    </TableCell>
-                    <TableCell align="right">
-                      {getWordCount(issue.content)}
-                    </TableCell>
-                    <TableCell>{getTimeAgoString(issue.updatedAt)}</TableCell>
-                  </TableRow>
-                );
-              })}
+                    </Link>
+                  </TableCell>
+                  <TableCell style={{ flex: 1 }}>
+                    {getWordCount(issue.content)}
+                  </TableCell>
+                  <TableCell style={{ flex: 2 }}>
+                    {getTimeAgoString(issue.updatedAt)}
+                  </TableCell>
+                </StyledTableRow>
+              ))}
             {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
+              <StyledTableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
-              </TableRow>
+              </StyledTableRow>
             )}
           </TableBody>
         </Table>
