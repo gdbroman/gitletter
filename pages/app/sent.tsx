@@ -10,6 +10,7 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
+import { deleteIssue } from "../../src/services/issues";
 import { IssueWithStrippedDate, stripDate } from "../../src/types/stripDate";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -52,6 +53,10 @@ const Sent: FC<Props> = ({ newsletter }) => {
   const onItemClick = (issue: IssueWithStrippedDate) => {
     router.push(`/app/compose?n=${newsletterId}&i=${issue.id}`);
   };
+  const onItemDelete = async (issue: IssueWithStrippedDate) => {
+    await deleteIssue(issue.id);
+    router.replace(`/app/sent`);
+  };
 
   return (
     <ProtectedPage>
@@ -65,6 +70,7 @@ const Sent: FC<Props> = ({ newsletter }) => {
               type="sentIssues"
               items={sentIssues}
               onItemClick={onItemClick}
+              onItemDelete={onItemDelete}
             />
           )}
         </Dashboard>

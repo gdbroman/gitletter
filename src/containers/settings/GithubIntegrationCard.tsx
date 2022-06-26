@@ -17,8 +17,8 @@ import {
 } from "../../../pages/api/github/app/[...installationId]";
 import { ItemSelect } from "../../components/ItemSelect";
 import { CustomSnackbar } from "../../components/Snackbar";
+import { deleteIntegration, updateIntegration } from "../../services/github";
 import { Nullable } from "../../types/general";
-import { deleteIntegration, updateIntegration } from "../../util/githubClient";
 import { useToggle } from "../../util/hooks";
 import { LoadingButtonWithBlackSpinner } from "../header/HeaderNavRight";
 

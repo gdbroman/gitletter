@@ -91,7 +91,7 @@ function deleteIntegration(installationId: string) {
   }
 }
 
-export function createOctokitClient(installationId?: string): Octokit {
+export const createOctokitClient = (installationId?: string): Octokit => {
   const appId = process.env.GITHUB_APP_ID;
   const privateKeyBase64 = process.env.GITHUB_APP_PRIVATE_KEY as string;
   const privateKey = Buffer.from(privateKeyBase64, "base64").toString();
@@ -108,4 +108,4 @@ export function createOctokitClient(installationId?: string): Octokit {
         }
       : undefined
   );
-}
+};

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
@@ -8,6 +9,7 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
+import { removeSubscriber } from "../../src/services/subscribers";
 import {
   stripDate,
   SubscriberWithStrippedDate,
@@ -43,12 +45,18 @@ type Props = {
 };
 
 const Subscribers: FC<Props> = ({ newsletter }) => {
+  const router = useRouter();
+
   const title = newsletter.title;
   const newsletterId = newsletter.id;
   const subscribers = newsletter.subscribers;
 
   const onItemClick = (_: SubscriberWithStrippedDate) => {
     // todo
+  };
+  const onItemDelete = async (subscriber: SubscriberWithStrippedDate) => {
+    await removeSubscriber(subscriber.email, newsletter.id);
+    router.replace(`/app/subscribers`);
   };
 
   return (
@@ -60,7 +68,7 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
             <EnhancedTable
               type="subscribers"
               items={subscribers}
-              onItemClick={onItemClick}
+              onItemDelete={onItemDelete}
             />
           ) : (
             "Use this to capture email addresses from your newsletter."

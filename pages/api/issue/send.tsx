@@ -1,3 +1,5 @@
+import { Issue } from "@prisma/client";
+import { Session } from "next-auth/core/types";
 import { getSession } from "next-auth/react";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
@@ -16,56 +18,34 @@ export default async function handle(req, res) {
     return;
   }
 
-  const userEmail = session.user.email;
-  const userFullName = session.user.name;
-  const userName = userFullName.split(" ")[0].toLowerCase();
-
-  if (req.method === "POST") {
-    // send email to all subscribers
-    const { subscribers } = await prisma.newsletter.findFirst({
-      where: { id: newsletterId },
-      select: {
-        subscribers: {
-          select: { email: true },
+  const newsletter = await prisma.newsletter.findFirst({
+    where: { id: newsletterId },
+    select: {
+      title: true,
+      subscribers: {
+        select: { email: true },
+      },
+      githubIntegration: {
+        select: {
+          installationId: true,
+          repoDir: true,
+          repoName: true,
+          repoOwner: true,
         },
       },
-    });
-    const issue = await prisma.issue.findFirst({
-      where: { id: issueId },
-    });
+    },
+  });
+  const issue = await prisma.issue.findFirst({
+    where: { id: issueId },
+  });
 
-    const transport = nodemailer.createTransport({
-      host: "smtp.sendgrid.net",
-      port: 465,
-      auth: {
-        user: process.env.SENDGRID_USERNAME,
-        pass: process.env.SENDGRID_PASSWORD,
-      },
-    });
-
-    // convert markdown to html
-    const htmlString = ReactDOMServer.renderToStaticMarkup(
-      <MarkdownParser children={issue.content} />
-    );
-
-    const mailOptions: Mail.Options = {
-      from: `${userFullName} <${userName}@gitletter.co>`,
-      replyTo: `${userFullName} <${userEmail}>`,
-      to: `You <${userName}s-fans@gitletter.co>`,
-      bcc: subscribers.map((subscriber) => subscriber.email),
-      subject: issue.title,
-      html: htmlString,
-    };
-
-    transport.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(info);
-      }
-    });
+  if (req.method === "POST") {
+    sendMail(session, issue, newsletter);
 
     // TODO: write to github repo
+    // const client = createOctokitClient(
+    //   newsletter.githubIntegration.installationId
+    // );
 
     // update db entry
     const result = await prisma.issue.update({
@@ -78,3 +58,40 @@ export default async function handle(req, res) {
     res.json(result);
   }
 }
+
+const sendMail = async (session: Session, issue: Issue, newsletter: any) => {
+  const userEmail = session.user.email;
+  const userFullName = session.user.name;
+  const userName = userFullName.split(" ")[0].toLowerCase();
+
+  const transport = nodemailer.createTransport({
+    host: "smtp.sendgrid.net",
+    port: 465,
+    auth: {
+      user: process.env.SENDGRID_USERNAME,
+      pass: process.env.SENDGRID_PASSWORD,
+    },
+  });
+
+  // convert markdown to html
+  const htmlString = ReactDOMServer.renderToStaticMarkup(
+    <MarkdownParser children={issue.content} />
+  );
+
+  const mailOptions: Mail.Options = {
+    from: `${newsletter.title} <${userName}@gitletter.co>`,
+    replyTo: `${userFullName} <${userEmail}>`,
+    to: `You <${userName}s-fans@gitletter.co>`,
+    bcc: newsletter.subscribers.map((subscriber) => subscriber.email),
+    subject: issue.title,
+    html: htmlString,
+  };
+
+  transport.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(info);
+    }
+  });
+};

@@ -13,6 +13,7 @@ import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
+import { sendIssue, updateIssue } from "../../src/services/issues";
 import { stripDate } from "../../src/types/stripDate";
 import { useToggle } from "../../src/util/hooks";
 
@@ -77,16 +78,8 @@ const Compose: FC<Props> = ({ issue }) => {
 
   const handleSave = async () => {
     try {
-      await fetch(`${process.env.APP_URL}/api/issue`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          content,
-          issueId: issue.id,
-        }),
-      });
-      await router.push("/app");
+      await updateIssue(title, content, issue.id);
+      router.push("/app");
     } catch (error) {
       console.error(error);
     }
@@ -94,13 +87,7 @@ const Compose: FC<Props> = ({ issue }) => {
 
   const handleSend = async () => {
     try {
-      await fetch(`${process.env.APP_URL}/api/issue/send`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          issueId: issue.id,
-        }),
-      });
+      await sendIssue(issue.id);
       await router.push("/app/sent");
     } catch (error) {
       console.error(error);

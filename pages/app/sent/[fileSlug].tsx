@@ -8,7 +8,7 @@ import prisma from "../../../prisma/prisma";
 import Layout from "../../../src/components/Layout";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
 import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
-import { getRepoContent } from "../../../src/util/githubClient";
+import { getRepoContent } from "../../../src/services/github";
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,

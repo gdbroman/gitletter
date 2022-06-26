@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
+import { addSubscriber } from "../../services/subscribers";
+
 type Props = {
   newsletterId: string;
   open: boolean;
@@ -34,14 +36,7 @@ export const AddSubscriberDialog: FC<Props> = ({
   const handleSubmit = async () => {
     setError(undefined);
     try {
-      const res = await fetch(`${process.env.APP_URL}/api/subscribers`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          newsletterId,
-        }),
-      });
+      const res = await addSubscriber(email, newsletterId);
       if (res.status > 299) {
         throw new Error(await res.text());
       } else {
@@ -75,6 +70,7 @@ export const AddSubscriberDialog: FC<Props> = ({
           <TextField
             fullWidth
             label="Email address"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
           />

@@ -86,7 +86,7 @@ const ManageButtonMenu: FC<Pick<DashboardProps, "newsletterId">> = ({
   );
 };
 
-const StyledMenu = styled((props: MenuProps) => (
+export const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
     anchorOrigin={{

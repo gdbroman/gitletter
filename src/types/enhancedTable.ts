@@ -83,7 +83,10 @@ export type EnhancedTableHeadProps = {
 export type EnhancedTableProps = {
   type: TableType;
   items: IssueWithStrippedDate[] | SubscriberWithStrippedDate[];
-  onItemClick: (
+  onItemClick?: (
+    item: IssueWithStrippedDate | SubscriberWithStrippedDate
+  ) => void;
+  onItemDelete: (
     item: IssueWithStrippedDate | SubscriberWithStrippedDate
   ) => void;
 };

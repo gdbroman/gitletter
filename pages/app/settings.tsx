@@ -9,7 +9,7 @@ import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
 import { GithubIntegrationSettings } from "../../src/containers/settings/GithubIntegrationCard";
-import { getReposInfo } from "../../src/util/githubClient";
+import { getReposInfo } from "../../src/services/github";
 import { GithubReposInfo } from "../api/github/app/[...installationId]";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {

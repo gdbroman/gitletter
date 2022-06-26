@@ -33,7 +33,10 @@ export default async function handle(req, res) {
       },
     });
     res.json(result);
-  } else if (req.method === "PUT") {
-    // todo
+  } else if (req.method === "DELETE") {
+    const result = await prisma.subscriber.deleteMany({
+      where: { email, newsletterId },
+    });
+    res.json(result);
   }
 }

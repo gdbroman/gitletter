@@ -26,11 +26,23 @@ import {
   IssueWithStrippedDate,
   SubscriberWithStrippedDate,
 } from "../types/stripDate";
+import { EditRowButton } from "./EditRowButton";
 
-export const StyledTableRow = styled(TableRow)`
+const StyledTableRow = styled(TableRow)`
   flex: 1;
   display: flex;
   width: 100%;
+  #more {
+    display: none;
+  }
+  &:hover {
+    #more {
+      display: flex;
+    }
+    #value {
+      display: none;
+    }
+  }
 `;
 
 export const EnhancedTableHead: FC<EnhancedTableHeadProps> = ({
@@ -76,6 +88,7 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
   type,
   items,
   onItemClick,
+  onItemDelete,
 }) => {
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<HeadCellType>(DefaultOrderBy[type]);
@@ -124,14 +137,22 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
                   <StyledTableRow
                     hover
                     key={item.id}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => onItemClick(item)}
+                    style={{ cursor: onItemClick ? "pointer" : "default" }}
+                    onClick={onItemClick ? () => onItemClick(item) : undefined}
                   >
                     <TableCell component="th" scope="row" style={{ flex: 1 }}>
                       {getItemValues(item, type)[0]}
                     </TableCell>
-                    <TableCell align="right">
-                      {getItemValues(item, type)[1]}
+                    <TableCell
+                      align="right"
+                      style={{
+                        display: "flex",
+                        padding: "0 16px 0 0",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span id="value">{getItemValues(item, type)[1]}</span>
+                      <EditRowButton onDelete={() => onItemDelete(item)} />
                     </TableCell>
                   </StyledTableRow>
                 )
