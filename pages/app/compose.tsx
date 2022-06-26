@@ -1,3 +1,4 @@
+import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -63,6 +64,7 @@ const Compose: FC<Props> = ({ issue }) => {
   const [content, setContent] = useState(issue.content);
   const isSent = issue.sentAt ? true : false;
   const preview = useToggle(isSent);
+  const sending = useToggle(false);
 
   const handleTitleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -86,11 +88,13 @@ const Compose: FC<Props> = ({ issue }) => {
   };
 
   const handleSend = async () => {
+    sending.toggleOn();
     try {
       await sendIssue(issue.id);
       await router.push("/app/sent");
     } catch (error) {
       console.error(error);
+      sending.toggleOff();
     }
   };
 
@@ -138,12 +142,18 @@ const Compose: FC<Props> = ({ issue }) => {
             <Button variant="text" color="primary" onClick={preview.toggle}>
               {preview.isOn ? "Edit" : "Preview"}
             </Button>
-            <Button variant="text" color="primary" onClick={handleSend}>
-              Send
-            </Button>
-            <Button variant="contained" color="primary" onClick={handleSave}>
+
+            <Button variant="text" color="primary" onClick={handleSave}>
               Save
             </Button>
+            <LoadingButton
+              variant="contained"
+              color="primary"
+              loading={sending.isOn}
+              onClick={handleSend}
+            >
+              Send
+            </LoadingButton>
           </Box>
         )}
       </Layout>
