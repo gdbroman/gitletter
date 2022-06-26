@@ -1,4 +1,5 @@
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
@@ -9,8 +10,10 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import { dateStripped } from "../../src/types/helpers";
-import { NewsletterWithIssues } from "./index";
+import {
+  NewsletterWithStrippedDate,
+  stripDate,
+} from "../../src/types/stripDate";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -30,18 +33,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     })) ?? {};
 
   return {
-    props: { newsletter: dateStripped(newsletter) },
+    props: { newsletter: stripDate(newsletter) },
   };
 };
 
 type Props = {
-  newsletter: NewsletterWithIssues;
+  newsletter: NewsletterWithStrippedDate;
 };
 
 const Sent: FC<Props> = ({ newsletter }) => {
+  const router = useRouter();
+
   const title = newsletter.title;
   const sentIssues = newsletter.issues.filter((issue) => !!issue.sentAt);
   const newsletterId = newsletter.id;
+
+  const onItemClick = (issue: NewsletterWithStrippedDate) => {
+    router.push(`/app/compose?n=${newsletterId}&i=${issue.id}`);
+  };
 
   return (
     <ProtectedPage>
@@ -52,9 +61,9 @@ const Sent: FC<Props> = ({ newsletter }) => {
             <Typography variant="body1">No sent issues found.</Typography>
           ) : (
             <EnhancedTable
-              newsletterId={newsletterId}
-              issues={sentIssues}
-              sentAt
+              type="sentIssues"
+              items={sentIssues}
+              onItemClick={onItemClick}
             />
           )}
         </Dashboard>

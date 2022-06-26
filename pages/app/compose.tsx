@@ -13,7 +13,7 @@ import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
-import { dateStripped } from "../../src/types/helpers";
+import { stripDate } from "../../src/types/stripDate";
 import { useToggle } from "../../src/util/hooks";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -48,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     });
   }
 
-  return { props: { issue: dateStripped(issue) } };
+  return { props: { issue: stripDate(issue) } };
 };
 
 type Props = {

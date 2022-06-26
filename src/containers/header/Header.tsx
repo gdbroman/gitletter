@@ -7,8 +7,8 @@ import { HeaderNavRight } from "./HeaderNavRight";
 
 const StyledHeader = styled.header`
   display: flex;
-  padding: 8px;
   height: 64px;
+  padding: 8px;
   align-items: center;
 `;
 

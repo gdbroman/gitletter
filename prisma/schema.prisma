@@ -12,9 +12,21 @@ model Newsletter {
   title             String
   description       String?
   issues            Issue[]
+  subscribers       Subscriber[]
   githubIntegration GithubIntegration?
   author            User               @relation(fields: [authorId], references: [id])
   authorId          String             @unique
+}
+
+model Subscriber {
+  id            String     @id @default(cuid())
+  email         String
+  emailVerified DateTime?  @map("email_verified")
+  addedAt       DateTime   @default(now()) @map(name: "created_at")
+  newsletter    Newsletter @relation(fields: [newsletterId], references: [id])
+  newsletterId  String
+
+  @@map(name: "subscribers")
 }
 
 model Issue {
