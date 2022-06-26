@@ -47,7 +47,7 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
   const newsletterId = newsletter.id;
   const subscribers = newsletter.subscribers;
 
-  const onItemClick = (subscriber: SubscriberWithStrippedDate) => {
+  const onItemClick = (_: SubscriberWithStrippedDate) => {
     // todo
   };
 

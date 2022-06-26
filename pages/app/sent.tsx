@@ -10,10 +10,7 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import {
-  NewsletterWithStrippedDate,
-  stripDate,
-} from "../../src/types/stripDate";
+import { IssueWithStrippedDate, stripDate } from "../../src/types/stripDate";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -38,7 +35,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 };
 
 type Props = {
-  newsletter: NewsletterWithStrippedDate;
+  newsletter: {
+    id: string;
+    title: string;
+    issues: IssueWithStrippedDate[];
+  };
 };
 
 const Sent: FC<Props> = ({ newsletter }) => {
@@ -48,7 +49,7 @@ const Sent: FC<Props> = ({ newsletter }) => {
   const sentIssues = newsletter.issues.filter((issue) => !!issue.sentAt);
   const newsletterId = newsletter.id;
 
-  const onItemClick = (issue: NewsletterWithStrippedDate) => {
+  const onItemClick = (issue: IssueWithStrippedDate) => {
     router.push(`/app/compose?n=${newsletterId}&i=${issue.id}`);
   };
 

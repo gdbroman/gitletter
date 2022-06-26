@@ -10,11 +10,7 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import {
-  IssueWithStrippedDate,
-  NewsletterWithStrippedDate,
-  stripDate,
-} from "../../src/types/stripDate";
+import { IssueWithStrippedDate, stripDate } from "../../src/types/stripDate";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -37,8 +33,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     props: { newsletter: stripDate(newsletter) },
   };
 };
+
 type Props = {
-  newsletter: NewsletterWithStrippedDate;
+  newsletter: {
+    id: string;
+    title: string;
+    issues: IssueWithStrippedDate[];
+  };
 };
 
 const Drafts: FC<Props> = ({ newsletter }) => {
