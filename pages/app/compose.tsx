@@ -8,10 +8,10 @@ import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { ChangeEvent, FC, useState } from "react";
-import ReactMarkdown from "react-markdown";
 
 import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
+import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { dateStripped } from "../../src/types/helpers";
 import { useToggle } from "../../src/util/hooks";
@@ -131,7 +131,7 @@ const Compose: FC<Props> = ({ issue }) => {
           </Box>
           <Box>
             {preview.isOn ? (
-              <ReactMarkdown children={content} />
+              <MarkdownParser children={content} />
             ) : (
               <TextField
                 fullWidth
