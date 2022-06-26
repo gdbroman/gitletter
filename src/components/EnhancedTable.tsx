@@ -88,6 +88,7 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
   type,
   items,
   onItemClick,
+  onItemDuplicate,
   onItemDelete,
 }) => {
   const [order, setOrder] = useState<Order>("desc");
@@ -152,7 +153,14 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
                       }}
                     >
                       <span id="value">{getItemValues(item, type)[1]}</span>
-                      <EditRowButton onDelete={() => onItemDelete(item)} />
+                      <EditRowButton
+                        onDuplicate={
+                          onItemDuplicate
+                            ? () => onItemDuplicate(item)
+                            : undefined
+                        }
+                        onDelete={() => onItemDelete(item)}
+                      />
                     </TableCell>
                   </StyledTableRow>
                 )

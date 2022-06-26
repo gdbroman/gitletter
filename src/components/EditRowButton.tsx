@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
@@ -19,10 +20,11 @@ const StyledRowButton = styled(Button)`
 `;
 
 type Props = {
+  onDuplicate?: () => void;
   onDelete: () => void;
 };
 
-export const EditRowButton: FC<Props> = ({ onDelete }) => {
+export const EditRowButton: FC<Props> = ({ onDuplicate, onDelete }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
 
@@ -34,9 +36,13 @@ export const EditRowButton: FC<Props> = ({ onDelete }) => {
     eatClick(event);
     setAnchorEl(null);
   };
+  const handleOnDuplicate = (event: MouseEvent<HTMLElement>) => {
+    onDuplicate();
+    handleOnClose(event);
+  };
   const handleOnDelete = (event: MouseEvent<HTMLElement>) => {
-    eatClick(event);
     onDelete();
+    handleOnClose(event);
   };
 
   return (
@@ -45,6 +51,12 @@ export const EditRowButton: FC<Props> = ({ onDelete }) => {
         <MoreVertIcon />
       </StyledRowButton>
       <StyledMenu anchorEl={anchorEl} open={menuOpen} onClose={handleOnClose}>
+        {onDuplicate && (
+          <MenuItem disableRipple onClick={handleOnDuplicate}>
+            <ContentCopyIcon />
+            <Typography variant="body1">Duplicate</Typography>
+          </MenuItem>
+        )}
         <MenuItem disableRipple onClick={handleOnDelete}>
           <DeleteIcon />
           <Typography variant="body1">Delete</Typography>

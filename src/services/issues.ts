@@ -1,3 +1,19 @@
+export const createIssue = async (
+  title: string,
+  content: string,
+  newsletterId: string
+) => {
+  return fetch(`${process.env.APP_URL}/api/issue`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title,
+      content,
+      newsletterId,
+    }),
+  });
+};
+
 export const updateIssue = async (
   title: string,
   content: string,

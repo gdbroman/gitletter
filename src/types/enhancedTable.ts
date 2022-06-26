@@ -86,6 +86,9 @@ export type EnhancedTableProps = {
   onItemClick?: (
     item: IssueWithStrippedDate | SubscriberWithStrippedDate
   ) => void;
+  onItemDuplicate?: (
+    item: IssueWithStrippedDate | SubscriberWithStrippedDate
+  ) => void;
   onItemDelete: (
     item: IssueWithStrippedDate | SubscriberWithStrippedDate
   ) => void;
