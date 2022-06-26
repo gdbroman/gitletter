@@ -132,8 +132,9 @@ export const EnhancedTable: FC<Props> = ({ newsletterId, issues, sentAt }) => {
   const router = useRouter();
 
   const [order, setOrder] = useState<Order>("desc");
-  const [orderBy, setOrderBy] =
-    useState<keyof IssueWithStrippedDate>("updatedAt");
+  const [orderBy, setOrderBy] = useState<keyof IssueWithStrippedDate>(
+    sentAt ? "sentAt" : "updatedAt"
+  );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
