@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FC } from "react";
 
+import * as ga from "../lib/googleAnalytics";
 import Layout from "../src/components/Layout";
 import {
   calendlyLink,
@@ -34,11 +35,15 @@ const Home: FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (session.data?.user) {
-  //     router.push("/app");
-  //   }
-  // }, [router, session.data?.user]);
+  const getStartedFree = () => {
+    signIn();
+    ga.event({
+      action: "Get started free CTA",
+      params: {
+        view: "Landing page",
+      },
+    });
+  };
 
   return (
     <Layout>
@@ -85,7 +90,7 @@ const Home: FC = () => {
                 startIcon={<GitHubIcon />}
                 style={{ fontSize: "1rem" }}
                 loading={loading}
-                onClick={signIn}
+                onClick={getStartedFree}
               >
                 Get started free
               </LoadingButton>
