@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { IconButton, Skeleton } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
 
@@ -21,7 +22,7 @@ export const HeaderNavRight = () => {
   switch (status) {
     case "loading":
       return (
-        <IconButton style={{ padding: 5 }}>
+        <IconButton style={{ padding: 5, marginRight: 4 }}>
           <Skeleton variant="circular" width={32} height={32} />
         </IconButton>
       );

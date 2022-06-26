@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import { Box, IconButton, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
 import { gitLetterSocialLinks } from "../util/constants";

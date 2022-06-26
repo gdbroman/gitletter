@@ -1,8 +1,9 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -93,12 +94,6 @@ const Home: FC = () => {
         </Box>
         <Box textAlign="center">
           <Image src={"/demo/screen1.png"} width={603} height={360} />
-          {/* <Image
-            src={"/demo/screen2.png"}
-            width={620}
-            height={320}
-            style={{ borderRadius: 8 }}
-          /> */}
         </Box>
       </main>
     </Layout>

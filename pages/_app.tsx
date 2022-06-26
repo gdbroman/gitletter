@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { FC, useEffect } from "react";

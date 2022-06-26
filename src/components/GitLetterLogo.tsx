@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
 import Image from "next/image";
 import Link from "next/link";
