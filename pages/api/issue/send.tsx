@@ -51,7 +51,8 @@ export default async function handle(req, res) {
     const mailOptions: Mail.Options = {
       from: `${userFullName} <${userName}@gitletter.co>`,
       replyTo: `${userFullName} <${userEmail}>`,
-      to: subscribers.map((subscriber) => subscriber.email),
+      to: `You <${userName}s-fans@gitletter.co>`,
+      bcc: subscribers.map((subscriber) => subscriber.email),
       subject: issue.title,
       html: htmlString,
     };
