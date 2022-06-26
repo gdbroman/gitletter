@@ -1,12 +1,15 @@
 import { Issue } from "@prisma/client";
+import { Base64 } from "js-base64";
 import { Session } from "next-auth/core/types";
 import { getSession } from "next-auth/react";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
+import slugify from "slugify";
 
 import prisma from "../../../prisma/prisma";
 import { MarkdownParser } from "../../../src/components/MarkdownParser";
+import { createOctokitClient } from "../github/app/[...installationId]";
 
 // POST /api/issue/send
 export default async function handle(req, res) {
@@ -42,10 +45,17 @@ export default async function handle(req, res) {
   if (req.method === "POST") {
     sendMail(session, issue, newsletter);
 
-    // TODO: write to github repo
-    // const client = createOctokitClient(
-    //   newsletter.githubIntegration.installationId
-    // );
+    const fileName = `${slugify(issue.title).toLowerCase()}.md`;
+    const { repoName, repoDir, repoOwner, installationId } =
+      newsletter.githubIntegration;
+    writeToGithub(
+      repoName,
+      repoDir,
+      repoOwner,
+      installationId,
+      fileName,
+      issue.content
+    );
 
     // update db entry
     const result = await prisma.issue.update({
@@ -94,4 +104,36 @@ const sendMail = async (session: Session, issue: Issue, newsletter: any) => {
       console.log(info);
     }
   });
+};
+
+const writeToGithub = async (
+  repoName: string,
+  repoDir: string,
+  repoOwner: string,
+  installationId: string,
+  fileName: string,
+  content: string
+) => {
+  const octokit = createOctokitClient(installationId);
+  const contentEncoded = Base64.encode(content);
+
+  try {
+    const gitLetterProfile = {
+      name: `GitLetter`,
+      email: "hello@gitletter.co",
+    };
+    const { data } = await octokit.repos.createOrUpdateFileContents({
+      owner: repoOwner,
+      repo: repoName,
+      path: `${repoDir}/${fileName}`,
+      message: `feat: Added ${fileName} programatically`,
+      content: contentEncoded,
+      committer: gitLetterProfile,
+      author: gitLetterProfile,
+    });
+
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
 };
