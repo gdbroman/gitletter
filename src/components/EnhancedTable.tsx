@@ -16,55 +16,22 @@ import {
   DefaultOrderBy,
   EnhancedTableHeadProps,
   EnhancedTableProps,
+  getComparator,
+  getItemValues,
   HeadCells,
   HeadCellType,
   Order,
-  TableType,
 } from "../types/enhancedTable";
 import {
   IssueWithStrippedDate,
   SubscriberWithStrippedDate,
 } from "../types/stripDate";
-import { getTimeAgoString } from "../util/strings";
 
 export const StyledTableRow = styled(TableRow)`
   flex: 1;
   display: flex;
   width: 100%;
 `;
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(
-  order: Order,
-  orderBy: HeadCellType
-): (
-  a: { [K in HeadCellType]?: string },
-  b: { [K in HeadCellType]?: string }
-) => number {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-const getItemValues = (item: any, type: TableType) => {
-  switch (type) {
-    case "drafts":
-      return [item.title, getTimeAgoString(item.updatedAt)];
-    case "sentIssues":
-      return [item.title, getTimeAgoString(item.sentAt)];
-    case "subscribers":
-      return [item.email, getTimeAgoString(item.addedAt)];
-  }
-};
 
 export const EnhancedTableHead: FC<EnhancedTableHeadProps> = ({
   headCells,

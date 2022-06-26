@@ -1,5 +1,6 @@
 import { MouseEvent } from "react";
 
+import { getTimeAgoString } from "../util/strings";
 import { IssueWithStrippedDate, SubscriberWithStrippedDate } from "./stripDate";
 
 export type Order = "asc" | "desc";
@@ -16,7 +17,18 @@ export type HeadCellType =
 export const DefaultOrderBy: Record<TableType, HeadCellType> = {
   drafts: "updatedAt",
   sentIssues: "sentAt",
-  subscribers: "updatedAt",
+  subscribers: "addedAt",
+};
+
+export const getItemValues = (item: any, type: TableType) => {
+  switch (type) {
+    case "drafts":
+      return [item.title, getTimeAgoString(item.updatedAt)];
+    case "sentIssues":
+      return [item.title, getTimeAgoString(item.sentAt)];
+    case "subscribers":
+      return [item.email, getTimeAgoString(item.addedAt)];
+  }
 };
 
 type HeadCell = {
@@ -50,8 +62,8 @@ const sentAtHeadCell: HeadCell = {
 };
 
 const addedAtHeadCell: HeadCell = {
-  id: "sentAt",
-  label: "Sent",
+  id: "addedAt",
+  label: "Added",
   flex: 1,
 };
 
@@ -75,3 +87,25 @@ export type EnhancedTableProps = {
     item: IssueWithStrippedDate | SubscriberWithStrippedDate
   ) => void;
 };
+
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+export function getComparator(
+  order: Order,
+  orderBy: HeadCellType
+): (
+  a: { [K in HeadCellType]?: string },
+  b: { [K in HeadCellType]?: string }
+) => number {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
