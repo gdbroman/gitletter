@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
@@ -7,11 +8,28 @@ import { MarkdownParser } from "../../../src/components/MarkdownParser";
 
 // POST /api/issue/send
 export default async function handle(req, res) {
-  const { issueId } = req.body;
+  const { issueId, newsletterId } = req.body;
+
+  const session = await getSession({ req });
+  if (!session) {
+    res.statusCode = 403;
+    return;
+  }
+
+  const userEmail = session.user.email;
+  const userFullName = session.user.name;
+  const userName = userFullName.split(" ")[0].toLowerCase();
 
   if (req.method === "POST") {
     // send email to all subscribers
-    const subscribers = ["99gustaf@gmail.com"];
+    const { subscribers } = await prisma.newsletter.findFirst({
+      where: { id: newsletterId },
+      select: {
+        subscribers: {
+          select: { email: true },
+        },
+      },
+    });
     const issue = await prisma.issue.findFirst({
       where: { id: issueId },
     });
@@ -31,8 +49,9 @@ export default async function handle(req, res) {
     );
 
     const mailOptions: Mail.Options = {
-      from: "hello@gitletter.co",
-      to: subscribers,
+      from: `${userFullName} <${userName}@gitletter.co>`,
+      replyTo: `${userFullName} <${userEmail}>`,
+      to: subscribers.map((subscriber) => subscriber.email),
       subject: issue.title,
       html: htmlString,
     };
