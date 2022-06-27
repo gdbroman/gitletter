@@ -27,7 +27,7 @@ type Props = {
 
 const SuccessPage: FC<Props> = ({ newsletterTitle }) => (
   <Layout>
-    <Box my={8} textAlign="center">
+    <Box my={8} mx="auto" textAlign="center" maxWidth="600px">
       <Typography variant="h1" fontWeight="bold">
         Success! 🎉
       </Typography>
