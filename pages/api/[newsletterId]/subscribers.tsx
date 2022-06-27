@@ -7,15 +7,6 @@ export default async function handle(req, res) {
   const { email } = req.body;
   const newsletterId = req.query.newsletterId;
 
-  const session = await getSession({ req });
-  if (!session) {
-    res.statusCode = 403;
-    res.json({
-      error: "Unauthenticated",
-    });
-    return;
-  }
-
   if (req.method === "POST") {
     const existingSubscriber = await prisma.subscriber.findFirst({
       where: { email, newsletterId },
@@ -35,6 +26,14 @@ export default async function handle(req, res) {
     });
     res.redirect(`/app/${newsletterId}/success`);
   } else if (req.method === "DELETE") {
+    const session = await getSession({ req });
+    if (!session) {
+      res.statusCode = 403;
+      res.json({
+        error: "Unauthenticated",
+      });
+      return;
+    }
     const result = await prisma.subscriber.deleteMany({
       where: { email, newsletterId },
     });
