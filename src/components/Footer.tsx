@@ -7,8 +7,9 @@ import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
 import { gitLetterSocialLinks } from "../util/constants";
+
 const StyledFooter = styled.footer`
-  padding: 16px;
+  padding: 16px 32px;
   text-align: center;
   justify-content: center;
 `;
