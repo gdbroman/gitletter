@@ -11,12 +11,13 @@ import { FC } from "react";
 
 import * as ga from "../lib/googleAnalytics";
 import Layout from "../src/components/Layout";
+import { useSignIn } from "../src/hooks/useSignIn";
+import { useToggle } from "../src/hooks/useToggle";
 import {
   calendlyLink,
   siteDescription,
   siteTagline,
 } from "../src/util/constants";
-import { useSignIn, useToggle } from "../src/util/hooks";
 
 const Home: FC = () => {
   const router = useRouter();

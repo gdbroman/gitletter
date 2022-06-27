@@ -1,5 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import CodeIcon from "@mui/icons-material/Code";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -10,7 +11,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, MouseEvent, useState } from "react";
 
-import { useToggle } from "../../util/hooks";
+import { useToggle } from "../../hooks/useToggle";
+import { AddIntegrationDialog } from "./AddIntegrationDialog";
 import { AddSubscriberDialog } from "./AddSubscriberDialog";
 import { DashboardProps } from "./Dashboard";
 
@@ -45,13 +47,23 @@ const ManageButtonMenu: FC<Pick<DashboardProps, "newsletterId">> = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
-  const dialogOpen = useToggle(false);
+  const addIntegrationDialogOpen = useToggle(false);
+  const addSubscriberDialogOpen = useToggle(false);
+
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-    dialogOpen.toggleOn();
+  };
+
+  const handleAddIntegration = () => {
+    addIntegrationDialogOpen.toggleOn();
+    handleClose();
+  };
+  const handleAddSubscriber = () => {
+    addSubscriberDialogOpen.toggleOn();
+    handleClose();
   };
 
   return (
@@ -68,19 +80,28 @@ const ManageButtonMenu: FC<Pick<DashboardProps, "newsletterId">> = ({
         Manage
       </Button>
       <StyledMenu anchorEl={anchorEl} open={menuOpen} onClose={handleClose}>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={handleAddIntegration} disableRipple>
+          <CodeIcon />
+          <Typography variant="body1">Sign-up form snippet</Typography>
+        </MenuItem>
+        <MenuItem onClick={handleAddSubscriber} disableRipple>
           <AddIcon />
           <Typography variant="body1">Manually add a subscriber</Typography>
         </MenuItem>
         <MenuItem disabled disableRipple>
-          <CodeIcon />
-          <Typography variant="body1">Integration (in progress)</Typography>
+          <FileDownloadIcon />
+          <Typography variant="body1">Import (incoming feature)</Typography>
         </MenuItem>
       </StyledMenu>
+      <AddIntegrationDialog
+        newsletterId={newsletterId}
+        open={addIntegrationDialogOpen.isOn}
+        onClose={addIntegrationDialogOpen.toggleOff}
+      />
       <AddSubscriberDialog
         newsletterId={newsletterId}
-        open={dialogOpen.isOn}
-        onClose={dialogOpen.toggleOff}
+        open={addSubscriberDialogOpen.isOn}
+        onClose={addSubscriberDialogOpen.toggleOff}
       />
     </>
   );

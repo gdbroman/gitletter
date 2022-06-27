@@ -51,9 +51,6 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
   const newsletterId = newsletter.id;
   const subscribers = newsletter.subscribers;
 
-  const onItemClick = (_: SubscriberWithStrippedDate) => {
-    // todo
-  };
   const onItemDelete = async (subscriber: SubscriberWithStrippedDate) => {
     await removeSubscriber(subscriber.email, newsletter.id);
     router.replace(`/app/subscribers`);

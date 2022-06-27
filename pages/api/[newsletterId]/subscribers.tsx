@@ -2,9 +2,10 @@ import { getSession } from "next-auth/react";
 
 import prisma from "../../../prisma/prisma";
 
-// POST & PUT /api/subscribers
+// POST & PUT /api/:newsletterId/subscribers
 export default async function handle(req, res) {
-  const { email, newsletterId } = req.body;
+  const { email } = req.body;
+  const newsletterId = req.query.newsletterId;
 
   const session = await getSession({ req });
   if (!session) {
@@ -25,14 +26,14 @@ export default async function handle(req, res) {
       return;
     }
 
-    const result = await prisma.subscriber.create({
+    await prisma.subscriber.create({
       data: {
         email,
         newsletter: { connect: { id: newsletterId } },
         addedAt: new Date(),
       },
     });
-    res.json(result);
+    res.redirect(`/app/${newsletterId}/success`);
   } else if (req.method === "DELETE") {
     const result = await prisma.subscriber.deleteMany({
       where: { email, newsletterId },

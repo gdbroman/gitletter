@@ -17,9 +17,9 @@ import {
 } from "../../../pages/api/github/app/[...installationId]";
 import { ItemSelect } from "../../components/ItemSelect";
 import { CustomSnackbar } from "../../components/Snackbar";
+import { useToggle } from "../../hooks/useToggle";
 import { deleteIntegration, updateIntegration } from "../../services/github";
 import { Nullable } from "../../types/general";
-import { useToggle } from "../../util/hooks";
 import { LoadingButtonWithBlackSpinner } from "../header/HeaderNavRight";
 
 const StyledAlert = styled(Alert)`

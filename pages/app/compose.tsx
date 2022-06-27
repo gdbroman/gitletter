@@ -14,9 +14,9 @@ import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
+import { useToggle } from "../../src/hooks/useToggle";
 import { sendIssue, updateIssue } from "../../src/services/issues";
 import { stripDate } from "../../src/types/stripDate";
-import { useToggle } from "../../src/util/hooks";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
