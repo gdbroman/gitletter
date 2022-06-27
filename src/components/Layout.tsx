@@ -4,18 +4,19 @@ import { NextSeo } from "next-seo";
 import { FC, ReactNode } from "react";
 
 import { Header } from "../containers/header/Header";
-import { siteDescription, siteTagline } from "../util/constants";
+import { shortDescription, siteDescription } from "../util/constants";
 import { Footer } from "./Footer";
 
-const maxContentWidth = 780;
+const maxWidth = 780;
+export const maxWidthMinusMargin = maxWidth - 32;
 
 const StyledDiv = styled.div`
   flex: 1;
   width: 100%;
-  max-width: ${maxContentWidth}px;
+  max-width: ${maxWidth}px;
   margin: 0 auto;
   padding: 16px 0;
-  @media (max-width: ${maxContentWidth - 32}px) {
+  @media (max-width: ${maxWidthMinusMargin}px) {
     padding: 16px;
   }
 `;
@@ -26,7 +27,10 @@ type Props = {
 
 const Layout: FC<Props> = (props) => (
   <Box display="flex" flexDirection="column" height="100%">
-    <NextSeo title={`${siteTagline}`} description={siteDescription} />
+    <NextSeo
+      title={`GitLetter - ${shortDescription}`}
+      description={siteDescription}
+    />
     <Header />
     <StyledDiv>{props.children}</StyledDiv>
     <Footer />

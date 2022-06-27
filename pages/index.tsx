@@ -48,17 +48,17 @@ const Home: FC = () => {
   return (
     <Layout>
       <main>
-        <Box mx="auto" my={4} textAlign="center">
+        <Box mx="auto" my={6} textAlign="center" maxWidth={560}>
           <Typography variant="h1" fontWeight="bold">
             {siteTagline}
           </Typography>
           <Typography
             variant="body1"
             fontWeight="medium"
-            mt="16px"
-            mb="32px"
+            mt={3}
+            mb={4}
             style={{
-              fontSize: "24px",
+              fontSize: "2rem",
             }}
           >
             {siteDescription}

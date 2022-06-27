@@ -1,7 +1,9 @@
 export const siteTitle = "GitLetter";
 export const siteTagline = "Start a newsletter using GitHub";
+export const shortDescription =
+  "A newsletter tool that writes directly to your repo.";
 export const siteDescription =
-  "All your issues in one repository. Seamlessly integrate with your markdown blog, or let GitLetter handle everything for you.";
+  "Keep all your writing in one repository. Integrate with your existing blog.";
 export const siteURL = "https://gitletter.co";
 
 export const calendlyLink = "https://calendly.com/gdbroman";
