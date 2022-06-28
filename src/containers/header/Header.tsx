@@ -8,6 +8,7 @@ import { HeaderNavRight } from "./HeaderNavRight";
 const StyledHeader = styled.header`
   display: flex;
   height: 64px;
+  min-height: 64px;
   padding: 8px;
   align-items: center;
 `;
