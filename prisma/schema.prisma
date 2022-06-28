@@ -16,6 +16,8 @@ model Newsletter {
   githubIntegration GithubIntegration?
   author            User               @relation(fields: [authorId], references: [id])
   authorId          String             @unique
+
+  @@map("newsletters")
 }
 
 model Subscriber {
@@ -40,6 +42,8 @@ model Issue {
   createdAt   DateTime   @default(now()) @map(name: "created_at")
   updatedAt   DateTime   @updatedAt @map(name: "updated_at")
   sentAt      DateTime?
+
+  @@map("issues")
 }
 
 model GithubIntegration {
@@ -50,6 +54,8 @@ model GithubIntegration {
   repoOwner      String?
   newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
   newletterId    String?     @unique
+
+  @@map("github_integrations")
 }
 
 model Account {
@@ -106,5 +112,5 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-  @@map("verificationtokens")
+  @@map("verification_tokens")
 }
