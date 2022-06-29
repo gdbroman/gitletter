@@ -1,21 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Newsletter {
   id                String             @id @default(cuid())
   title             String
   description       String?
+  authorId          String             @unique
+  author            User               @relation(fields: [authorId], references: [id])
+  githubIntegration GithubIntegration?
   issues            Issue[]
   subscribers       Subscriber[]
-  githubIntegration GithubIntegration?
-  author            User               @relation(fields: [authorId], references: [id])
-  authorId          String             @unique
 
   @@map("newsletters")
 }
@@ -24,24 +24,24 @@ model Subscriber {
   id            String     @id @default(cuid())
   email         String
   emailVerified DateTime?  @map("email_verified")
-  addedAt       DateTime   @default(now()) @map(name: "created_at")
-  newsletter    Newsletter @relation(fields: [newsletterId], references: [id])
+  addedAt       DateTime   @default(now()) @map("created_at")
   newsletterId  String
+  newsletter    Newsletter @relation(fields: [newsletterId], references: [id])
 
-  @@map(name: "subscribers")
+  @@map("subscribers")
 }
 
 model Issue {
   id          String     @id @default(cuid())
   title       String
   content     String
-  author      User       @relation(fields: [authorId], references: [id])
   authorId    String
-  newsletter  Newsletter @relation(fields: [newletterId], references: [id])
   newletterId String
-  createdAt   DateTime   @default(now()) @map(name: "created_at")
-  updatedAt   DateTime   @updatedAt @map(name: "updated_at")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
   sentAt      DateTime?
+  author      User       @relation(fields: [authorId], references: [id])
+  newsletter  Newsletter @relation(fields: [newletterId], references: [id])
 
   @@map("issues")
 }
@@ -52,8 +52,8 @@ model GithubIntegration {
   repoName       String?
   repoDir        String?
   repoOwner      String?
-  newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
   newletterId    String?     @unique
+  newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
 
   @@map("github_integrations")
 }
@@ -73,8 +73,7 @@ model Account {
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -96,14 +95,14 @@ model User {
   email         String?     @unique
   emailVerified DateTime?   @map("email_verified")
   image         String?
-  createdAt     DateTime    @default(now()) @map(name: "created_at")
-  updatedAt     DateTime    @updatedAt @map(name: "updated_at")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  accounts      Account[]
   issues        Issue[]
   newsletter    Newsletter?
-  accounts      Account[]
   sessions      Session[]
 
-  @@map(name: "users")
+  @@map("users")
 }
 
 model VerificationToken {
