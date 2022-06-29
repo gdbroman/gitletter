@@ -43,19 +43,23 @@ export default async function handle(req, res) {
   });
 
   if (req.method === "POST") {
-    sendMail(session, issue, newsletter);
-
     const fileName = `${slugify(issue.title).toLowerCase()}.md`;
     const { repoName, repoDir, repoOwner, installationId } =
       newsletter.githubIntegration;
-    writeToGithub(
-      repoName,
-      repoDir,
-      repoOwner,
-      installationId,
-      fileName,
-      issue.content
-    );
+
+    sendMail(session, issue, newsletter);
+    try {
+      writeToGithub(
+        repoName,
+        repoDir,
+        repoOwner,
+        installationId,
+        fileName,
+        issue.content
+      );
+    } catch {
+      console.log("Error writing to github");
+    }
 
     // update db entry
     const result = await prisma.issue.update({
@@ -117,23 +121,17 @@ const writeToGithub = async (
   const octokit = createOctokitClient(installationId);
   const contentEncoded = Base64.encode(content);
 
-  try {
-    const gitLetterProfile = {
-      name: `GitLetter`,
-      email: "hello@gitletter.co",
-    };
-    const { data } = await octokit.repos.createOrUpdateFileContents({
-      owner: repoOwner,
-      repo: repoName,
-      path: `${repoDir}/${fileName}`,
-      message: `feat: Added ${fileName} programatically`,
-      content: contentEncoded,
-      committer: gitLetterProfile,
-      author: gitLetterProfile,
-    });
-
-    console.log(data);
-  } catch (err) {
-    console.error(err);
-  }
+  const gitLetterProfile = {
+    name: `GitLetter`,
+    email: "hello@gitletter.co",
+  };
+  await octokit.repos.createOrUpdateFileContents({
+    owner: repoOwner,
+    repo: repoName,
+    path: `${repoDir}/${fileName}`,
+    message: `feat: Added ${fileName} programatically`,
+    content: contentEncoded,
+    committer: gitLetterProfile,
+    author: gitLetterProfile,
+  });
 };

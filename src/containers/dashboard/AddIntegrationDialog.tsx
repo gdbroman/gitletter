@@ -3,13 +3,14 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import copy from "copy-to-clipboard";
 import { FC } from "react";
 
+import theme from "../../../styles/theme";
 import { useToggle } from "../../hooks/useToggle";
 type Props = {
   newsletterId: string;
@@ -22,6 +23,7 @@ export const AddIntegrationDialog: FC<Props> = ({
   open,
   onClose,
 }) => {
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const copied = useToggle(false);
   const snippet = [
     `<form method="POST" action="https://gitletter.co/api/${newsletterId}/subscribers">`,
@@ -36,13 +38,13 @@ export const AddIntegrationDialog: FC<Props> = ({
   };
 
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog onClose={onClose} open={open} fullScreen={fullScreen}>
       <Box display="flex" flexDirection="column" gap={4} padding={4} pt={3}>
-        <Box textAlign="center">
-          <DialogTitle>Signup form</DialogTitle>
-        </Box>
+        <Typography variant="h5" fontWeight="bold" textAlign="center">
+          Signup form
+        </Typography>
         <Box
-          maxWidth={420}
+          maxWidth={theme.breakpoints.down("xs")}
           style={{
             position: "relative",
             backgroundColor: "#eee",
@@ -56,7 +58,7 @@ export const AddIntegrationDialog: FC<Props> = ({
             padding={1}
           >
             <Typography variant="body2" color="gray">
-              Copy / paste onto your site
+              Copy / paste this onto your site
             </Typography>
             <Tooltip title={copied.isOn ? "Copied!" : "Copy to clipboard"}>
               <IconButton onClick={handleCopy}>

@@ -1,8 +1,14 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Issue } from "@prisma/client";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
@@ -17,6 +23,7 @@ import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { useToggle } from "../../src/hooks/useToggle";
 import { sendIssue, updateIssue } from "../../src/services/issues";
 import { stripDate } from "../../src/types/stripDate";
+import theme from "../../styles/theme";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -59,12 +66,14 @@ type Props = {
 
 const Compose: FC<Props> = ({ issue }) => {
   const router = useRouter();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const [title, setTitle] = useState(issue.title);
   const [content, setContent] = useState(issue.content);
   const isSent = issue.sentAt ? true : false;
   const preview = useToggle(isSent);
   const sending = useToggle(false);
+  const areYouSure = useToggle(false);
 
   const handleTitleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -150,10 +159,30 @@ const Compose: FC<Props> = ({ issue }) => {
               variant="contained"
               color="primary"
               loading={sending.isOn}
-              onClick={handleSend}
+              onClick={areYouSure.toggleOn}
             >
               Send
             </LoadingButton>
+            <Dialog
+              open={areYouSure.isOn}
+              fullScreen={fullScreen}
+              onClose={areYouSure.toggleOff}
+            >
+              <DialogTitle>Here goes nothing!</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  You are about to send this issue to all of your subscribers.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button autoFocus onClick={areYouSure.toggleOff}>
+                  Wait, not yet!
+                </Button>
+                <Button variant="contained" onClick={handleSend}>
+                  Send
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         )}
       </Layout>
