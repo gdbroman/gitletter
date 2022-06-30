@@ -115,8 +115,8 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
   );
 
   const handleAreYouSure = async () => {
-    await handleSave();
     areYouSure.toggleOn();
+    await handleSave();
   };
 
   const handleSend = async (writeToGithub: boolean) => {
