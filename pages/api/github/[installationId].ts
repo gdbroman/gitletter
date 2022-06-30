@@ -23,7 +23,9 @@ export default async function handler(
     await client.repos.getContent({
       repo: githubIntegration.repoName,
       owner: githubIntegration.repoOwner,
-      path: `${githubIntegration.repoDir}${filePath}`,
+      path: `${
+        githubIntegration.repoDir === "./" ? "" : githubIntegration.repoDir
+      }${filePath}`,
     });
   res.send(repoContent.data);
 }

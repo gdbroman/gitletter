@@ -10,6 +10,7 @@ import slugify from "slugify";
 
 import prisma from "../../../prisma/prisma";
 import { MarkdownParser } from "../../../src/components/MarkdownParser";
+import { getPath } from "../../../src/util/github";
 import { createOctokitClient } from "../github/app/[...installationId]";
 
 // POST /api/issue/send
@@ -128,6 +129,7 @@ const writeToGithubFn = async (
   const octokit = createOctokitClient(installationId);
   const contentEncoded = Base64.encode(content);
 
+  const path = getPath(repoDir, fileName);
   const gitLetterProfile = {
     name: `GitLetter`,
     email: "hello@gitletter.co",
@@ -135,7 +137,7 @@ const writeToGithubFn = async (
   await octokit.repos.createOrUpdateFileContents({
     owner: repoOwner,
     repo: repoName,
-    path: !!repoDir ? `${repoDir}/${fileName}` : fileName,
+    path,
     message: `feat: Added ${fileName} programatically`,
     content: contentEncoded,
     committer: gitLetterProfile,

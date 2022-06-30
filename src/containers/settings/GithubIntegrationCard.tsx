@@ -89,7 +89,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     try {
       const res = await updateIntegration(githubIntegration?.installationId, {
         repoName: repo,
-        repoDir: dir === "./" ? "" : dir,
+        repoDir: dir,
         repoOwner: githubReposData.get(repo)?.[0]?.owner,
       });
       if (res == null) {
