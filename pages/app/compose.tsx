@@ -83,7 +83,6 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
   const handleSave = async () => {
     try {
       await updateIssue(title, content, issue.id);
-      router.push("/app");
     } catch (error) {
       console.error(error);
     }
@@ -98,6 +97,11 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
       console.error(error);
       sending.toggleOff();
     }
+  };
+
+  const handleAreYouSure = async () => {
+    await handleSave();
+    areYouSure.toggleOn();
   };
 
   return (
@@ -151,7 +155,7 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={areYouSure.toggleOn}
+              onClick={handleAreYouSure}
             >
               Send
             </Button>

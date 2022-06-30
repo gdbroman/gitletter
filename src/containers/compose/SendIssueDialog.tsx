@@ -84,7 +84,7 @@ export const SendIssueDialog: FC<Props> = ({
                 }.`
               ) : (
                 <>
-                  You have not{" "}
+                  You are not{" "}
                   <Link href="/app/settings">connected to GitHub</Link> in
                   settings.
                 </>

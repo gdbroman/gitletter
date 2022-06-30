@@ -48,11 +48,12 @@ export default async function handle(
 
   if (req.method === "POST") {
     const fileName = `${slugify(issue.title).toLowerCase()}.md`;
-    const { repoName, repoDir, repoOwner, installationId } =
-      newsletter.githubIntegration;
 
     sendMail(session, issue, newsletter);
     if (writeToGithub) {
+      const { repoName, repoDir, repoOwner, installationId } =
+        newsletter.githubIntegration;
+
       try {
         writeToGithubFn(
           repoName,
