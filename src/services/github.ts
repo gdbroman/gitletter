@@ -5,6 +5,18 @@ import {
   UpdateGithubIntegrationInput,
 } from "../../pages/api/github/app/[...installationId]";
 
+export async function getIntegration(
+  newsletterId: string
+): Promise<GithubIntegration | null> {
+  const response = await fetch(
+    `${process.env.APP_URL}/api/github/integration/${newsletterId}`,
+    {
+      method: "GET",
+    }
+  );
+  return responseHandler(response);
+}
+
 export async function getReposInfo(
   githubInstallationId: string
 ): Promise<GithubReposInfo | null> {

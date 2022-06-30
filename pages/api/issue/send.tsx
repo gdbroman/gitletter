@@ -1,5 +1,6 @@
 import { Issue } from "@prisma/client";
 import { Base64 } from "js-base64";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth/core/types";
 import { getSession } from "next-auth/react";
 import nodemailer from "nodemailer";
@@ -12,8 +13,11 @@ import { MarkdownParser } from "../../../src/components/MarkdownParser";
 import { createOctokitClient } from "../github/app/[...installationId]";
 
 // POST /api/issue/send
-export default async function handle(req, res) {
-  const { issueId, newsletterId } = req.body;
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { issueId, writeToGithub } = req.body;
 
   const session = await getSession({ req });
   if (!session) {
@@ -21,8 +25,11 @@ export default async function handle(req, res) {
     return;
   }
 
+  const issue = await prisma.issue.findFirst({
+    where: { id: issueId },
+  });
   const newsletter = await prisma.newsletter.findFirst({
-    where: { id: newsletterId },
+    where: { id: issue.newsletterId },
     select: {
       title: true,
       subscribers: {
@@ -38,9 +45,6 @@ export default async function handle(req, res) {
       },
     },
   });
-  const issue = await prisma.issue.findFirst({
-    where: { id: issueId },
-  });
 
   if (req.method === "POST") {
     const fileName = `${slugify(issue.title).toLowerCase()}.md`;
@@ -48,17 +52,19 @@ export default async function handle(req, res) {
       newsletter.githubIntegration;
 
     sendMail(session, issue, newsletter);
-    try {
-      writeToGithub(
-        repoName,
-        repoDir,
-        repoOwner,
-        installationId,
-        fileName,
-        issue.content
-      );
-    } catch {
-      console.log("Error writing to github");
+    if (writeToGithub) {
+      try {
+        writeToGithubFn(
+          repoName,
+          repoDir,
+          repoOwner,
+          installationId,
+          fileName,
+          issue.content
+        );
+      } catch {
+        console.log("Error writing to github");
+      }
     }
 
     // update db entry
@@ -110,7 +116,7 @@ const sendMail = async (session: Session, issue: Issue, newsletter: any) => {
   });
 };
 
-const writeToGithub = async (
+const writeToGithubFn = async (
   repoName: string,
   repoDir: string,
   repoOwner: string,
@@ -128,7 +134,7 @@ const writeToGithub = async (
   await octokit.repos.createOrUpdateFileContents({
     owner: repoOwner,
     repo: repoName,
-    path: `${repoDir}/${fileName}`,
+    path: !!repoDir ? `${repoDir}/${fileName}` : fileName,
     message: `feat: Added ${fileName} programatically`,
     content: contentEncoded,
     committer: gitLetterProfile,

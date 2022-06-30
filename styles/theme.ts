@@ -79,6 +79,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            cursor: "not-allowed",
+            color: "rgba(0, 0, 0, 0.38)",
+          },
+        },
+      },
+    },
   },
 });
 

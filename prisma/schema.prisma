@@ -36,12 +36,12 @@ model Issue {
   title       String
   content     String
   authorId    String
-  newletterId String
+  newsletterId String
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
   sentAt      DateTime?
   author      User       @relation(fields: [authorId], references: [id])
-  newsletter  Newsletter @relation(fields: [newletterId], references: [id])
+  newsletter  Newsletter @relation(fields: [newsletterId], references: [id])
 
   @@map("issues")
 }
@@ -52,8 +52,8 @@ model GithubIntegration {
   repoName       String?
   repoDir        String?
   repoOwner      String?
-  newletterId    String?     @unique
-  newsletter     Newsletter? @relation(fields: [newletterId], references: [id])
+  newsletterId    String?     @unique
+  newsletter     Newsletter? @relation(fields: [newsletterId], references: [id])
 
   @@map("github_integrations")
 }

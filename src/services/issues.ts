@@ -30,12 +30,13 @@ export const updateIssue = async (
   });
 };
 
-export const sendIssue = async (issueId: string) => {
+export const sendIssue = async (issueId: string, writeToGithub: boolean) => {
   return fetch(`${process.env.APP_URL}/api/issue/send`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       issueId,
+      writeToGithub,
     }),
   });
 };

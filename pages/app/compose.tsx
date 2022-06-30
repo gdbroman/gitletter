@@ -1,14 +1,7 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { Issue } from "@prisma/client";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
@@ -20,10 +13,10 @@ import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
+import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { useToggle } from "../../src/hooks/useToggle";
 import { sendIssue, updateIssue } from "../../src/services/issues";
 import { stripDate } from "../../src/types/stripDate";
-import theme from "../../styles/theme";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -57,16 +50,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     });
   }
 
-  return { props: { issue: stripDate(issue) } };
+  return { props: { issue: stripDate(issue), newsletterId } };
 };
 
 type Props = {
   issue: Issue;
+  newsletterId: string;
 };
 
-const Compose: FC<Props> = ({ issue }) => {
+const Compose: FC<Props> = ({ issue, newsletterId }) => {
   const router = useRouter();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const [title, setTitle] = useState(issue.title);
   const [content, setContent] = useState(issue.content);
@@ -96,10 +89,10 @@ const Compose: FC<Props> = ({ issue }) => {
     }
   };
 
-  const handleSend = async () => {
+  const handleSend = async (writeToGithub: boolean) => {
     sending.toggleOn();
     try {
-      await sendIssue(issue.id);
+      await sendIssue(issue.id, writeToGithub);
       await router.push("/app/sent");
     } catch (error) {
       console.error(error);
@@ -155,34 +148,20 @@ const Compose: FC<Props> = ({ issue }) => {
             <Button variant="text" color="primary" onClick={handleSave}>
               Save
             </Button>
-            <LoadingButton
+            <Button
               variant="contained"
               color="primary"
-              loading={sending.isOn}
               onClick={areYouSure.toggleOn}
             >
               Send
-            </LoadingButton>
-            <Dialog
+            </Button>
+            <SendIssueDialog
+              newsletterId={newsletterId}
               open={areYouSure.isOn}
-              fullScreen={fullScreen}
-              onClose={areYouSure.toggleOff}
-            >
-              <DialogTitle>Here goes nothing!</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  You are about to send this issue to all of your subscribers.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button autoFocus onClick={areYouSure.toggleOff}>
-                  Wait, not yet!
-                </Button>
-                <Button variant="contained" onClick={handleSend}>
-                  Send
-                </Button>
-              </DialogActions>
-            </Dialog>
+              loading={sending.isOn}
+              onCancel={areYouSure.toggleOff}
+              onSubmit={handleSend}
+            />
           </Box>
         )}
       </Layout>
