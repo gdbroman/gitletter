@@ -2,6 +2,7 @@ import { createAppAuth } from "@octokit/auth-app";
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 import { OctokitResponse } from "@octokit/types";
 import { GithubIntegration } from "@prisma/client";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../../prisma/prisma";
 
@@ -18,7 +19,10 @@ export type UpdateGithubIntegrationInput = Pick<
 >;
 
 // GET, PUT, DELETE /api/github/app/:id
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const installationId = req.query.installationId[0];
 
   if (req.method === "DELETE") {
@@ -45,16 +49,20 @@ async function getGithubReposInfo(installationId: string) {
   const githubReposInfo: GithubReposInfo = await Promise.all(
     repos.map(async (repo) => {
       let infos: RepoInfo[] = [];
-      const repoContent: OctokitResponse<GithubRepoData> =
-        await client.repos.getContent({
-          repo: repo.name,
-          owner: repo.owner.login,
-          path: "",
-        });
-      if (Array.isArray(repoContent.data)) {
-        infos = repoContent.data
-          .filter(({ type }) => type === "dir")
-          .map(({ path }) => ({ dir: path, owner: repo.owner.login }));
+      try {
+        const repoContent: OctokitResponse<GithubRepoData> =
+          await client.repos.getContent({
+            repo: repo.name,
+            owner: repo.owner.login,
+            path: "",
+          });
+        if (Array.isArray(repoContent.data)) {
+          infos = repoContent.data
+            .filter(({ type }) => type === "dir")
+            .map(({ path }) => ({ dir: path, owner: repo.owner.login }));
+        }
+      } catch (error) {
+        console.error(error);
       }
 
       return [repo.name, infos];

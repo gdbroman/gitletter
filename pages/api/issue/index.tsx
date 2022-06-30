@@ -1,9 +1,13 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
 import prisma from "../../../prisma/prisma";
 
 // POST & PUT /api/issue
-export default async function handle(req, res) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { title, content, issueId, newsletterId } = req.body;
 
   const session = await getSession({ req });

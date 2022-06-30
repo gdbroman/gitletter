@@ -1,11 +1,15 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
 import prisma from "../../../prisma/prisma";
 
 // POST & PUT /api/:newsletterId/subscribers
-export default async function handle(req, res) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { email } = req.body;
-  const newsletterId = req.query.newsletterId;
+  const newsletterId = req.query.newsletterId as string;
 
   if (req.method === "POST") {
     const existingSubscriber = await prisma.subscriber.findFirst({

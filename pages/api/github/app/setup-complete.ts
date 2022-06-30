@@ -1,9 +1,13 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
 import prisma from "../../../../prisma/prisma";
 
 // POST /api/github/app/setup-complete
-export default async function handle(req, res) {
+export default async function handle(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { installation_id } = req.query;
 
   const session = await getSession({ req });
@@ -29,7 +33,7 @@ export default async function handle(req, res) {
 
   let githubIntegration = await prisma.githubIntegration.findFirst({
     where: {
-      installationId: installation_id,
+      installationId: installation_id as string,
     },
   });
 
@@ -38,7 +42,7 @@ export default async function handle(req, res) {
   } else {
     githubIntegration = await prisma.githubIntegration.create({
       data: {
-        installationId: installation_id,
+        installationId: installation_id as string,
         newsletter: { connect: { id: newsLetter.id } },
       },
     });
