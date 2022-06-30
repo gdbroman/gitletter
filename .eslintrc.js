@@ -6,7 +6,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react-hooks/exhaustive-deps": "error",
     "react-hooks/rules-of-hooks": "warn",
-    "react/jsx-no-literals": "warn",
+    "react/jsx-no-literals": "off",
     "prefer-const": "warn",
     "object-shorthand": ["error", "properties"],
     "no-unused-vars": "off",
