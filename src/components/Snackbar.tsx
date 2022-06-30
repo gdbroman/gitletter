@@ -20,7 +20,7 @@ export const CustomSnackbar = ({
   severity: AlertColor;
   autoHideDuration?: number;
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }) => (
   <Snackbar open={isOpen} onClose={onClose} autoHideDuration={autoHideDuration}>
     <Alert severity={severity} sx={{ width: "100%" }}>

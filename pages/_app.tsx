@@ -24,7 +24,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   }, []);
 
   useEffect(() => {
-    const handleStart = (url) => {
+    const handleStart = () => {
       NProgress.start();
     };
     const handleStop = () => {

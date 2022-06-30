@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useCallback, useState } from "react";
 
 import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
@@ -17,6 +17,7 @@ import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { useToggle } from "../../src/hooks/useToggle";
 import { sendIssue, updateIssue } from "../../src/services/issues";
 import { stripDate } from "../../src/types/stripDate";
+import { eatClick } from "../../src/util/eatClick";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -63,6 +64,9 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
 
   const [title, setTitle] = useState(issue.title);
   const [content, setContent] = useState(issue.content);
+  const [savedTitle, setSavedTitle] = useState(issue.title);
+  const [savedContent, setSavedContent] = useState(issue.content);
+
   const isSent = issue.sentAt ? true : false;
   const preview = useToggle(isSent);
   const sending = useToggle(false);
@@ -80,12 +84,39 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
     setContent(e.target.value);
   };
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     try {
       await updateIssue(title, content, issue.id);
     } catch (error) {
       console.error(error);
     }
+  }, [content, issue.id, title]);
+
+  const handleTitleBlur = useCallback(
+    async (e: any) => {
+      eatClick(e);
+      if (title !== savedTitle) {
+        await handleSave();
+        setSavedTitle(title);
+      }
+    },
+    [handleSave, savedTitle, title]
+  );
+
+  const handleContentBlur = useCallback(
+    async (e: any) => {
+      eatClick(e);
+      if (content !== savedContent) {
+        await handleSave();
+        setSavedContent(content);
+      }
+    },
+    [content, handleSave, savedContent]
+  );
+
+  const handleAreYouSure = async () => {
+    await handleSave();
+    areYouSure.toggleOn();
   };
 
   const handleSend = async (writeToGithub: boolean) => {
@@ -95,81 +126,81 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
       await router.push("/app/sent");
     } catch (error) {
       console.error(error);
-      sending.toggleOff();
     }
   };
 
-  const handleAreYouSure = async () => {
-    await handleSave();
-    areYouSure.toggleOn();
-  };
-
   return (
-    <ProtectedPage>
-      <Layout>
-        <NextSeo title={title} />
-        <article>
-          <Box my={4}>
-            {preview.isOn ? (
-              <Typography variant="h1" fontWeight={500} paddingY={1}>
-                {title}
-              </Typography>
-            ) : (
-              <TextField
-                fullWidth
-                variant="standard"
-                inputProps={{
-                  style: { fontSize: 40, fontWeight: 500, padding: "8px 0" },
-                }}
-                value={title}
-                onChange={handleTitleChange}
+    <>
+      <ProtectedPage>
+        <Layout>
+          <NextSeo title={title} />
+          <article>
+            <Box my={4}>
+              {preview.isOn ? (
+                <Typography variant="h1" fontWeight={500} paddingY={1}>
+                  {title}
+                </Typography>
+              ) : (
+                <TextField
+                  fullWidth
+                  variant="standard"
+                  inputProps={{
+                    style: { fontSize: 40, fontWeight: 500, padding: "8px 0" },
+                  }}
+                  value={title}
+                  onBlur={handleTitleBlur}
+                  onChange={handleTitleChange}
+                />
+              )}
+            </Box>
+            <Box>
+              {preview.isOn ? (
+                <MarkdownParser children={content} />
+              ) : (
+                <TextField
+                  fullWidth
+                  multiline
+                  value={content}
+                  onBlur={handleContentBlur}
+                  onChange={handleContentChange}
+                />
+              )}
+            </Box>
+          </article>
+          {isSent ? (
+            <Typography variant="body1" color="textSecondary" my={4}>
+              {`Sent on ${issue.sentAt}`}
+            </Typography>
+          ) : (
+            <Box display="flex" justifyContent="end" my={4} gap={2}>
+              <Button variant="text" color="primary" onClick={preview.toggle}>
+                {preview.isOn ? "Edit" : "Preview"}
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAreYouSure}
+              >
+                Send
+              </Button>
+              <SendIssueDialog
+                newsletterId={newsletterId}
+                open={areYouSure.isOn}
+                loading={sending.isOn}
+                onCancel={areYouSure.toggleOff}
+                onSubmit={handleSend}
               />
-            )}
-          </Box>
-          <Box>
-            {preview.isOn ? (
-              <MarkdownParser children={content} />
-            ) : (
-              <TextField
-                fullWidth
-                multiline
-                value={content}
-                onChange={handleContentChange}
-              />
-            )}
-          </Box>
-        </article>
-        {isSent ? (
-          <Typography variant="body1" color="textSecondary" my={4}>
-            {`Sent on ${issue.sentAt}`}
-          </Typography>
-        ) : (
-          <Box display="flex" justifyContent="end" my={4} gap={2}>
-            <Button variant="text" color="primary" onClick={preview.toggle}>
-              {preview.isOn ? "Edit" : "Preview"}
-            </Button>
-
-            <Button variant="text" color="primary" onClick={handleSave}>
-              Save
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAreYouSure}
-            >
-              Send
-            </Button>
-            <SendIssueDialog
-              newsletterId={newsletterId}
-              open={areYouSure.isOn}
-              loading={sending.isOn}
-              onCancel={areYouSure.toggleOff}
-              onSubmit={handleSend}
-            />
-          </Box>
-        )}
-      </Layout>
-    </ProtectedPage>
+            </Box>
+          )}
+        </Layout>
+      </ProtectedPage>
+      {/* <CustomSnackbar
+        message={"Saved!"}
+        severity="success"
+        isOpen={saved.isOn}
+        onClose={saved.toggleOff}
+      /> */}
+    </>
   );
 };
 
