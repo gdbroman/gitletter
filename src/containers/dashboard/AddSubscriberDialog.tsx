@@ -66,7 +66,7 @@ export const AddSubscriberDialog: FC<Props> = ({
           onChange={(e) => setEmail(e.currentTarget.value)}
         />
         <Typography variant="caption" color="gray" mt={1}>
-          We will not send them a confirmation email.
+          They will not receive a confirmation email.
         </Typography>
         {error && (
           <Typography variant="body2" color="error">

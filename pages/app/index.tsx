@@ -10,7 +10,7 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import { createIssue, deleteIssue } from "../../src/services/issue";
+import { issueService } from "../../src/services/issueService";
 import { IssueWithStrippedDate, stripDate } from "../../src/types/stripDate";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -54,11 +54,11 @@ const Drafts: FC<Props> = ({ newsletter }) => {
     router.push(`/app/compose?n=${newsletterId}&i=${issue.id}`);
   };
   const onItemDuplicate = async (issue: IssueWithStrippedDate) => {
-    await createIssue(issue.title, issue.content, newsletterId);
+    await issueService.createIssue(newsletterId, issue.title, issue.content);
     router.replace(`/app`);
   };
   const onItemDelete = async (issue: IssueWithStrippedDate) => {
-    await deleteIssue(issue.id);
+    await issueService.deleteIssue(issue.id);
     router.replace(`/app`);
   };
 

@@ -58,7 +58,7 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     [githubReposData]
   );
   const dirs = useMemo(
-    () => [...(githubReposData?.get(repo)?.map((d) => d.dir) ?? []), "./"],
+    () => githubReposData?.get(repo)?.map((d) => d.dir) ?? [],
     [githubReposData, repo]
   );
   const isChanged = useMemo(
@@ -86,11 +86,9 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     try {
       const res = await githubIntegrationService.updateGithubIntegration(
         githubIntegration?.installationId,
-        {
-          repoName: repo,
-          repoDir: dir,
-          repoOwner: githubReposData.get(repo)?.[0]?.owner,
-        }
+        repo,
+        dir,
+        githubReposData.get(repo)?.[0]?.owner
       );
       if (res == null) {
         throw new Error("No response");

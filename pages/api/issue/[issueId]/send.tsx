@@ -8,10 +8,10 @@ import Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
 import slugify from "slugify";
 
-import { createOctokitClient } from "../../../prisma/modules/github";
-import prisma from "../../../prisma/prisma";
-import { MarkdownParser } from "../../../src/components/MarkdownParser";
-import { getPath } from "../../../util/getRepoPath";
+import { createOctokitClient } from "../../../../prisma/modules/github";
+import prisma from "../../../../prisma/prisma";
+import { MarkdownParser } from "../../../../src/components/MarkdownParser";
+import { getPath } from "../../../../util/getRepoPath";
 
 export default async function handle(
   req: NextApiRequest,
@@ -20,7 +20,8 @@ export default async function handle(
   const session = await getSession({ req });
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
-  const { issueId, writeToGithub } = req.body;
+  const issueId = req.query.issueId as string;
+  const { writeToGithub } = req.body;
 
   const issue = await prisma.issue.findFirst({
     where: { id: issueId },

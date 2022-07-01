@@ -16,7 +16,7 @@ import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { useToggle } from "../../src/hooks/useToggle";
-import { sendIssue, updateIssue } from "../../src/services/issue";
+import { issueService } from "../../src/services/issueService";
 import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../util/eatClick";
 
@@ -85,7 +85,7 @@ const Compose: FC<Props> = ({ issue }) => {
   };
   const handleSave = useCallback(async () => {
     try {
-      await updateIssue(title, content, issue.id);
+      await issueService.updateIssue(issue.id, title, content);
     } catch (error) {
       console.error(error);
     }
@@ -118,7 +118,7 @@ const Compose: FC<Props> = ({ issue }) => {
   const handleSend = async (writeToGithub: boolean) => {
     sending.toggleOn();
     try {
-      await sendIssue(issue.id, writeToGithub);
+      await issueService.sendIssue(issue.id, writeToGithub);
       await router.push("/app/sent");
     } catch (error) {
       console.error(error);

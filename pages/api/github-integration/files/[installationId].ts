@@ -2,7 +2,10 @@ import { OctokitResponse } from "@octokit/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
-import { GithubRepoData } from "../../../../prisma/modules/github";
+import {
+  createOctokitClient,
+  GithubRepoData,
+} from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
 
 // GET /api/github/:installationId?fileSlug=:fileSlug

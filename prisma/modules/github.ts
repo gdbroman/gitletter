@@ -32,7 +32,13 @@ export async function getGithubRepos(installationId: string) {
             path: "",
           });
         if (Array.isArray(repoContent.data)) {
-          infos = repoContent.data
+          const repoContentData = repoContent.data;
+          repoContentData.push({
+            type: "dir",
+            path: "./",
+          } as any);
+
+          infos = repoContentData
             .filter(({ type }) => type === "dir")
             .map(({ path }) => ({ dir: path, owner: repo.owner.login }));
         }

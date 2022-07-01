@@ -1,15 +1,13 @@
+export const jsonHeader = { "Content-Type": "application/json" };
+
 export const fetchApi = async <T>(
   endpoint: string,
   method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH" = "GET",
-  body?: any
+  body?: any,
+  headers?: any
 ): Promise<T> => {
   const response = await fetch(`${process.env.APP_URL}/api${endpoint}`, {
-    headers:
-      method === "POST"
-        ? {
-            "Content-Type": "application/json",
-          }
-        : undefined,
+    headers: ["POST"].includes(method) ? jsonHeader : headers ?? undefined,
     method,
     body: body ? JSON.stringify(body) : undefined,
   });

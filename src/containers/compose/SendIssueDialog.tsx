@@ -67,7 +67,9 @@ export const SendIssueDialog: FC<Props> = ({
             }
           />
           <Typography variant="caption" color="gray">
-            You currently have {subscriberCount} subscribers.
+            {`The issue will be sent to ${subscriberCount} subscriber${
+              subscriberCount === 1 ? "" : "s"
+            }.`}
           </Typography>
           <FormControlLabel
             disabled={!githubIntegration}
@@ -81,7 +83,7 @@ export const SendIssueDialog: FC<Props> = ({
           />
           <Typography variant="caption" color="gray">
             {!!githubIntegration ? (
-              `Will be saved to ${
+              `The issue will be saved to ${
                 !githubIntegration.repoDir ? "./" : githubIntegration.repoDir
               } in ${githubIntegration.repoOwner}/${
                 githubIntegration.repoName

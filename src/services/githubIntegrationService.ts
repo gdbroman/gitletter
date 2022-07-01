@@ -1,9 +1,6 @@
 import { GithubIntegration } from "@prisma/client";
 
-import {
-  GithubReposInfo,
-  UpdateGithubIntegrationInput,
-} from "../../prisma/modules/github";
+import { GithubReposInfo } from "../../prisma/modules/github";
 import { fetchApi } from "./util";
 
 const getGithubIntegration = async (installationId: string) =>
@@ -17,13 +14,15 @@ const deleteGithubIntegration = async (installationId: string) =>
 
 const updateGithubIntegration = async (
   installationId: string,
-  updateGithubIntegrationInput: UpdateGithubIntegrationInput
+  repoName: string,
+  repoDir: string,
+  repoOwner: string
 ) =>
-  fetchApi<GithubIntegration>(
-    `/github-integration/${installationId}`,
-    "PUT",
-    updateGithubIntegrationInput
-  );
+  fetchApi<GithubIntegration>(`/github-integration/${installationId}`, "PUT", {
+    repoName,
+    repoDir,
+    repoOwner,
+  });
 
 // Not using these atm
 export const getReposInfo = async (installationId: string) =>
