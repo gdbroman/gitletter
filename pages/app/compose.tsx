@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Issue } from "@prisma/client";
@@ -15,15 +16,15 @@ import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { useToggle } from "../../src/hooks/useToggle";
-import { sendIssue, updateIssue } from "../../src/services/issues";
+import { sendIssue, updateIssue } from "../../src/services/issue";
 import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../src/util/eatClick";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
-    res.statusCode = 403;
-    return { props: { issue: {} } };
+    res.statusCode = 401;
+    return { props: { issue: {}, newsletterId: null } };
   }
   let issue: Issue = {} as Issue;
   const urlSearchParams = new URLSearchParams(
@@ -77,13 +78,11 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
   ) => {
     setTitle(e.target.value);
   };
-
   const handleContentChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setContent(e.target.value);
   };
-
   const handleSave = useCallback(async () => {
     try {
       await updateIssue(title, content, issue.id);
@@ -102,7 +101,6 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
     },
     [handleSave, savedTitle, title]
   );
-
   const handleContentBlur = useCallback(
     async (e: any) => {
       eatClick(e);
@@ -113,12 +111,10 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
     },
     [content, handleSave, savedContent]
   );
-
   const handleAreYouSure = async () => {
     areYouSure.toggleOn();
     await handleSave();
   };
-
   const handleSend = async (writeToGithub: boolean) => {
     sending.toggleOn();
     try {
@@ -134,39 +130,45 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
       <ProtectedPage>
         <Layout>
           <NextSeo title={title} />
-          <article>
-            <Box my={4}>
-              {preview.isOn ? (
-                <Typography variant="h1" fontWeight={500} paddingY={1}>
-                  {title}
-                </Typography>
-              ) : (
-                <TextField
-                  fullWidth
-                  variant="standard"
-                  inputProps={{
-                    style: { fontSize: 40, fontWeight: 500, padding: "8px 0" },
-                  }}
-                  value={title}
-                  onBlur={handleTitleBlur}
-                  onChange={handleTitleChange}
-                />
-              )}
+          <Card variant="outlined">
+            <Box p={4}>
+              <Box my={4}>
+                {preview.isOn ? (
+                  <Typography variant="h1" fontWeight={500} paddingY={1}>
+                    {title}
+                  </Typography>
+                ) : (
+                  <TextField
+                    fullWidth
+                    variant="standard"
+                    inputProps={{
+                      style: {
+                        fontSize: 40,
+                        fontWeight: 500,
+                        padding: "8px 0",
+                      },
+                    }}
+                    value={title}
+                    onBlur={handleTitleBlur}
+                    onChange={handleTitleChange}
+                  />
+                )}
+              </Box>
+              <Box>
+                {preview.isOn ? (
+                  <MarkdownParser children={content} />
+                ) : (
+                  <TextField
+                    fullWidth
+                    multiline
+                    value={content}
+                    onBlur={handleContentBlur}
+                    onChange={handleContentChange}
+                  />
+                )}
+              </Box>
             </Box>
-            <Box>
-              {preview.isOn ? (
-                <MarkdownParser children={content} />
-              ) : (
-                <TextField
-                  fullWidth
-                  multiline
-                  value={content}
-                  onBlur={handleContentBlur}
-                  onChange={handleContentChange}
-                />
-              )}
-            </Box>
-          </article>
+          </Card>
           {isSent ? (
             <Typography variant="body1" color="textSecondary" my={4}>
               {`Sent on ${issue.sentAt}`}

@@ -14,7 +14,7 @@ import { FC, useEffect, useState } from "react";
 import { DialogResponsive } from "../../components/DialogResponsive";
 import { useToggle } from "../../hooks/useToggle";
 import { getIntegration } from "../../services/github";
-import { getSubscriberCount } from "../../services/subscribers";
+import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
   newsletterId: string;
@@ -43,7 +43,9 @@ export const SendIssueDialog: FC<Props> = ({
     const getAndSet = async () => {
       const integrationRes = await getIntegration(newsletterId);
       if (integrationRes) setGithubIntegration(integrationRes);
-      const subscriberCountRes = await getSubscriberCount(newsletterId);
+      const subscriberCountRes = await newsletterService.getSubscriberCount(
+        newsletterId
+      );
       if (subscriberCountRes) setSubscriberCount(subscriberCountRes);
     };
     getAndSet();

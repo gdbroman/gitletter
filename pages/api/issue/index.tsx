@@ -8,9 +8,11 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await getSession({ req });
+  if (!session) return res.status(401).json({ message: "Unauthorized" });
+
   const { title, content, issueId, newsletterId } = req.body;
 
-  const session = await getSession({ req });
   if (req.method === "POST") {
     const result = await prisma.issue.create({
       data: {

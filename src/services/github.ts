@@ -4,81 +4,32 @@ import {
   GithubReposInfo,
   UpdateGithubIntegrationInput,
 } from "../../pages/api/github/app/[...installationId]";
+import { fetchApi } from "../util/fetchApi";
 
-export async function getIntegration(
-  newsletterId: string
-): Promise<GithubIntegration | null> {
-  const response = await fetch(
-    `${process.env.APP_URL}/api/github/integration/${newsletterId}`,
-    {
-      method: "GET",
-    }
-  );
-  return responseHandler(response);
-}
+export const getIntegration = async (newsletterId: string) =>
+  fetchApi<GithubIntegration>(`/github/integration/${newsletterId}`);
 
-export async function getReposInfo(
-  githubInstallationId: string
-): Promise<GithubReposInfo | null> {
-  const response = await fetch(
-    `${process.env.APP_URL}/api/github/app/${githubInstallationId}`,
-    {
-      method: "GET",
-    }
-  );
+export const deleteIntegration = async (githubInstallationId: string) =>
+  fetchApi<GithubIntegration>(`/github/app/${githubInstallationId}`, "DELETE");
 
-  return responseHandler(response);
-}
-
-export async function getRepoContent(
-  githubInstallationId: string,
-  fileSlug?: string
-): Promise<any[] | null> {
-  const response = await fetch(
-    `${process.env.APP_URL}/api/github/${githubInstallationId}${
-      fileSlug ? `?fileSlug=${fileSlug}` : ""
-    }`,
-    {
-      method: "GET",
-    }
-  );
-
-  return responseHandler(response);
-}
-
-export async function deleteIntegration(
-  githubInstallationId: string
-): Promise<GithubIntegration | null> {
-  const response = await fetch(
-    `${process.env.APP_URL}/api/github/app/${githubInstallationId}`,
-    {
-      method: "DELETE",
-    }
-  );
-
-  return responseHandler(response);
-}
-
-export async function updateIntegration(
+export const updateIntegration = async (
   githubInstallationId: string,
   updateGithubIntegrationInput: UpdateGithubIntegrationInput
-): Promise<GithubIntegration | null> {
-  const response = await fetch(
-    `${process.env.APP_URL}/api/github/app/${githubInstallationId}`,
-    {
-      method: "PUT",
-      body: JSON.stringify(updateGithubIntegrationInput),
-    }
+) =>
+  fetchApi<GithubIntegration>(
+    `/github/app/${githubInstallationId}`,
+    "PUT",
+    updateGithubIntegrationInput
   );
 
-  return responseHandler(response);
-}
+// Not using these atm
+export const getReposInfo = async (githubInstallationId: string) =>
+  fetchApi<GithubReposInfo>(`/github/app/${githubInstallationId}`);
 
-const responseHandler = (response: Response) => {
-  if (response.ok) {
-    return response.json();
-  } else {
-    console.error(response.statusText);
-    return null;
-  }
-};
+export const getRepoContent = async (
+  githubInstallationId: string,
+  fileSlug?: string
+) =>
+  fetchApi<any[] | null>(
+    `/github/${githubInstallationId}${fileSlug ? `?fileSlug=${fileSlug}` : ""}`
+  ); // TODO: move fileslug to body

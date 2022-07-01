@@ -13,18 +13,14 @@ import { MarkdownParser } from "../../../src/components/MarkdownParser";
 import { getPath } from "../../../src/util/github";
 import { createOctokitClient } from "../github/app/[...installationId]";
 
-// POST /api/issue/send
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { issueId, writeToGithub } = req.body;
-
   const session = await getSession({ req });
-  if (!session) {
-    res.statusCode = 403;
-    return;
-  }
+  if (!session) return res.status(401).json({ message: "Unauthorized" });
+
+  const { issueId, writeToGithub } = req.body;
 
   const issue = await prisma.issue.findFirst({
     where: { id: issueId },

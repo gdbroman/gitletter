@@ -9,7 +9,7 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import { removeSubscriber } from "../../src/services/subscribers";
+import { subscriberService } from "../../src/services/subscriberService";
 import {
   stripDate,
   SubscriberWithStrippedDate,
@@ -18,7 +18,7 @@ import {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
-    res.statusCode = 403;
+    res.statusCode = 401;
     return { props: { newsletter: { subscribers: [] } } };
   }
 
@@ -52,7 +52,7 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
   const subscribers = newsletter.subscribers;
 
   const onItemDelete = async (subscriber: SubscriberWithStrippedDate) => {
-    await removeSubscriber(subscriber.email, newsletter.id);
+    await subscriberService.deleteSubscriber(subscriber.id);
     router.replace(`/app/subscribers`);
   };
 

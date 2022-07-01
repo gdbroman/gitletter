@@ -16,6 +16,9 @@ const theme = createTheme({
       disabledBackground: "000000",
       disabled: "#FFFFFF",
     },
+    background: {
+      default: "#FFFFFF",
+    },
   },
   typography: {
     fontFamily: [

@@ -10,7 +10,7 @@ import { FC, useMemo, useState } from "react";
 
 import { DialogResponsive } from "../../components/DialogResponsive";
 import { useToggle } from "../../hooks/useToggle";
-import { addSubscriber } from "../../services/subscribers";
+import { subscriberService } from "../../services/subscriberService";
 
 type Props = {
   newsletterId: string;
@@ -39,7 +39,7 @@ export const AddSubscriberDialog: FC<Props> = ({
     adding.toggleOn();
     setError(undefined);
     try {
-      const res = await addSubscriber(email, newsletterId);
+      const res = await subscriberService.createSubscriber(email, newsletterId);
       console.log(res);
       if (res) {
         onClose();

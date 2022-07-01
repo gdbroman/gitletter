@@ -15,7 +15,7 @@ import { GithubReposInfo } from "../api/github/app/[...installationId]";
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
-    res.statusCode = 403;
+    res.statusCode = 401;
     return { props: { newsletter: {}, githubReposInfo: {} } };
   }
 

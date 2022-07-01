@@ -17,8 +17,8 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const session = await getSession({ req });
   if (!session) {
-    res.statusCode = 403;
-    return { props: { newsletter: {}, files: {} } };
+    res.statusCode = 401;
+    return { props: { newsletter: {}, file: {} } };
   }
 
   const newsletter = await prisma.newsletter.findFirst({

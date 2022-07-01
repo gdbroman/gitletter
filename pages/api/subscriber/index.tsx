@@ -3,13 +3,11 @@ import { getSession } from "next-auth/react";
 
 import prisma from "../../../prisma/prisma";
 
-// POST & PUT /api/:newsletterId/subscribers
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { email } = req.body;
-  const newsletterId = req.query.newsletterId as string;
+  const { email, newsletterId } = req.body;
 
   if (req.method === "POST") {
     const existingSubscriber = await prisma.subscriber.findFirst({
@@ -28,19 +26,16 @@ export default async function handle(
         addedAt: new Date(),
       },
     });
+
     res.redirect(`/app/${newsletterId}/success`);
   } else if (req.method === "DELETE") {
     const session = await getSession({ req });
-    if (!session) {
-      res.statusCode = 403;
-      res.json({
-        error: "Unauthenticated",
-      });
-      return;
-    }
+    if (!session) return res.status(401).json({ message: "Unauthorized" });
+
     const result = await prisma.subscriber.deleteMany({
       where: { email, newsletterId },
     });
+    res.statusCode = 200;
     res.json(result);
   }
 }

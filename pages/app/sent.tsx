@@ -10,13 +10,13 @@ import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import { deleteIssue } from "../../src/services/issues";
+import { deleteIssue } from "../../src/services/issue";
 import { IssueWithStrippedDate, stripDate } from "../../src/types/stripDate";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
-    res.statusCode = 403;
+    res.statusCode = 401;
     return { props: { newsletter: { issues: [] } } };
   }
 
