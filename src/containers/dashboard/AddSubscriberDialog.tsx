@@ -10,7 +10,7 @@ import { FC, useMemo, useState } from "react";
 
 import { DialogResponsive } from "../../components/DialogResponsive";
 import { useToggle } from "../../hooks/useToggle";
-import { subscriberService } from "../../services/subscriberService";
+import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
   newsletterId: string;
@@ -26,7 +26,7 @@ export const AddSubscriberDialog: FC<Props> = ({
   const router = useRouter();
 
   const adding = useToggle(false);
-  const [email, setEmail] = useState<string | undefined>();
+  const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string | undefined>();
   const isEmailValid = useMemo(() => {
     if (!email) {
@@ -39,8 +39,7 @@ export const AddSubscriberDialog: FC<Props> = ({
     adding.toggleOn();
     setError(undefined);
     try {
-      const res = await subscriberService.createSubscriber(email, newsletterId);
-      console.log(res);
+      const res = await newsletterService.subscribe(newsletterId, email);
       if (res) {
         onClose();
         router.replace(router.asPath);

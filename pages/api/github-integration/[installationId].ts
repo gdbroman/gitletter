@@ -28,16 +28,16 @@ export default async function handler(
 
   if (req.method === "GET") {
     const integration = await getIntegration(installationId);
-    res.json(integration);
+    res.status(200).json(integration);
   } else if (req.method === "DELETE") {
     const integration = await deleteIntegration(installationId);
-    res.json(integration);
+    res.status(200).json(integration);
   } else if (req.method === "PUT") {
     const integration = await updateIntegration(
       installationId,
       JSON.parse(req.body)
     );
-    res.json(integration);
+    res.status(200).json(integration);
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

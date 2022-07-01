@@ -8,10 +8,10 @@ import Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
 import slugify from "slugify";
 
+import { createOctokitClient } from "../../../prisma/modules/github";
 import prisma from "../../../prisma/prisma";
 import { MarkdownParser } from "../../../src/components/MarkdownParser";
 import { getPath } from "../../../util/getRepoPath";
-import { createOctokitClient } from "../github-integration/repo-dirs/[...installationId]";
 
 export default async function handle(
   req: NextApiRequest,
@@ -73,7 +73,7 @@ export default async function handle(
       },
     });
 
-    res.json(result);
+    res.status(200).json(result);
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

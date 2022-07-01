@@ -20,7 +20,7 @@ type Props = {
 export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
   const copied = useToggle(false);
   const snippet = [
-    `<form method="POST" action="https://gitletter.co/api/newsletter/${newsletterId}/subscribers">`,
+    `<form method="POST" action="https://gitletter.co/api/newsletter/${newsletterId}/subscribe">`,
     '  <input type="email" name="email" placeholder="Your email address..." />',
     "  <button>Subscribe</button>",
     "</form>",

@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 
 import prisma from "../../../../prisma/prisma";
 
@@ -8,7 +7,7 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const newsletterId = req.query.newsletterId as string;
-  const { email } = req.body;
+  const { email, dontRedirect } = req.body;
 
   if (req.method === "POST") {
     const existingSubscriber = await prisma.subscriber.findFirst({
@@ -26,16 +25,11 @@ export default async function handle(
       },
     });
 
-    res.redirect(`/app/${newsletterId}/success`);
-  } else if (req.method === "DELETE") {
-    const session = await getSession({ req });
-    if (!session) return res.status(401).json({ message: "Unauthorized" });
-
-    const result = await prisma.subscriber.deleteMany({
-      where: { email, newsletterId },
-    });
-
-    res.status(200).json(result);
+    if (dontRedirect) {
+      res.status(200).json({ message: "Subscriber added." });
+    } else {
+      res.redirect(`/app/${newsletterId}/success`);
+    }
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

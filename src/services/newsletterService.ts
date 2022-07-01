@@ -10,6 +10,13 @@ type NewsletterExtended = Newsletter & {
 const getNewsletter = async (newsletterId: string) =>
   fetchApi<NewsletterExtended>(`/newsletter/${newsletterId}`);
 
+const subscribe = async (newsletterId: string, email: string) =>
+  fetchApi(`/newsletter/${newsletterId}/subscribe`, "POST", {
+    email,
+    dontRedirect: true,
+  });
+
 export const newsletterService = {
   getNewsletter,
+  subscribe,
 };
