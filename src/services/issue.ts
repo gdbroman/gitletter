@@ -1,4 +1,4 @@
-import { fetchApi } from "../util/fetchApi";
+import { fetchApi } from "./util";
 
 export const createIssue = async (
   title: string,

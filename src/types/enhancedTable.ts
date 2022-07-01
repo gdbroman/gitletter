@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 
-import { getTimeAgoString } from "../util/strings";
+import { getTimeAgoString } from "../../util/strings";
 import { IssueWithStrippedDate, SubscriberWithStrippedDate } from "./stripDate";
 
 export type Order = "asc" | "desc";

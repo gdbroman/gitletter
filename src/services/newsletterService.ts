@@ -1,10 +1,15 @@
-import { fetchApi } from "../util/fetchApi";
+import { GithubIntegration, Newsletter, Subscriber } from "@prisma/client";
 
-const getSubscriberCount = async (
-  newsletterId: string
-): Promise<number | null> =>
-  fetchApi(`/newsletter/${newsletterId}/subscriber-count`);
+import { fetchApi } from "./util";
+
+type NewsletterExtended = Newsletter & {
+  subscribers: Subscriber[];
+  githubIntegration: GithubIntegration;
+};
+
+const getNewsletter = async (newsletterId: string) =>
+  fetchApi<NewsletterExtended>(`/newsletter/${newsletterId}`);
 
 export const newsletterService = {
-  getSubscriberCount,
+  getNewsletter,
 };

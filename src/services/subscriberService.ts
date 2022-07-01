@@ -1,4 +1,4 @@
-import { fetchApi } from "../util/fetchApi";
+import { fetchApi } from "./util";
 
 const createSubscriber = async (email: string, newsletterId: string) =>
   fetchApi(`/subscriber`, "POST", {

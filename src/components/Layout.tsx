@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import { NextSeo } from "next-seo";
 import { FC, ReactNode } from "react";
 
+import { shortDescription, siteDescription } from "../../util/constants";
 import { Header } from "../containers/header/Header";
-import { shortDescription, siteDescription } from "../util/constants";
 import { Footer } from "./Footer";
 
 const maxWidth = 780;

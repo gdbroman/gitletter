@@ -7,8 +7,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { FC, MouseEvent, useState } from "react";
 
+import { eatClick } from "../../util/eatClick";
 import { StyledMenu } from "../containers/dashboard/NavBarCta";
-import { eatClick } from "../util/eatClick";
 
 const StyledRowButton = styled(Button)`
   width: 32px;

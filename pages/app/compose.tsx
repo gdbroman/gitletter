@@ -18,30 +18,31 @@ import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { useToggle } from "../../src/hooks/useToggle";
 import { sendIssue, updateIssue } from "../../src/services/issue";
 import { stripDate } from "../../src/types/stripDate";
-import { eatClick } from "../../src/util/eatClick";
+import { eatClick } from "../../util/eatClick";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
   if (!session) {
     res.statusCode = 401;
-    return { props: { issue: {}, newsletterId: null } };
+    return { props: { issue: {} } };
   }
   let issue: Issue = {} as Issue;
   const urlSearchParams = new URLSearchParams(
     req.url.substring(req.url.indexOf("?"))
   );
-  const issueId = urlSearchParams.get("i");
   const newsletterId = urlSearchParams.get("n");
+  const issueId = urlSearchParams.get("i");
 
-  if (!newsletterId) {
+  if (!newsletterId && !issueId) {
     res.statusCode = 404;
+    return { props: { issue: {} } };
   }
 
   if (!issueId) {
     issue = await prisma.issue.create({
       data: {
-        title: "Hello world!",
-        content: "I say unto you...",
+        title: "Hello world",
+        content: "And I spoke thusly.",
         newsletter: { connect: { id: newsletterId } },
         author: { connect: { email: session?.user?.email } },
       },
@@ -52,15 +53,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     });
   }
 
-  return { props: { issue: stripDate(issue), newsletterId } };
+  return { props: { issue: stripDate(issue) } };
 };
 
 type Props = {
   issue: Issue;
-  newsletterId: string;
 };
 
-const Compose: FC<Props> = ({ issue, newsletterId }) => {
+const Compose: FC<Props> = ({ issue }) => {
   const router = useRouter();
 
   const [title, setTitle] = useState(issue.title);
@@ -186,7 +186,7 @@ const Compose: FC<Props> = ({ issue, newsletterId }) => {
                 Send
               </Button>
               <SendIssueDialog
-                newsletterId={newsletterId}
+                newsletterId={issue.newsletterId}
                 open={areYouSure.isOn}
                 loading={sending.isOn}
                 onCancel={areYouSure.toggleOff}

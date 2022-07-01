@@ -10,35 +10,18 @@ export default async function handle(
   const session = await getSession({ req });
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
-  const { title, content, issueId, newsletterId } = req.body;
-
   if (req.method === "POST") {
-    const result = await prisma.issue.create({
+    const { title, description } = req.body;
+
+    const result = await prisma.newsletter.create({
       data: {
         title,
-        content,
-        newsletter: { connect: { id: newsletterId } },
+        description,
         author: { connect: { email: session?.user?.email } },
       },
     });
 
     res.status(201).json(result);
-  } else if (req.method === "PUT") {
-    const result = await prisma.issue.update({
-      where: { id: issueId },
-      data: {
-        title,
-        content,
-      },
-    });
-
-    res.status(200).json(result);
-  } else if (req.method === "DELETE") {
-    const result = await prisma.issue.delete({
-      where: { id: issueId },
-    });
-
-    res.status(200).json(result);
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

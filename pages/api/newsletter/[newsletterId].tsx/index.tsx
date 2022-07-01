@@ -3,22 +3,23 @@ import { getSession } from "next-auth/react";
 
 import prisma from "../../../../prisma/prisma";
 
-export default async function handler(
+export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const session = await getSession({ req });
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
-  const newsletterId = req.query.installationId as string;
-
   if (req.method === "GET") {
-    const integration = await prisma.githubIntegration.findFirst({
-      where: {
-        newsletterId,
-      },
+    const newsletterId = req.query.newsletterId as string;
+
+    const result = await prisma.newsletter.findFirst({
+      where: { id: newsletterId },
+      include: { subscribers: true, githubIntegration: true },
     });
 
-    res.json(integration);
+    res.json(result);
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
   }
 }

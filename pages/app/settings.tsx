@@ -4,13 +4,12 @@ import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { FC } from "react";
 
+import { getGithubRepos, GithubReposInfo } from "../../prisma/modules/github";
 import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
 import { GithubIntegrationSettings } from "../../src/containers/settings/GithubIntegrationCard";
-import { getReposInfo } from "../../src/services/github";
-import { GithubReposInfo } from "../api/github/app/[...installationId]";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -29,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   let githubReposInfo = null;
   if (newsletter.githubIntegration) {
     try {
-      githubReposInfo = await getReposInfo(
+      githubReposInfo = await getGithubRepos(
         newsletter.githubIntegration.installationId
       );
     } catch (e) {

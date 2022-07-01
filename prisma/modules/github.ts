@@ -2,10 +2,6 @@ import { createAppAuth } from "@octokit/auth-app";
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 import { OctokitResponse } from "@octokit/types";
 import { GithubIntegration } from "@prisma/client";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
-
-import prisma from "../../../../prisma/prisma";
 
 export type GithubRepoData =
   RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
@@ -19,32 +15,7 @@ export type UpdateGithubIntegrationInput = Pick<
   "repoName" | "repoDir" | "repoOwner"
 >;
 
-// GET, PUT, DELETE /api/github/app/:id
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const session = await getSession({ req });
-  if (!session) return res.status(401).json({ message: "Unauthorized" });
-
-  const installationId = req.query.installationId[0];
-
-  if (req.method === "DELETE") {
-    const integration = await deleteIntegration(installationId);
-    res.json(integration);
-  } else if (req.method === "PUT") {
-    const integration = await updateIntegration(
-      installationId,
-      JSON.parse(req.body)
-    );
-    res.json(integration);
-  } else {
-    const githubReposInfo = await getGithubReposInfo(installationId);
-    res.send(githubReposInfo);
-  }
-}
-
-async function getGithubReposInfo(installationId: string) {
+export async function getGithubRepos(installationId: string) {
   const client = createOctokitClient(installationId);
   const repos = await client.paginate(
     client.apps.listReposAccessibleToInstallation
@@ -73,34 +44,6 @@ async function getGithubReposInfo(installationId: string) {
     })
   );
   return githubReposInfo;
-}
-
-function updateIntegration(
-  installationId: string,
-  data: UpdateGithubIntegrationInput
-) {
-  try {
-    return prisma.githubIntegration.update({
-      where: {
-        installationId,
-      },
-      data,
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function deleteIntegration(installationId: string) {
-  try {
-    return prisma.githubIntegration.delete({
-      where: {
-        installationId,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 export const createOctokitClient = (installationId?: string): Octokit => {

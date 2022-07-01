@@ -10,8 +10,8 @@ import slugify from "slugify";
 
 import prisma from "../../../prisma/prisma";
 import { MarkdownParser } from "../../../src/components/MarkdownParser";
-import { getPath } from "../../../src/util/github";
-import { createOctokitClient } from "../github/app/[...installationId]";
+import { getPath } from "../../../util/getRepoPath";
+import { createOctokitClient } from "../github-integration/repo-dirs/[...installationId]";
 
 export default async function handle(
   req: NextApiRequest,
@@ -74,6 +74,8 @@ export default async function handle(
     });
 
     res.json(result);
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
   }
 }
 

@@ -11,14 +11,11 @@ import { GithubIntegration } from "@prisma/client";
 import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
-import {
-  GithubReposInfo,
-  RepoInfo,
-} from "../../../pages/api/github/app/[...installationId]";
+import { GithubReposInfo, RepoInfo } from "../../../prisma/modules/github";
 import { ItemSelect } from "../../components/ItemSelect";
 import { CustomSnackbar } from "../../components/Snackbar";
 import { useToggle } from "../../hooks/useToggle";
-import { deleteIntegration, updateIntegration } from "../../services/github";
+import { githubIntegrationService } from "../../services/githubIntegrationService";
 import { Nullable } from "../../types/general";
 import { LoadingButtonWithBlackSpinner } from "../header/HeaderNavRight";
 
@@ -87,11 +84,14 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     setError(null);
     setSuccess(null);
     try {
-      const res = await updateIntegration(githubIntegration?.installationId, {
-        repoName: repo,
-        repoDir: dir,
-        repoOwner: githubReposData.get(repo)?.[0]?.owner,
-      });
+      const res = await githubIntegrationService.updateGithubIntegration(
+        githubIntegration?.installationId,
+        {
+          repoName: repo,
+          repoDir: dir,
+          repoOwner: githubReposData.get(repo)?.[0]?.owner,
+        }
+      );
       if (res == null) {
         throw new Error("No response");
       }
@@ -112,7 +112,9 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
   const handleDisconnect = async () => {
     disconnecting.toggleOn();
     try {
-      const res = await deleteIntegration(githubIntegration?.installationId);
+      const res = await githubIntegrationService.deleteGithubIntegration(
+        githubIntegration?.installationId
+      );
       if (res == null) {
         throw new Error("No response");
       }

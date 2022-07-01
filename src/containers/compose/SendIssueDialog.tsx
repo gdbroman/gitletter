@@ -13,7 +13,6 @@ import { FC, useEffect, useState } from "react";
 
 import { DialogResponsive } from "../../components/DialogResponsive";
 import { useToggle } from "../../hooks/useToggle";
-import { getIntegration } from "../../services/github";
 import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
@@ -41,12 +40,11 @@ export const SendIssueDialog: FC<Props> = ({
 
   useEffect(() => {
     const getAndSet = async () => {
-      const integrationRes = await getIntegration(newsletterId);
-      if (integrationRes) setGithubIntegration(integrationRes);
-      const subscriberCountRes = await newsletterService.getSubscriberCount(
-        newsletterId
-      );
-      if (subscriberCountRes) setSubscriberCount(subscriberCountRes);
+      const newsletterRes = await newsletterService.getNewsletter(newsletterId);
+      if (newsletterRes) {
+        setSubscriberCount(newsletterRes.subscribers.length);
+        setGithubIntegration(newsletterRes.githubIntegration);
+      }
     };
     getAndSet();
   }, [newsletterId]);

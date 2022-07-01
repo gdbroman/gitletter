@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
-import { gitLetterSocialLinks } from "../util/constants";
+import { gitLetterSocialLinks } from "../../util/constants";
 
 const StyledFooter = styled.footer`
   padding: 16px 32px;
