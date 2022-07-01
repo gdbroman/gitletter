@@ -1,14 +1,15 @@
-import CloseIcon from "@mui/icons-material/Close";
-import Box from "@mui/material/Box";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
+import { DialogResponsive } from "../../components/DialogResponsive";
+import { useToggle } from "../../hooks/useToggle";
 import { addSubscriber } from "../../services/subscribers";
 
 type Props = {
@@ -24,6 +25,7 @@ export const AddSubscriberDialog: FC<Props> = ({
 }) => {
   const router = useRouter();
 
+  const adding = useToggle(false);
   const [email, setEmail] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
   const isEmailValid = useMemo(() => {
@@ -34,66 +36,58 @@ export const AddSubscriberDialog: FC<Props> = ({
   }, [email]);
 
   const handleSubmit = async () => {
+    adding.toggleOn();
     setError(undefined);
     try {
       const res = await addSubscriber(email, newsletterId);
-      if (res.status > 299) {
-        throw new Error(await res.text());
-      } else {
+      console.log(res);
+      if (res) {
         onClose();
         router.replace(router.asPath);
-      }
-    } catch (error) {
-      if (error.message) {
-        setError(error.message);
       } else {
-        setError("Something went wrong.");
+        throw new Error();
       }
+    } catch {
+      setError("Something went wrong.");
+    } finally {
+      adding.toggleOff();
     }
   };
 
   return (
-    <Dialog onClose={onClose} open={open}>
-      <IconButton onClick={onClose} style={{ position: "absolute", right: 0 }}>
-        <CloseIcon />
-      </IconButton>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={2}
-        padding={4}
-        pt={3}
-      >
-        <DialogTitle>Manually add a subscriber</DialogTitle>
-        <Box width="300px">
-          <TextField
-            fullWidth
-            label="Email address"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.currentTarget.value)}
-          />
-          <Typography variant="body2" color="gray" mt={1}>
-            We will not send a confirmation email.
-          </Typography>
-        </Box>
+    <DialogResponsive open={open} onClose={onClose}>
+      <DialogTitle>Manually add subscriber</DialogTitle>
+      <DialogContent style={{ overflowY: "visible" }}>
+        <TextField
+          fullWidth
+          label="Email address"
+          type="email"
+          value={email}
+          style={{ marginTop: 8 }}
+          onChange={(e) => setEmail(e.currentTarget.value)}
+        />
+        <Typography variant="caption" color="gray" mt={1}>
+          We will not send them a confirmation email.
+        </Typography>
         {error && (
           <Typography variant="body2" color="error">
             {error}
           </Typography>
         )}
-        <Button
-          fullWidth
-          size="large"
-          color="primary"
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus disabled={adding.isOn} onClick={onClose}>
+          Cancel
+        </Button>
+        <LoadingButton
+          loading={adding.isOn}
           variant={isEmailValid ? "contained" : "outlined"}
           disabled={!isEmailValid}
           onClick={handleSubmit}
         >
           Add subscriber
-        </Button>
-      </Box>
-    </Dialog>
+        </LoadingButton>
+      </DialogActions>
+    </DialogResponsive>
   );
 };

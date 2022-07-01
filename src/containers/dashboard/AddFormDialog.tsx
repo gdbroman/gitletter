@@ -2,15 +2,14 @@ import CheckIcon from "@mui/icons-material/Check";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import copy from "copy-to-clipboard";
 import { FC } from "react";
 
 import theme from "../../../styles/theme";
+import { DialogResponsive } from "../../components/DialogResponsive";
 import { useToggle } from "../../hooks/useToggle";
 type Props = {
   newsletterId: string;
@@ -18,12 +17,7 @@ type Props = {
   onClose: () => void;
 };
 
-export const AddIntegrationDialog: FC<Props> = ({
-  newsletterId,
-  open,
-  onClose,
-}) => {
-  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
+export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
   const copied = useToggle(false);
   const snippet = [
     `<form method="POST" action="https://gitletter.co/api/${newsletterId}/subscribers">`,
@@ -38,9 +32,14 @@ export const AddIntegrationDialog: FC<Props> = ({
   };
 
   return (
-    <Dialog onClose={onClose} open={open} fullScreen={fullScreen}>
+    <DialogResponsive breakPoint="md" onClose={onClose} open={open}>
       <Box display="flex" flexDirection="column" gap={4} padding={4} pt={3}>
-        <Typography variant="h5" fontWeight="bold" textAlign="center">
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          textAlign="center"
+          style={{ userSelect: "none" }}
+        >
           Signup form
         </Typography>
         <Box
@@ -57,8 +56,12 @@ export const AddIntegrationDialog: FC<Props> = ({
             justifyContent="space-between"
             padding={1}
           >
-            <Typography variant="body2" color="gray">
-              Copy / paste this onto your site
+            <Typography
+              variant="body2"
+              color="gray"
+              style={{ userSelect: "none" }}
+            >
+              Copy / paste this onto your blog
             </Typography>
             <Tooltip title={copied.isOn ? "Copied!" : "Copy to clipboard"}>
               <IconButton onClick={handleCopy}>
@@ -80,6 +83,6 @@ export const AddIntegrationDialog: FC<Props> = ({
           Done
         </Button>
       </Box>
-    </Dialog>
+    </DialogResponsive>
   );
 };

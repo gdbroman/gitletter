@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { FC, MouseEvent, useState } from "react";
 
 import { useToggle } from "../../hooks/useToggle";
-import { AddIntegrationDialog } from "./AddIntegrationDialog";
+import { AddFormDialog } from "./AddFormDialog";
 import { AddSubscriberDialog } from "./AddSubscriberDialog";
 import { DashboardProps } from "./Dashboard";
 
@@ -82,18 +82,18 @@ const ManageButtonMenu: FC<Pick<DashboardProps, "newsletterId">> = ({
       <StyledMenu anchorEl={anchorEl} open={menuOpen} onClose={handleClose}>
         <MenuItem onClick={handleAddIntegration} disableRipple>
           <CodeIcon />
-          <Typography variant="body1">Sign-up form snippet</Typography>
+          <Typography variant="body1">Add form to your blog</Typography>
         </MenuItem>
         <MenuItem onClick={handleAddSubscriber} disableRipple>
           <AddIcon />
-          <Typography variant="body1">Manually add a subscriber</Typography>
+          <Typography variant="body1">Manually add subscriber</Typography>
         </MenuItem>
         <MenuItem disabled disableRipple>
           <FileDownloadIcon />
-          <Typography variant="body1">Import (incoming feature)</Typography>
+          <Typography variant="body1">Import subscribers</Typography>
         </MenuItem>
       </StyledMenu>
-      <AddIntegrationDialog
+      <AddFormDialog
         newsletterId={newsletterId}
         open={addIntegrationDialogOpen.isOn}
         onClose={addIntegrationDialogOpen.toggleOff}
