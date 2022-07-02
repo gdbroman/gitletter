@@ -140,6 +140,7 @@ const Compose: FC<Props> = ({ issue }) => {
               title={title}
               content={<MarkdownParser children={content} />}
               newsletterId={issue.newsletterId}
+              emailAddress={"99gustaf@gmail.com"}
             />
           )}
           {!preview.isOn && (

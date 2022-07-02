@@ -25,11 +25,11 @@ type Props = {
   newsletterTitle: string;
 };
 
-const SuccessPage: FC<Props> = ({ newsletterTitle }) => (
+const UnsubscribedPage: FC<Props> = ({ newsletterTitle }) => (
   <Layout>
     <Box my={8} mx="auto" textAlign="center" maxWidth="600px">
       <Typography variant="h1" fontWeight="bold">
-        Success! 🎉
+        Unsubscribed 👋
       </Typography>
       <Typography
         variant="body1"
@@ -40,10 +40,10 @@ const SuccessPage: FC<Props> = ({ newsletterTitle }) => (
           fontSize: "2rem",
         }}
       >
-        You have successfully subscribed to {newsletterTitle}
+        You have been unsubscribed from {newsletterTitle}
       </Typography>
     </Box>
   </Layout>
 );
 
-export default SuccessPage;
+export default UnsubscribedPage;

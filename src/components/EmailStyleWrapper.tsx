@@ -18,60 +18,54 @@ export const EmailStyleWrapper: FC<Props> = ({
   return (
     <div
       style={{
-        backgroundColor: "#F9F5EC",
+        maxWidth: "560px",
+        margin: "32px auto",
+        padding: "1rem",
       }}
     >
-      <div
+      <article
         style={{
-          maxWidth: "600px",
-          margin: "32px auto",
-          padding: "1rem",
+          fontSize: "18px",
+          width: "100%",
         }}
       >
-        <article
-          style={{
-            fontSize: "18px",
-            width: "100%",
-          }}
-        >
-          <h1 style={{ textAlign: "center" }}>{title}</h1>
-          <hr />
-          {content}
-        </article>
-        <footer style={{ margin: "32px auto" }}>
-          <FooterSection>
-            <p>
-              <UnstyledLink
-                href={
-                  emailAddress
-                    ? `https://${siteDomain}/api/newsletter/${newsletterId}/subscribe?email=${emailAddress}`
-                    : "#"
-                }
-              >
-                Subscribe
-              </UnstyledLink>
-              {" / "}
-              <UnstyledLink
-                href={
-                  emailAddress
-                    ? `https://${siteDomain}/api/newsletter/${newsletterId}/unsubscribe?email=${emailAddress}`
-                    : "#"
-                }
-              >
-                Unsubscribe
-              </UnstyledLink>
-            </p>
-          </FooterSection>
-          <FooterSection>
-            <p>
-              Powered by{" "}
-              <UnstyledLink href={`https://${siteDomain}`}>
-                GitLetter
-              </UnstyledLink>
-            </p>
-          </FooterSection>
-        </footer>
-      </div>
+        <h1 style={{ textAlign: "center" }}>{title}</h1>
+        <hr />
+        {content}
+      </article>
+      <footer style={{ margin: "32px auto" }}>
+        <FooterSection>
+          <p>
+            <UnstyledLink
+              href={
+                emailAddress
+                  ? `${process.env.APP_URL}/api/newsletter/${newsletterId}/subscribe?email=${emailAddress}`
+                  : "#"
+              }
+            >
+              Subscribe
+            </UnstyledLink>
+            {" / "}
+            <UnstyledLink
+              href={
+                emailAddress
+                  ? `${process.env.APP_URL}/api/newsletter/${newsletterId}/unsubscribe?email=${emailAddress}`
+                  : "#"
+              }
+            >
+              Unsubscribe
+            </UnstyledLink>
+          </p>
+        </FooterSection>
+        <FooterSection>
+          <p>
+            Powered by{" "}
+            <UnstyledLink href={`https://${siteDomain}`}>
+              GitLetter
+            </UnstyledLink>
+          </p>
+        </FooterSection>
+      </footer>
     </div>
   );
 };
