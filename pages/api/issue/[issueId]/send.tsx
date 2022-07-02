@@ -1,4 +1,5 @@
 import { Issue } from "@prisma/client";
+import inlineCss from "inline-css";
 import { Base64 } from "js-base64";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth/core/types";
@@ -10,6 +11,7 @@ import slugify from "slugify";
 
 import { createOctokitClient } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
+import { EmailStyleWrapper } from "../../../../src/components/EmailStyleWrapper";
 import { MarkdownParser } from "../../../../src/components/MarkdownParser";
 import { getEmailAddress } from "../../../../util/getEmailAddress";
 import { getPath } from "../../../../util/getRepoPath";
@@ -111,14 +113,20 @@ const sendMail = async (
 
   // convert markdown to html
   const htmlString = ReactDOMServer.renderToStaticMarkup(
-    <MarkdownParser children={issue.content} />
+    <EmailStyleWrapper
+      title={issue.title}
+      content={<MarkdownParser children={issue.content} />}
+    />
   );
+  const htmlWithInlineStyling = await inlineCss(htmlString, {
+    url: "https://gitletter.co",
+  });
 
-  const defaultMailOptions = {
+  const defaultMailOptions: Mail.Options = {
     from: `${newsletter.title} <${getEmailAddress(newsletter.title)}>`,
     replyTo: `${userFullName} <${userEmail}>`,
     subject: issue.title,
-    html: htmlString,
+    html: htmlWithInlineStyling,
   };
   newsletter.subscribers.forEach((subscriber) => {
     const mailOptions: Mail.Options = {

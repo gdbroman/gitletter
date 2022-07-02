@@ -12,6 +12,7 @@ import { ChangeEvent, FC, useCallback, useState } from "react";
 
 import { populateNewIssue } from "../../prisma/modules/issue";
 import prisma from "../../prisma/prisma";
+import { EmailStyleWrapper } from "../../src/components/EmailStyleWrapper";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
@@ -124,14 +125,16 @@ const Compose: FC<Props> = ({ issue }) => {
       <ProtectedPage>
         <Layout>
           <NextSeo title={title} />
-          <Card variant="outlined">
-            <Box p={2}>
-              <Box my={4}>
-                {preview.isOn ? (
-                  <Typography variant="h1" fontWeight={500} paddingY={1}>
-                    {title}
-                  </Typography>
-                ) : (
+          {preview.isOn && (
+            <EmailStyleWrapper
+              title={title}
+              content={<MarkdownParser children={content} />}
+            />
+          )}
+          {!preview.isOn && (
+            <Card variant="outlined">
+              <Box p={2}>
+                <Box my={4}>
                   <TextField
                     fullWidth
                     variant="standard"
@@ -146,12 +149,8 @@ const Compose: FC<Props> = ({ issue }) => {
                     onBlur={handleTitleBlur}
                     onChange={handleTitleChange}
                   />
-                )}
-              </Box>
-              <Box>
-                {preview.isOn ? (
-                  <MarkdownParser children={content} />
-                ) : (
+                </Box>
+                <Box>
                   <TextField
                     fullWidth
                     multiline
@@ -159,10 +158,10 @@ const Compose: FC<Props> = ({ issue }) => {
                     onBlur={handleContentBlur}
                     onChange={handleContentChange}
                   />
-                )}
+                </Box>
               </Box>
-            </Box>
-          </Card>
+            </Card>
+          )}
           {isSent ? (
             <Typography variant="body1" color="textSecondary" my={4}>
               {`Sent on ${issue.sentAt}`}
