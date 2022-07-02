@@ -19,6 +19,13 @@ export async function getGithubRepos(installationId: string) {
   const githubReposInfo: GithubReposInfo = await Promise.all(
     repos.map(async (repo) => {
       let infos: RepoInfo[] = [];
+      const repoContentData = [
+        {
+          type: "dir",
+          path: "./",
+        } as any,
+      ];
+
       try {
         const repoContent: OctokitResponse<GithubRepoData> =
           await client.repos.getContent({
@@ -27,19 +34,15 @@ export async function getGithubRepos(installationId: string) {
             path: "",
           });
         if (Array.isArray(repoContent.data)) {
-          const repoContentData = repoContent.data;
-          repoContentData.push({
-            type: "dir",
-            path: "./",
-          } as any);
-
-          infos = repoContentData
-            .filter(({ type }) => type === "dir")
-            .map(({ path }) => ({ dir: path, owner: repo.owner.login }));
+          repoContentData.push(...repoContent.data);
         }
       } catch (error) {
-        console.error(error);
+        console.error("Could not get repo content, perhaps it's empty.");
       }
+
+      infos = repoContentData
+        .filter(({ type }) => type === "dir")
+        .map(({ path }) => ({ dir: path, owner: repo.owner.login }));
 
       return [repo.name, infos];
     })
