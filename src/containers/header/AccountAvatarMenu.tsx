@@ -112,7 +112,7 @@ export const AccountAvatarMenu = () => {
           onClick={(event) => event.stopPropagation()}
         >
           <AccountAvatar size={38} sessionData={session.data} />
-          <Box>
+          <Box minWidth={0}>
             <Typography
               variant="body2"
               lineHeight={1.3}
@@ -121,7 +121,7 @@ export const AccountAvatarMenu = () => {
             >
               {session.data?.user.name}
             </Typography>
-            <Typography variant="body2" noWrap lineHeight={1.3}>
+            <Typography variant="body2" lineHeight={1.3} noWrap>
               {session.data?.user.email}
             </Typography>
           </Box>
