@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { ChangeEvent, FC, useMemo, useState } from "react";
 
 import { maxEmailAddressLength } from "../../../util/constants";
-import { getEmailAddress } from "../../../util/getEmail";
+import { getEmailAddress } from "../../../util/getEmailAddress";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { CustomSnackbar } from "../../components/Snackbar";
 import { newsletterService } from "../../services/newsletterService";
