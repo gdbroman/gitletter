@@ -11,7 +11,19 @@ import slugify from "slugify";
 import { createOctokitClient } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
 import { MarkdownParser } from "../../../../src/components/MarkdownParser";
+import { getEmailAddress } from "../../../../util/getEmailAddress";
 import { getPath } from "../../../../util/getRepoPath";
+
+type FetchedNewsletter = {
+  title: string;
+  subscribers: { email: string }[];
+  githubIntegration: {
+    installationId: string;
+    repoDir: string;
+    repoName: string;
+    repoOwner: string;
+  };
+};
 
 export default async function handle(
   req: NextApiRequest,
@@ -80,10 +92,13 @@ export default async function handle(
   }
 }
 
-const sendMail = async (session: Session, issue: Issue, newsletter: any) => {
+const sendMail = async (
+  session: Session,
+  issue: Issue,
+  newsletter: FetchedNewsletter
+) => {
   const userEmail = session.user.email;
   const userFullName = session.user.name;
-  const userName = userFullName.split(" ")[0].toLowerCase();
 
   const transport = nodemailer.createTransport({
     host: "smtp.sendgrid.net",
@@ -99,21 +114,24 @@ const sendMail = async (session: Session, issue: Issue, newsletter: any) => {
     <MarkdownParser children={issue.content} />
   );
 
-  const mailOptions: Mail.Options = {
-    from: `${newsletter.title} <${userName}@gitletter.co>`,
+  const defaultMailOptions = {
+    from: `${newsletter.title} <${getEmailAddress(newsletter.title)}>`,
     replyTo: `${userFullName} <${userEmail}>`,
-    to: `You <${userName}s-fans@gitletter.co>`,
-    bcc: newsletter.subscribers.map((subscriber) => subscriber.email),
     subject: issue.title,
     html: htmlString,
   };
-
-  transport.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
-    }
+  newsletter.subscribers.forEach((subscriber) => {
+    const mailOptions: Mail.Options = {
+      ...defaultMailOptions,
+      to: subscriber.email,
+    };
+    transport.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(info);
+      }
+    });
   });
 };
 
