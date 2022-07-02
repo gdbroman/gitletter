@@ -6,6 +6,7 @@ type Props = {
   title: string;
   content: ReactNode;
   newsletterId: string;
+  newsletterTitle?: string;
   emailAddress?: string;
 };
 
@@ -13,6 +14,7 @@ export const EmailStyleWrapper: FC<Props> = ({
   title,
   content,
   newsletterId,
+  newsletterTitle,
   emailAddress,
 }) => {
   return (
@@ -33,39 +35,32 @@ export const EmailStyleWrapper: FC<Props> = ({
         <hr />
         {content}
       </article>
-      <footer style={{ margin: "32px auto" }}>
-        <FooterSection>
-          <p>
-            <UnstyledLink
-              href={
-                emailAddress
-                  ? `${process.env.APP_URL}/api/newsletter/${newsletterId}/subscribe?email=${emailAddress}`
-                  : "#"
-              }
-            >
-              Subscribe
-            </UnstyledLink>
-            {" / "}
-            <UnstyledLink
-              href={
-                emailAddress
-                  ? `${process.env.APP_URL}/api/newsletter/${newsletterId}/unsubscribe?email=${emailAddress}`
-                  : "#"
-              }
-            >
-              Unsubscribe
-            </UnstyledLink>
-          </p>
-        </FooterSection>
-        <FooterSection>
-          <p>
-            Powered by{" "}
-            <UnstyledLink href={`https://${siteDomain}`}>
-              GitLetter
-            </UnstyledLink>
-          </p>
-        </FooterSection>
-      </footer>
+      {newsletterTitle && emailAddress && (
+        <footer style={{ margin: "32px auto" }}>
+          <FooterSection>
+            <p>
+              {newsletterTitle} –{" "}
+              <UnstyledLink
+                href={
+                  emailAddress
+                    ? `${process.env.APP_URL}/api/newsletter/${newsletterId}/unsubscribe?email=${emailAddress}`
+                    : "#"
+                }
+              >
+                Unsubscribe
+              </UnstyledLink>
+            </p>
+          </FooterSection>
+          <FooterSection>
+            <p>
+              Powered by{" "}
+              <UnstyledLink href={`https://${siteDomain}`}>
+                GitLetter
+              </UnstyledLink>
+            </p>
+          </FooterSection>
+        </footer>
+      )}
     </div>
   );
 };

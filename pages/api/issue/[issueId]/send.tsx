@@ -123,6 +123,7 @@ const sendMail = async (
         title={issue.title}
         content={<MarkdownParser children={issue.content} />}
         newsletterId={issue.newsletterId}
+        newsletterTitle={newsletter.title}
         emailAddress={subscriber.email}
       />
     );

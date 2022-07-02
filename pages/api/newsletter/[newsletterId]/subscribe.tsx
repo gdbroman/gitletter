@@ -30,18 +30,6 @@ export default async function handle(
     } else {
       res.redirect(`/app/${newsletterId}/subscribed`);
     }
-  } else if (req.method === "GET") {
-    const email = req.query.email as string;
-
-    await prisma.subscriber.create({
-      data: {
-        email,
-        newsletter: { connect: { id: newsletterId } },
-        addedAt: new Date(),
-      },
-    });
-
-    res.redirect(`/app/${newsletterId}/subscribed`);
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }
