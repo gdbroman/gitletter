@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -82,18 +83,22 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
           disabled={submitting.isOn}
           onChange={handleOnChangeTitle}
         />
-        <TextField
-          fullWidth
-          label="From"
-          value={getEmailAddress(title)}
-          disabled
-        />
-        <TextField
-          fullWidth
-          label="Reply-to"
-          value={session.data.user.email}
-          disabled
-        />
+        <Tooltip title="This email address is just for branding purposes.">
+          <TextField
+            fullWidth
+            label="From"
+            value={getEmailAddress(title)}
+            disabled
+          />
+        </Tooltip>
+        <Tooltip title="Where replies will be sent.">
+          <TextField
+            fullWidth
+            label="Reply-to"
+            value={session.data.user.email}
+            disabled
+          />
+        </Tooltip>
         {error && (
           <Typography variant="caption" color="red">
             {error}
