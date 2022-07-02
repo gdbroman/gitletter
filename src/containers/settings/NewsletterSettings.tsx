@@ -5,6 +5,7 @@ import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { ChangeEvent, FC, useMemo, useState } from "react";
 
 import { maxEmailAddressLength } from "../../../util/constants";
@@ -20,6 +21,7 @@ type Props = {
 
 export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
   const router = useRouter();
+  const session = useSession();
 
   const [title, setTitle] = useState(initialTitle);
   const [error, setError] = useState("");
@@ -34,7 +36,7 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
     [title, initialTitle]
   );
 
-  const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
     if (newName.length <= maxEmailAddressLength) {
       setTitle(newName);
@@ -75,18 +77,23 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
       >
         <TextField
           fullWidth
-          label="Name"
+          label="Title"
           value={title}
           disabled={submitting.isOn}
-          onChange={handleOnChange}
+          onChange={handleOnChangeTitle}
         />
         <TextField
           fullWidth
-          label="Email address"
+          label="From"
           value={getEmailAddress(title)}
           disabled
         />
-        {/* <TextField fullWidth label="Reply-to" value={session.data.user.email} /> */}
+        <TextField
+          fullWidth
+          label="Reply-to"
+          value={session.data.user.email}
+          disabled
+        />
         {error && (
           <Typography variant="caption" color="red">
             {error}
