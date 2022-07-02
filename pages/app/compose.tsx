@@ -10,6 +10,7 @@ import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 
+import { populateNewIssue } from "../../prisma/modules/issue";
 import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
@@ -39,14 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   if (!issueId) {
-    issue = await prisma.issue.create({
-      data: {
-        title: "Hello world",
-        content: "And I spoke thusly.",
-        newsletter: { connect: { id: newsletterId } },
-        author: { connect: { email: session?.user?.email } },
-      },
-    });
+    issue = await populateNewIssue(session.user.email, newsletterId);
   } else {
     issue = await prisma.issue.findFirst({
       where: { id: issueId },
