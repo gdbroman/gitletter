@@ -7,42 +7,47 @@ import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, useMemo, useState } from "react";
 
+import { maxEmailAddressLength } from "../../../util/constants";
+import { getEmailAddress } from "../../../util/getEmail";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { CustomSnackbar } from "../../components/Snackbar";
 import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
   id: string;
-  title: string;
+  name: string;
 };
 
-export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
+export const NewsletterSettings: FC<Props> = ({ id, name: initialName }) => {
   const router = useRouter();
 
-  const [title, setTitle] = useState(initialTitle);
+  const [name, setName] = useState(initialName);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const submitting = useToggle(false);
 
   const isValid = useMemo(() => {
-    return title.length > 0;
-  }, [title]);
-  const isChanged = useMemo(
-    () => title !== initialTitle,
-    [title, initialTitle]
-  );
+    return name.length > 0 && name.length <= maxEmailAddressLength;
+  }, [name]);
+  const isChanged = useMemo(() => name !== initialName, [name, initialName]);
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+    const newName = event.target.value;
+    if (newName.length <= maxEmailAddressLength) {
+      setName(newName);
+    }
   };
   const handleCancel = () => {
-    setTitle(initialTitle);
+    setName(initialName);
   };
   const handleSubmit = async () => {
     submitting.toggleOn();
     setError("");
     try {
-      const response = await newsletterService.updateNewsletter(id, title);
+      const response = await newsletterService.updateNewsletter(
+        id,
+        name.trim()
+      );
       if (!response) {
         throw new Error();
       }
@@ -61,24 +66,30 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
-        alignItems="end"
         padding={2}
         paddingTop={4}
         gap={2}
       >
         <TextField
           fullWidth
-          label="Title"
-          value={title}
+          label="Name"
+          value={name}
           disabled={submitting.isOn}
           onChange={handleOnChange}
-        ></TextField>
+        />
+        <TextField
+          fullWidth
+          label="Email address"
+          value={getEmailAddress(name)}
+          disabled
+        />
+        {/* <TextField fullWidth label="Reply-to" value={session.data.user.email} /> */}
         {error && (
           <Typography variant="caption" color="red">
             {error}
           </Typography>
         )}
-        <Box display="flex" gap={1}>
+        <Box display="flex" gap={1} justifyContent="end">
           {isChanged && (
             <Button
               variant="text"

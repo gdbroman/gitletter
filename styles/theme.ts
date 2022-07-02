@@ -92,6 +92,17 @@ const theme = createTheme({
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            "& fieldset.MuiOutlinedInput-notchedOutline": {
+              border: "1px solid rgba(0, 0, 0, 0.12)",
+            },
+          },
+        },
+      },
+    },
   },
 });
 
