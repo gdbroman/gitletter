@@ -21,7 +21,6 @@ export default async function handle(
     res.status(200).json(result);
   } else if (req.method === "PUT") {
     const { title } = req.body;
-    console.log("title", title);
     const result = await prisma.newsletter.update({
       where: { id: newsletterId },
       data: { title },

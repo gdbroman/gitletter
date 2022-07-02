@@ -111,27 +111,28 @@ const sendMail = async (
     },
   });
 
-  // convert markdown to html
-  const htmlString = ReactDOMServer.renderToStaticMarkup(
-    <EmailStyleWrapper
-      title={issue.title}
-      content={<MarkdownParser children={issue.content} />}
-    />
-  );
-  const htmlWithInlineStyling = await inlineCss(htmlString, {
-    url: "https://gitletter.co",
-  });
-
   const defaultMailOptions: Mail.Options = {
     from: `${newsletter.title} <${getEmailAddress(newsletter.title)}>`,
     replyTo: `${userFullName} <${userEmail}>`,
     subject: issue.title,
-    html: htmlWithInlineStyling,
   };
-  newsletter.subscribers.forEach((subscriber) => {
+  newsletter.subscribers.forEach(async (subscriber) => {
+    // convert markdown to html
+    const htmlString = ReactDOMServer.renderToStaticMarkup(
+      <EmailStyleWrapper
+        title={issue.title}
+        content={<MarkdownParser children={issue.content} />}
+        newsletterId={issue.newsletterId}
+        emailAddress={subscriber.email}
+      />
+    );
+    const htmlWithInlineStyling = await inlineCss(htmlString, {
+      url: "https://gitletter.co",
+    });
     const mailOptions: Mail.Options = {
       ...defaultMailOptions,
       to: subscriber.email,
+      html: htmlWithInlineStyling,
     };
     transport.sendMail(mailOptions, (err, info) => {
       if (err) {

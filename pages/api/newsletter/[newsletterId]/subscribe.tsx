@@ -7,9 +7,9 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const newsletterId = req.query.newsletterId as string;
-  const { email, dontRedirect } = req.body;
 
   if (req.method === "POST") {
+    const { email, dontRedirect } = req.body;
     const existingSubscriber = await prisma.subscriber.findFirst({
       where: { email, newsletterId },
     });
@@ -30,6 +30,16 @@ export default async function handle(
     } else {
       res.redirect(`/app/${newsletterId}/success`);
     }
+  } else if (req.method === "GET") {
+    const email = req.query.email as string;
+
+    await prisma.subscriber.create({
+      data: {
+        email,
+        newsletter: { connect: { id: newsletterId } },
+        addedAt: new Date(),
+      },
+    });
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }
