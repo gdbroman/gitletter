@@ -43,9 +43,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!issueId) {
     issue = await populateNewIssue(session.user.email, newsletterId);
   } else {
-    issue = await prisma.issue.findFirst({
-      where: { id: issueId },
-    });
+    try {
+      issue = await prisma.issue.findFirst({
+        where: { id: issueId },
+      });
+    } catch {
+      console.error("Issue not found");
+    }
+  }
+
+  if (!issue) {
+    res.statusCode = 302;
+    res.setHeader("location", "/app");
+    return { props: { issue: {} } };
   }
 
   return { props: { issue: stripDate(issue) } };
@@ -129,6 +139,7 @@ const Compose: FC<Props> = ({ issue }) => {
             <EmailStyleWrapper
               title={title}
               content={<MarkdownParser children={content} />}
+              newsletterId={issue.newsletterId}
             />
           )}
           {!preview.isOn && (
