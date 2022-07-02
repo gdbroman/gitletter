@@ -15,30 +15,33 @@ import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
   id: string;
-  name: string;
+  title: string;
 };
 
-export const NewsletterSettings: FC<Props> = ({ id, name: initialName }) => {
+export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
   const router = useRouter();
 
-  const [name, setName] = useState(initialName);
+  const [title, setTitle] = useState(initialTitle);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const submitting = useToggle(false);
 
   const isValid = useMemo(() => {
-    return name.length > 0 && name.length <= maxEmailAddressLength;
-  }, [name]);
-  const isChanged = useMemo(() => name !== initialName, [name, initialName]);
+    return title.length > 0 && title.length <= maxEmailAddressLength;
+  }, [title]);
+  const isChanged = useMemo(
+    () => title !== initialTitle,
+    [title, initialTitle]
+  );
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newName = event.target.value;
     if (newName.length <= maxEmailAddressLength) {
-      setName(newName);
+      setTitle(newName);
     }
   };
   const handleCancel = () => {
-    setName(initialName);
+    setTitle(initialTitle);
   };
   const handleSubmit = async () => {
     submitting.toggleOn();
@@ -46,7 +49,7 @@ export const NewsletterSettings: FC<Props> = ({ id, name: initialName }) => {
     try {
       const response = await newsletterService.updateNewsletter(
         id,
-        name.trim()
+        title.trim()
       );
       if (!response) {
         throw new Error();
@@ -73,14 +76,14 @@ export const NewsletterSettings: FC<Props> = ({ id, name: initialName }) => {
         <TextField
           fullWidth
           label="Name"
-          value={name}
+          value={title}
           disabled={submitting.isOn}
           onChange={handleOnChange}
         />
         <TextField
           fullWidth
           label="Email address"
-          value={getEmailAddress(name)}
+          value={getEmailAddress(title)}
           disabled
         />
         {/* <TextField fullWidth label="Reply-to" value={session.data.user.email} /> */}
@@ -90,7 +93,7 @@ export const NewsletterSettings: FC<Props> = ({ id, name: initialName }) => {
           </Typography>
         )}
         <Box display="flex" gap={1} justifyContent="end">
-          {isChanged && (
+          {isChanged && !success && (
             <Button
               variant="text"
               size="medium"
@@ -102,10 +105,12 @@ export const NewsletterSettings: FC<Props> = ({ id, name: initialName }) => {
             </Button>
           )}
           <LoadingButton
-            variant={isChanged && isValid ? "contained" : "outlined"}
+            variant={
+              isChanged && isValid && !success ? "contained" : "outlined"
+            }
             size="medium"
             color="primary"
-            disabled={!isChanged || !isValid}
+            disabled={!isChanged || !isValid || !!success}
             loading={submitting.isOn}
             onClick={handleSubmit}
           >

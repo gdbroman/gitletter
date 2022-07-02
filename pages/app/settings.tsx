@@ -65,7 +65,7 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposInfo }) => {
               githubIntegration={githubIntegration}
               githubReposInfo={githubReposInfo}
             />
-            <NewsletterSettings id={newsletterId} name={title} />
+            <NewsletterSettings id={newsletterId} title={title} />
           </Box>
         </Dashboard>
       </Layout>
