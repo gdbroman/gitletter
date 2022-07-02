@@ -28,28 +28,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     res.statusCode = 401;
     return { props: { issue: {} } };
   }
-  let issue: Issue = {} as Issue;
   const urlSearchParams = new URLSearchParams(
     req.url.substring(req.url.indexOf("?"))
   );
   const newsletterId = urlSearchParams.get("n");
   const issueId = urlSearchParams.get("i");
 
-  if (!newsletterId && !issueId) {
-    res.statusCode = 404;
-    return { props: { issue: {} } };
-  }
-
-  if (!issueId) {
+  let issue: Issue = {} as Issue;
+  if (issueId) {
+    issue = await prisma.issue.findFirst({
+      where: { id: issueId },
+    });
+  } else if (newsletterId) {
     issue = await populateNewIssue(session.user.email, newsletterId);
-  } else {
-    try {
-      issue = await prisma.issue.findFirst({
-        where: { id: issueId },
-      });
-    } catch {
-      console.error("Issue not found");
-    }
   }
 
   if (!issue) {

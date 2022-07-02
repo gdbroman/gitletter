@@ -23,6 +23,7 @@ export const populateNewIssue = async (
     where: { id: newsletterId },
     select: { title: true, issues: true },
   });
+  if (!newsletter) return null;
 
   const count = newsletter.issues.length;
   const title = `${newsletter.title} #${count}`;
