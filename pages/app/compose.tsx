@@ -15,10 +15,10 @@ import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
-import { useToggle } from "../../src/hooks/useToggle";
 import { issueService } from "../../src/services/issueService";
 import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../util/eatClick";
+import { useToggle } from "../../util/hooks/useToggle";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -131,7 +131,7 @@ const Compose: FC<Props> = ({ issue }) => {
         <Layout>
           <NextSeo title={title} />
           <Card variant="outlined">
-            <Box p={4}>
+            <Box p={2}>
               <Box my={4}>
                 {preview.isOn ? (
                   <Typography variant="h1" fontWeight={500} paddingY={1}>

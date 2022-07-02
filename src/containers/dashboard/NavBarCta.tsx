@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, MouseEvent, useState } from "react";
 
-import { useToggle } from "../../hooks/useToggle";
+import { useToggle } from "../../../util/hooks/useToggle";
 import { AddFormDialog } from "./AddFormDialog";
 import { AddSubscriberDialog } from "./AddSubscriberDialog";
 import { DashboardProps } from "./Dashboard";

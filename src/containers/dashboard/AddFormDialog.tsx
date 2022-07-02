@@ -9,8 +9,8 @@ import copy from "copy-to-clipboard";
 import { FC } from "react";
 
 import theme from "../../../styles/theme";
+import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
-import { useToggle } from "../../hooks/useToggle";
 type Props = {
   newsletterId: string;
   open: boolean;

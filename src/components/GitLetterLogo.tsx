@@ -2,26 +2,14 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useMemo } from "react";
 
-const getLogoHref = (status) => {
-  switch (status) {
-    case "loading":
-      return "#";
-    case "authenticated":
-      return "/app";
-    default:
-      return "/";
-  }
-};
+import { useGetHomeRef } from "../../util/hooks/useGetHomeRef";
 
 export const GitLetterLogo = () => {
-  const { status } = useSession();
-  const href = useMemo(() => getLogoHref(status), [status]);
+  const homeRef = useGetHomeRef();
 
   return (
-    <Link href={href}>
+    <Link href={homeRef}>
       <Box
         display="flex"
         alignItems="center"

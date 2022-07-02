@@ -5,7 +5,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
 
-import { useSignIn } from "../../hooks/useSignIn";
+import { useSignIn } from "../../../util/hooks/useSignIn";
 import { AccountAvatarMenu } from "./AccountAvatarMenu";
 
 export const LoadingButtonWithBlackSpinner = styled(LoadingButton)`

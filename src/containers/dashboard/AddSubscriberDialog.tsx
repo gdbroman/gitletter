@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
+import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
-import { useToggle } from "../../hooks/useToggle";
 import { newsletterService } from "../../services/newsletterService";
 
 type Props = {

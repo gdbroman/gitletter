@@ -9,11 +9,11 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FC } from "react";
 
-import * as ga from "../lib/googleAnalytics";
 import Layout from "../src/components/Layout";
-import { useSignIn } from "../src/hooks/useSignIn";
-import { useToggle } from "../src/hooks/useToggle";
 import { calendlyLink, siteDescription, siteTagline } from "../util/constants";
+import { useSignIn } from "../util/hooks/useSignIn";
+import { useToggle } from "../util/hooks/useToggle";
+import * as ga from "../util/lib/googleAnalytics";
 
 const Home: FC = () => {
   const router = useRouter();
@@ -95,7 +95,12 @@ const Home: FC = () => {
           </Box>
         </Box>
         <Box textAlign="center">
-          <Image src={"/demo/screen1.png"} width={603} height={360} />
+          <Image
+            src={"/demo/screen1.png"}
+            alt="GitLetter demo"
+            width={603}
+            height={360}
+          />
         </Box>
       </main>
     </Layout>

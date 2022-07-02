@@ -12,9 +12,9 @@ import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
 import { GithubReposInfo, RepoInfo } from "../../../prisma/modules/github";
+import { useToggle } from "../../../util/hooks/useToggle";
 import { ItemSelect } from "../../components/ItemSelect";
 import { CustomSnackbar } from "../../components/Snackbar";
-import { useToggle } from "../../hooks/useToggle";
 import { githubIntegrationService } from "../../services/githubIntegrationService";
 import { Nullable } from "../../types/general";
 import { LoadingButtonWithBlackSpinner } from "../header/HeaderNavRight";

@@ -9,8 +9,8 @@ import { SessionProvider } from "next-auth/react";
 import NProgress from "nprogress";
 import { FC, useEffect } from "react";
 
-import * as ga from "../lib/googleAnalytics";
 import theme from "../styles/theme";
+import * as ga from "../util/lib/googleAnalytics";
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter();

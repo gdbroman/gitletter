@@ -11,8 +11,8 @@ import { GithubIntegration } from "@prisma/client";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 
+import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
-import { useToggle } from "../../hooks/useToggle";
 import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
