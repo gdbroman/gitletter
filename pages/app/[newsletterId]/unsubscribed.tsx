@@ -29,7 +29,7 @@ const UnsubscribedPage: FC<Props> = ({ newsletterTitle }) => (
   <Layout>
     <Box my={8} mx="auto" textAlign="center" maxWidth="600px">
       <Typography variant="h1" fontWeight="bold">
-        Unsubscribed 👋
+        Farewell 👋
       </Typography>
       <Typography
         variant="body1"
