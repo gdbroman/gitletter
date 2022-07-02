@@ -5,6 +5,7 @@ import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import prisma from "../../prisma/prisma";
+import { EmptyTab } from "../../src/components/EmptyTab";
 import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
@@ -68,7 +69,15 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
               onItemDelete={onItemDelete}
             />
           ) : (
-            "Use this to capture email addresses from your newsletter."
+            <EmptyTab
+              emoji="🕊"
+              title="No subscribers yet"
+              subtitle={
+                <>
+                  Click <b>Manage</b> to get going
+                </>
+              }
+            />
           )}
         </Dashboard>
       </Layout>

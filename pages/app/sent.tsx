@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
@@ -6,6 +5,7 @@ import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import prisma from "../../prisma/prisma";
+import { EmptyTab } from "../../src/components/EmptyTab";
 import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
@@ -64,7 +64,15 @@ const Sent: FC<Props> = ({ newsletter }) => {
         <NextSeo title="Sent" />
         <Dashboard title={title} value={1} newsletterId={newsletterId}>
           {!sentIssues.length ? (
-            <Typography variant="body1">No sent issues found.</Typography>
+            <EmptyTab
+              emoji="📭"
+              title="Nothing sent yet"
+              subtitle={
+                <>
+                  Click <b>Compose</b> to get going
+                </>
+              }
+            />
           ) : (
             <EnhancedTable
               type="sentIssues"

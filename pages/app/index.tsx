@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
@@ -6,6 +5,7 @@ import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import prisma from "../../prisma/prisma";
+import { EmptyTab } from "../../src/components/EmptyTab";
 import { EnhancedTable } from "../../src/components/EnhancedTable";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
@@ -68,7 +68,15 @@ const Drafts: FC<Props> = ({ newsletter }) => {
         <NextSeo title="Drafts" />
         <Dashboard title={title} value={0} newsletterId={newsletterId}>
           {!drafts.length ? (
-            <Typography variant="body1">No drafts found.</Typography>
+            <EmptyTab
+              emoji="📝"
+              title="No drafts found"
+              subtitle={
+                <>
+                  Click <b>Compose</b> to get going
+                </>
+              }
+            />
           ) : (
             <EnhancedTable
               type="drafts"
