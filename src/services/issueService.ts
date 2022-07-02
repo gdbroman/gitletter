@@ -1,4 +1,4 @@
-import { fetchApi, jsonHeader } from "./util";
+import { fetchApi } from "./util";
 
 const createIssue = async (
   newsletterId: string,
@@ -12,15 +12,10 @@ const createIssue = async (
   });
 
 const updateIssue = async (issueId: string, title: string, content: string) =>
-  fetchApi(
-    `/issue/${issueId}`,
-    "PUT",
-    {
-      title,
-      content,
-    },
-    jsonHeader
-  );
+  fetchApi(`/issue/${issueId}`, "PUT", {
+    title,
+    content,
+  });
 
 const deleteIssue = async (issueId: string) =>
   fetchApi(`/issue/${issueId}`, "DELETE");

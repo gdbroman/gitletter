@@ -1,7 +1,6 @@
 import { createAppAuth } from "@octokit/auth-app";
 import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
 import { OctokitResponse } from "@octokit/types";
-import { GithubIntegration } from "@prisma/client";
 
 export type GithubRepoData =
   RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
@@ -10,10 +9,6 @@ export type RepoInfo = {
   owner: string;
 };
 export type GithubReposInfo = [string, RepoInfo[]][];
-export type UpdateGithubIntegrationInput = Pick<
-  GithubIntegration,
-  "repoName" | "repoDir" | "repoOwner"
->;
 
 export async function getGithubRepos(installationId: string) {
   const client = createOctokitClient(installationId);

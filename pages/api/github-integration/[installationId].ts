@@ -1,21 +1,7 @@
-import { RestEndpointMethodTypes } from "@octokit/rest";
-import { GithubIntegration } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
 import prisma from "../../../prisma/prisma";
-
-export type GithubRepoData =
-  RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
-export type RepoInfo = {
-  dir: string;
-  owner: string;
-};
-export type GithubReposInfo = [string, RepoInfo[]][];
-export type UpdateGithubIntegrationInput = Pick<
-  GithubIntegration,
-  "repoName" | "repoDir" | "repoOwner"
->;
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,9 +19,12 @@ export default async function handler(
     const integration = await deleteIntegration(installationId);
     res.status(200).json(integration);
   } else if (req.method === "PUT") {
+    const { repoName, repoDir, repoOwner } = req.body;
     const integration = await updateIntegration(
       installationId,
-      JSON.parse(req.body)
+      repoName,
+      repoDir,
+      repoOwner
     );
     res.status(200).json(integration);
   } else {
@@ -57,14 +46,20 @@ function getIntegration(installationId: string) {
 
 function updateIntegration(
   installationId: string,
-  data: UpdateGithubIntegrationInput
+  repoName: string,
+  repoDir: string,
+  repoOwner: string
 ) {
   try {
     return prisma.githubIntegration.update({
       where: {
         installationId,
       },
-      data,
+      data: {
+        repoName,
+        repoDir,
+        repoOwner,
+      },
     });
   } catch (error) {
     console.error(error);

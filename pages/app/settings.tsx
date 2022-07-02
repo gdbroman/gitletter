@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import { GithubIntegration, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
@@ -9,7 +10,8 @@ import prisma from "../../prisma/prisma";
 import Layout from "../../src/components/Layout";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import { GithubIntegrationSettings } from "../../src/containers/settings/GithubIntegrationCard";
+import { GithubIntegrationSettings } from "../../src/containers/settings/GithubIntegrationSettings";
+import { NewsletterSettings } from "../../src/containers/settings/NewsletterSettings";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -58,10 +60,13 @@ const AppSettings: FC<Props> = ({ newsletter, githubReposInfo }) => {
       <Layout>
         <NextSeo title="Settings" />
         <Dashboard title={title} value={3} newsletterId={newsletterId}>
-          <GithubIntegrationSettings
-            githubIntegration={githubIntegration}
-            githubReposInfo={githubReposInfo}
-          />
+          <Box display="flex" flexDirection="column" gap={2}>
+            <GithubIntegrationSettings
+              githubIntegration={githubIntegration}
+              githubReposInfo={githubReposInfo}
+            />
+            <NewsletterSettings id={newsletterId} title={title} />
+          </Box>
         </Dashboard>
       </Layout>
     </ProtectedPage>
