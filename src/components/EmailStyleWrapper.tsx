@@ -31,7 +31,7 @@ export const EmailStyleWrapper: FC<Props> = ({
           width: "100%",
         }}
       >
-        <h1 style={{ textAlign: "center" }}>{title}</h1>
+        <h1 style={{ fontSize: "32px", textAlign: "center" }}>{title}</h1>
         <hr />
         {content}
       </article>

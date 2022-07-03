@@ -136,7 +136,7 @@ const Compose: FC<Props> = ({ issue }) => {
           {!preview.isOn && (
             <Card variant="outlined">
               <Box p={2}>
-                <Box my={4}>
+                <Box mb={4}>
                   <TextField
                     fullWidth
                     variant="standard"
