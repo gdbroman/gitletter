@@ -1,9 +1,10 @@
 import Box from "@mui/material/Box";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import TextField from "@mui/material/TextField";
+import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { Issue } from "@prisma/client";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
@@ -16,6 +17,7 @@ import { EmailStyleWrapper } from "../../src/components/EmailStyleWrapper";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
+import { Editor } from "../../src/containers/compose/Editor";
 import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { issueService } from "../../src/services/issueService";
 import { stripDate } from "../../src/types/stripDate";
@@ -74,10 +76,8 @@ const Compose: FC<Props> = ({ issue }) => {
   ) => {
     setTitle(e.target.value);
   };
-  const handleContentChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setContent(e.target.value);
+  const handleContentChange = (newValue: string) => {
+    setContent(newValue);
   };
   const handleSave = useCallback(async () => {
     try {
@@ -122,82 +122,55 @@ const Compose: FC<Props> = ({ issue }) => {
   };
 
   return (
-    <>
-      <ProtectedPage>
-        <Layout>
-          <NextSeo title={title} />
-          {preview.isOn && (
-            <EmailStyleWrapper
-              title={title}
-              content={<MarkdownParser children={content} />}
-              newsletterId={issue.newsletterId}
-            />
-          )}
-          {!preview.isOn && (
-            <Card variant="outlined">
-              <Box p={2}>
-                <Box mb={4}>
-                  <TextField
-                    fullWidth
-                    variant="standard"
-                    inputProps={{
-                      style: {
-                        fontSize: 40,
-                        fontWeight: 500,
-                        padding: "8px 0",
-                      },
-                    }}
-                    value={title}
-                    onBlur={handleTitleBlur}
-                    onChange={handleTitleChange}
-                  />
-                </Box>
-                <Box>
-                  <TextField
-                    fullWidth
-                    multiline
-                    value={content}
-                    onBlur={handleContentBlur}
-                    onChange={handleContentChange}
-                  />
-                </Box>
-              </Box>
-            </Card>
-          )}
-          {isSent ? (
-            <Typography variant="body1" color="textSecondary" my={4}>
-              {`Sent on ${issue.sentAt}`}
-            </Typography>
-          ) : (
-            <Box display="flex" justifyContent="end" my={4} gap={2}>
-              <Button variant="text" color="primary" onClick={preview.toggle}>
+    <ProtectedPage>
+      <Layout
+        footer={
+          <footer style={{ backgroundColor: "#eeeeee" }}>
+            <Box display="flex" justifyContent="end" p={2} gap={2}>
+              <Button variant="text" onClick={preview.toggle}>
                 {preview.isOn ? "Edit" : "Preview"}
               </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAreYouSure}
-              >
+              <Button variant="contained" onClick={handleAreYouSure}>
                 Send
               </Button>
-              <SendIssueDialog
-                newsletterId={issue.newsletterId}
-                open={areYouSure.isOn}
-                loading={sending.isOn}
-                onCancel={areYouSure.toggleOff}
-                onSubmit={handleSend}
-              />
             </Box>
-          )}
-        </Layout>
-      </ProtectedPage>
-      {/* <CustomSnackbar
-        message={"Saved!"}
-        severity="success"
-        isOpen={saved.isOn}
-        onClose={saved.toggleOff}
-      /> */}
-    </>
+            <SendIssueDialog
+              newsletterId={issue.newsletterId}
+              open={areYouSure.isOn}
+              loading={sending.isOn}
+              onCancel={areYouSure.toggleOff}
+              onSubmit={handleSend}
+            />
+          </footer>
+        }
+      >
+        <NextSeo title={title} />
+        <Box mb={2}>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link href="/app" passHref>
+              <MuiLink underline="hover" color="inherit" href="/">
+                myLetter
+              </MuiLink>
+            </Link>
+            <Typography color="text.primary">{issue.title}</Typography>
+          </Breadcrumbs>
+        </Box>
+        {preview.isOn ? (
+          <EmailStyleWrapper
+            title={title}
+            content={<MarkdownParser children={content} />}
+            newsletterId={issue.newsletterId}
+          />
+        ) : (
+          <Editor value={content} onChange={handleContentChange} />
+        )}
+        {isSent && (
+          <Typography variant="body1" color="textSecondary" my={4}>
+            {`Sent on ${issue.sentAt}`}
+          </Typography>
+        )}
+      </Layout>
+    </ProtectedPage>
   );
 };
 
