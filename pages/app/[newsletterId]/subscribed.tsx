@@ -29,7 +29,10 @@ const SubscribedPage: FC<Props> = ({ newsletterTitle }) => (
   <Layout>
     <Box my={8} mx="auto" textAlign="center" maxWidth="600px">
       <Typography variant="h1" fontWeight="bold">
-        Success! 🎉
+        Success!{" "}
+        <span role="img" aria-label="emoji">
+          🎉
+        </span>
       </Typography>
       <Typography
         variant="body1"
