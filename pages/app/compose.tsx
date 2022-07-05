@@ -1,7 +1,9 @@
+import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Button from "@mui/material/Button";
 import MuiLink from "@mui/material/Link";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { GithubIntegration, Issue } from "@prisma/client";
 import Link from "next/link";
@@ -23,6 +25,20 @@ import { issueService } from "../../src/services/issueService";
 import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../util/eatClick";
 import { useToggle } from "../../util/hooks/useToggle";
+
+const StyledTextField = styled(TextField)`
+  fieldset {
+    border: none;
+  }
+  .Mui-focused {
+    fieldset {
+      border: 1px solid rgba(0, 0, 0, 0.23);
+    }
+  }
+  input {
+    padding: 4px 8px;
+  }
+`;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -176,7 +192,16 @@ const Compose: FC<Props> = ({
                 {newsletterTitle}
               </MuiLink>
             </Link>
-            <Typography color="text.primary">{issue.title}</Typography>
+            <StyledTextField
+              style={{
+                color: "text.primary",
+                padding: 0,
+                margin: 0,
+              }}
+              value={title}
+              onChange={handleTitleChange}
+              onBlur={handleTitleBlur}
+            />
           </Breadcrumbs>
         </Box>
         {preview.isOn ? (
