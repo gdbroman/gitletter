@@ -9,14 +9,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import { GithubIntegration } from "@prisma/client";
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
-import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
-  newsletterId: string;
+  subscriberCount: number;
+  githubIntegration: GithubIntegration;
   open: boolean;
   loading: boolean;
   onCancel: () => void;
@@ -24,30 +24,15 @@ type Props = {
 };
 
 export const SendIssueDialog: FC<Props> = ({
-  newsletterId,
+  subscriberCount,
+  githubIntegration,
   open,
   loading,
   onCancel,
   onSubmit,
 }) => {
-  const [subscriberCount, setSubscriberCount] = useState(0);
-  const [githubIntegration, setGithubIntegration] = useState<
-    GithubIntegration | undefined
-  >();
-
   const emailToAllSubscribers = useToggle(true);
   const writeToGithub = useToggle(false);
-
-  useEffect(() => {
-    const getAndSet = async () => {
-      const newsletterRes = await newsletterService.getNewsletter(newsletterId);
-      if (newsletterRes) {
-        setSubscriberCount(newsletterRes.subscribers.length);
-        setGithubIntegration(newsletterRes.githubIntegration);
-      }
-    };
-    getAndSet();
-  }, [newsletterId]);
 
   return (
     <DialogResponsive open={open} onClose={onCancel}>

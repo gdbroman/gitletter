@@ -3,7 +3,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Button from "@mui/material/Button";
 import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { Issue } from "@prisma/client";
+import { GithubIntegration, Issue } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
@@ -49,16 +49,39 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     res.statusCode = 302;
     res.setHeader("location", "/app");
     return { props: { issue: {} } };
+  } else {
+    const newsletter = await prisma.newsletter.findFirst({
+      where: { id: issue.newsletterId },
+      select: {
+        title: true,
+        githubIntegration: true,
+        subscribers: true,
+      },
+    });
+    return {
+      props: {
+        issue: stripDate(issue),
+        newsletterTitle: newsletter.title,
+        subscriberCount: newsletter.subscribers.length,
+        githubIntegration: newsletter.githubIntegration,
+      },
+    };
   }
-
-  return { props: { issue: stripDate(issue) } };
 };
 
 type Props = {
   issue: Issue;
+  newsletterTitle: string;
+  subscriberCount: number;
+  githubIntegration: GithubIntegration;
 };
 
-const Compose: FC<Props> = ({ issue }) => {
+const Compose: FC<Props> = ({
+  issue,
+  newsletterTitle,
+  subscriberCount,
+  githubIntegration,
+}) => {
   const router = useRouter();
 
   const [title, setTitle] = useState(issue.title);
@@ -135,7 +158,8 @@ const Compose: FC<Props> = ({ issue }) => {
               </Button>
             </Box>
             <SendIssueDialog
-              newsletterId={issue.newsletterId}
+              subscriberCount={subscriberCount}
+              githubIntegration={githubIntegration}
               open={areYouSure.isOn}
               loading={sending.isOn}
               onCancel={areYouSure.toggleOff}
@@ -149,7 +173,7 @@ const Compose: FC<Props> = ({ issue }) => {
           <Breadcrumbs aria-label="breadcrumb">
             <Link href="/app" passHref>
               <MuiLink underline="hover" color="inherit" href="/">
-                myLetter
+                {newsletterTitle}
               </MuiLink>
             </Link>
             <Typography color="text.primary">{issue.title}</Typography>
