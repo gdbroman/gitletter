@@ -136,16 +136,12 @@ const Compose: FC<Props> = ({
     },
     [handleSave, savedTitle, title]
   );
-  const handleContentBlur = useCallback(
-    async (e: any) => {
-      eatClick(e);
-      if (content !== savedContent) {
-        await handleSave();
-        setSavedContent(content);
-      }
-    },
-    [content, handleSave, savedContent]
-  );
+  const handleContentBlur = useCallback(async () => {
+    if (content !== savedContent) {
+      await handleSave();
+      setSavedContent(content);
+    }
+  }, [content, handleSave, savedContent]);
   const handleAreYouSure = async () => {
     areYouSure.toggleOn();
     await handleSave();
@@ -211,7 +207,11 @@ const Compose: FC<Props> = ({
             newsletterId={issue.newsletterId}
           />
         ) : (
-          <Editor value={content} onChange={handleContentChange} />
+          <Editor
+            value={content}
+            onChange={handleContentChange}
+            onBlur={handleContentBlur}
+          />
         )}
         {isSent && (
           <Typography variant="body1" color="textSecondary" my={4}>

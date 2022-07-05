@@ -1,9 +1,16 @@
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
+import styled from "@emotion/styled";
 import Card from "@mui/material/Card";
 import CodeMirror from "@uiw/react-codemirror";
 
-export const Editor = ({ value, onChange }) => (
+const StyledCodeMirror = styled(CodeMirror)`
+  .cm-editor.cm-focused {
+    outline: 0;
+  }
+`;
+
+export const Editor = ({ value, onChange, onBlur }) => (
   <Card
     variant="outlined"
     style={{
@@ -14,9 +21,10 @@ export const Editor = ({ value, onChange }) => (
       overflowY: "scroll",
     }}
   >
-    <CodeMirror
+    <StyledCodeMirror
       value={value}
       onChange={onChange}
+      onBlur={onBlur}
       extensions={[
         markdown({
           base: markdownLanguage,
