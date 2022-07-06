@@ -1,10 +1,10 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { GetServerSideProps } from "next/types";
+import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import prisma from "../../../prisma/prisma";
 import Layout from "../../../src/components/Layout";
+import { ResultBox } from "./subscribed";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const newsletterId = query.newsletterId as string;
@@ -27,25 +27,12 @@ type Props = {
 
 const UnsubscribedPage: FC<Props> = ({ newsletterTitle }) => (
   <Layout>
-    <Box my={8} mx="auto" textAlign="center" maxWidth="600px">
-      <Typography variant="h1" fontWeight="bold">
-        Farewell
-        <span role="img" aria-label="emoji">
-          👋
-        </span>
-      </Typography>
-      <Typography
-        variant="body1"
-        fontWeight="medium"
-        mt={3}
-        mb={4}
-        style={{
-          fontSize: "2rem",
-        }}
-      >
-        You have been unsubscribed from {newsletterTitle}
-      </Typography>
-    </Box>
+    <NextSeo title="Farewell 👋" />
+    <ResultBox
+      title="Farewell"
+      emoji="👋"
+      body={`You have been unsubscribed from ${newsletterTitle}`}
+    />
   </Layout>
 );
 
