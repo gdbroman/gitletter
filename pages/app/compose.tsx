@@ -1,12 +1,7 @@
-import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Button from "@mui/material/Button";
-import MuiLink from "@mui/material/Link";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { GithubIntegration, Issue } from "@prisma/client";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
@@ -19,26 +14,13 @@ import { EmailStyleWrapper } from "../../src/components/EmailStyleWrapper";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
+import { IssueBreadCrumbs } from "../../src/containers/compose/BreadCrumbs";
 import { Editor } from "../../src/containers/compose/Editor";
 import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { issueService } from "../../src/services/issueService";
 import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../util/eatClick";
 import { useToggle } from "../../util/hooks/useToggle";
-
-const StyledTextField = styled(TextField)`
-  fieldset {
-    border: none;
-  }
-  .Mui-focused {
-    fieldset {
-      border: 1px solid rgba(0, 0, 0, 0.23);
-    }
-  }
-  input {
-    padding: 4px 8px;
-  }
-`;
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -181,25 +163,12 @@ const Compose: FC<Props> = ({
         }
       >
         <NextSeo title={title} />
-        <Box mb={2}>
-          <Breadcrumbs aria-label="breadcrumb">
-            <Link href="/app" passHref>
-              <MuiLink underline="hover" color="inherit" href="/">
-                {newsletterTitle}
-              </MuiLink>
-            </Link>
-            <StyledTextField
-              style={{
-                color: "text.primary",
-                padding: 0,
-                margin: 0,
-              }}
-              value={title}
-              onChange={handleTitleChange}
-              onBlur={handleTitleBlur}
-            />
-          </Breadcrumbs>
-        </Box>
+        <IssueBreadCrumbs
+          title={title}
+          newsletterTitle={newsletterTitle}
+          onTitleChange={handleTitleChange}
+          onTitleBlur={handleTitleBlur}
+        />
         {preview.isOn ? (
           <EmailStyleWrapper
             title={title}
