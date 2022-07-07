@@ -107,6 +107,7 @@ export const AccountAvatarMenu = () => {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <HeaderMenuItem
+          tabIndex={-1}
           disableRipple
           disableTouchRipple
           onClick={(event) => event.stopPropagation()}
