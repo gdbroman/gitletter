@@ -21,6 +21,7 @@ export const EmailStyleWrapper: FC<Props> = ({
     <div
       style={{
         maxWidth: "560px",
+        width: "100%",
         margin: "32px auto",
         padding: "1rem",
       }}
@@ -28,7 +29,6 @@ export const EmailStyleWrapper: FC<Props> = ({
       <article
         style={{
           fontSize: "18px",
-          width: "100%",
         }}
       >
         <h1 style={{ fontSize: "32px", textAlign: "center" }}>{title}</h1>
