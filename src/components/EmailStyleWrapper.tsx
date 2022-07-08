@@ -2,15 +2,34 @@ import { FC, ReactNode } from "react";
 
 import { siteDomain } from "../../util/constants";
 
-type Props = {
+export const emailArticleMaxWidth = "528px";
+
+type EmailArticleProps = {
   title: string;
   content: ReactNode;
+};
+
+export const EmailArticle: FC<EmailArticleProps> = ({ title, content }) => (
+  <article
+    style={{
+      fontSize: "18px",
+      width: "100%",
+      maxWidth: emailArticleMaxWidth,
+    }}
+  >
+    <h1 style={{ fontSize: "32px", textAlign: "center" }}>{title}</h1>
+    <hr />
+    {content}
+  </article>
+);
+
+type EmailStyleWrapperProps = EmailArticleProps & {
   newsletterId: string;
   newsletterTitle?: string;
   emailAddress?: string;
 };
 
-export const EmailStyleWrapper: FC<Props> = ({
+export const EmailStyleWrapper: FC<EmailStyleWrapperProps> = ({
   title,
   content,
   newsletterId,
@@ -20,21 +39,13 @@ export const EmailStyleWrapper: FC<Props> = ({
   return (
     <div
       style={{
-        maxWidth: "560px",
         width: "100%",
+        maxWidth: `${emailArticleMaxWidth + 32}px`,
         margin: "32px auto",
         padding: "1rem",
       }}
     >
-      <article
-        style={{
-          fontSize: "18px",
-        }}
-      >
-        <h1 style={{ fontSize: "32px", textAlign: "center" }}>{title}</h1>
-        <hr />
-        {content}
-      </article>
+      <EmailArticle title={title} content={content} />
       {newsletterTitle && emailAddress && (
         <footer style={{ margin: "32px auto" }}>
           <FooterSection>

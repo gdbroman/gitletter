@@ -10,7 +10,7 @@ import { ChangeEvent, FC, useCallback, useState } from "react";
 
 import { populateNewIssue } from "../../prisma/modules/issue";
 import prisma from "../../prisma/prisma";
-import { EmailStyleWrapper } from "../../src/components/EmailStyleWrapper";
+import { EmailArticle } from "../../src/components/EmailStyleWrapper";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
@@ -92,6 +92,14 @@ const Compose: FC<Props> = ({
   const sending = useToggle(false);
   const areYouSure = useToggle(false);
 
+  const saveIssue = useCallback(async () => {
+    try {
+      await issueService.updateIssue(issue.id, title, content);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [content, issue.id, title]);
+
   const handleTitleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -100,33 +108,27 @@ const Compose: FC<Props> = ({
   const handleContentChange = (newValue: string) => {
     setContent(newValue);
   };
-  const handleSave = useCallback(async () => {
-    try {
-      await issueService.updateIssue(issue.id, title, content);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [content, issue.id, title]);
 
   const handleTitleBlur = useCallback(
     async (e: any) => {
       eatClick(e);
       if (title !== savedTitle) {
-        await handleSave();
+        await saveIssue();
         setSavedTitle(title);
       }
     },
-    [handleSave, savedTitle, title]
+    [saveIssue, savedTitle, title]
   );
   const handleContentBlur = useCallback(async () => {
     if (content !== savedContent) {
-      await handleSave();
+      await saveIssue();
       setSavedContent(content);
     }
-  }, [content, handleSave, savedContent]);
+  }, [content, saveIssue, savedContent]);
+
   const handleAreYouSure = async () => {
     areYouSure.toggleOn();
-    await handleSave();
+    await saveIssue();
   };
   const handleSend = async (writeToGithub: boolean) => {
     sending.toggleOn();
@@ -170,11 +172,12 @@ const Compose: FC<Props> = ({
           onTitleBlur={handleTitleBlur}
         />
         {preview.isOn ? (
-          <EmailStyleWrapper
-            title={title}
-            content={<MarkdownParser children={content} />}
-            newsletterId={issue.newsletterId}
-          />
+          <Box display="flex" justifyContent="center">
+            <EmailArticle
+              title={title}
+              content={<MarkdownParser children={content} />}
+            />
+          </Box>
         ) : (
           <Editor
             value={content}
