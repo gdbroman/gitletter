@@ -3,6 +3,7 @@ import { languages } from "@codemirror/language-data";
 import styled from "@emotion/styled";
 import Card from "@mui/material/Card";
 import CodeMirror from "@uiw/react-codemirror";
+import { EditorView } from "codemirror";
 
 const StyledCodeMirror = styled(CodeMirror)`
   .cm-editor.cm-focused {
@@ -26,6 +27,7 @@ export const Editor = ({ value, onChange, onBlur }) => (
       onChange={onChange}
       onBlur={onBlur}
       extensions={[
+        EditorView.lineWrapping,
         markdown({
           base: markdownLanguage,
           codeLanguages: languages,
