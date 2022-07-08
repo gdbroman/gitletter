@@ -1,12 +1,11 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { GithubIntegration, Issue } from "@prisma/client";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { ChangeEvent, FC, useCallback, useState } from "react";
+import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
 
 import { populateNewIssue } from "../../prisma/modules/issue";
 import prisma from "../../prisma/prisma";
@@ -15,6 +14,10 @@ import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
 import { IssueBreadCrumbs } from "../../src/containers/compose/BreadCrumbs";
+import {
+  ComposeControls,
+  composeControlsFooterHeight,
+} from "../../src/containers/compose/ComposeControls";
 import { Editor } from "../../src/containers/compose/Editor";
 import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
 import { issueService } from "../../src/services/issueService";
@@ -88,6 +91,19 @@ const Compose: FC<Props> = ({
   const [savedTitle, setSavedTitle] = useState(issue.title);
   const [savedContent, setSavedContent] = useState(issue.content);
 
+  const isTitleChanged = useMemo(
+    () => title !== savedTitle,
+    [title, savedTitle]
+  );
+  const isContentChanged = useMemo(
+    () => content !== savedContent,
+    [content, savedContent]
+  );
+  const isIssueChanged = useMemo(
+    () => isTitleChanged || isContentChanged,
+    [isTitleChanged, isContentChanged]
+  );
+
   const isSent = issue.sentAt ? true : false;
   const preview = useToggle(isSent);
   const sending = useToggle(false);
@@ -104,68 +120,59 @@ const Compose: FC<Props> = ({
     }
   }, [content, issue.id, title]);
 
-  const handleTitleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setTitle(e.target.value);
-  };
-  const handleContentChange = (newValue: string) => {
+  const handleTitleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setTitle(e.target.value);
+    },
+    []
+  );
+  const handleContentChange = useCallback((newValue: string) => {
     setContent(newValue);
-  };
-
+  }, []);
   const handleTitleBlur = useCallback(
     async (e: any) => {
       eatClick(e);
-      if (title !== savedTitle) {
+      if (isTitleChanged) {
         await saveIssue();
         setSavedTitle(title);
       }
     },
-    [saveIssue, savedTitle, title]
+    [title, isTitleChanged, saveIssue]
   );
   const handleContentBlur = useCallback(async () => {
-    if (content !== savedContent) {
+    if (isContentChanged) {
       await saveIssue();
       setSavedContent(content);
     }
-  }, [content, saveIssue, savedContent]);
-
-  const handleAreYouSure = async () => {
+  }, [content, isContentChanged, saveIssue]);
+  const handleAreYouSure = useCallback(async () => {
     areYouSure.toggleOn();
-    await saveIssue();
-  };
-  const handleSend = async (writeToGithub: boolean) => {
-    sending.toggleOn();
-    try {
-      await issueService.sendIssue(issue.id, writeToGithub);
-      await router.push("/app/sent");
-    } catch (error) {
-      console.error(error);
+    if (isIssueChanged) {
+      await saveIssue();
     }
-  };
+  }, [areYouSure, isIssueChanged, saveIssue]);
+  const handleSend = useCallback(
+    async (writeToGithub: boolean) => {
+      sending.toggleOn();
+      try {
+        await issueService.sendIssue(issue.id, writeToGithub);
+        await router.push("/app/sent");
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [issue.id, router, sending]
+  );
 
   return (
     <ProtectedPage>
       <Layout
         footer={
-          <footer style={{ backgroundColor: "#eeeeee" }}>
-            <Box display="flex" justifyContent="end" p={2} gap={2}>
-              <Button variant="text" onClick={preview.toggle}>
-                {preview.isOn ? "Edit" : "Preview"}
-              </Button>
-              <Button variant="contained" onClick={handleAreYouSure}>
-                Send
-              </Button>
-            </Box>
-            <SendIssueDialog
-              subscriberCount={subscriberCount}
-              githubIntegration={githubIntegration}
-              open={areYouSure.isOn}
-              loading={sending.isOn}
-              onCancel={areYouSure.toggleOff}
-              onSubmit={handleSend}
-            />
-          </footer>
+          <ComposeControls
+            isPreview={preview.isOn}
+            togglePreview={preview.toggle}
+            onClickSend={handleAreYouSure}
+          />
         }
       >
         <NextSeo title={title} />
@@ -194,7 +201,16 @@ const Compose: FC<Props> = ({
             {`Sent on ${issue.sentAt}`}
           </Typography>
         )}
+        <Box height={composeControlsFooterHeight} />
       </Layout>
+      <SendIssueDialog
+        subscriberCount={subscriberCount}
+        githubIntegration={githubIntegration}
+        open={areYouSure.isOn}
+        loading={sending.isOn}
+        onCancel={areYouSure.toggleOff}
+        onSubmit={handleSend}
+      />
     </ProtectedPage>
   );
 };

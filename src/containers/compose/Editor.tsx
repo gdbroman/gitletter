@@ -12,16 +12,7 @@ const StyledCodeMirror = styled(CodeMirror)`
 `;
 
 export const Editor = ({ value, onChange, onBlur }) => (
-  <Card
-    variant="outlined"
-    style={{
-      flex: "1 1 auto",
-      position: "relative",
-      height: 0,
-      maxHeight: "100%",
-      overflowY: "scroll",
-    }}
-  >
+  <Card variant="outlined">
     <StyledCodeMirror
       value={value}
       onChange={onChange}
