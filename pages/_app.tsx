@@ -6,11 +6,11 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
-import NProgress from "nprogress";
 import { FC, useEffect } from "react";
 
 import theme from "../styles/theme";
 import * as ga from "../util/lib/googleAnalytics";
+import { progressIndicator } from "../util/lib/progressIndicator";
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter();
@@ -25,10 +25,10 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
   useEffect(() => {
     const handleStart = () => {
-      NProgress.start();
+      progressIndicator.start();
     };
     const handleStop = () => {
-      NProgress.done();
+      progressIndicator.done();
     };
 
     router.events.on("routeChangeStart", handleStart);

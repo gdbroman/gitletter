@@ -21,6 +21,7 @@ import { issueService } from "../../src/services/issueService";
 import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../util/eatClick";
 import { useToggle } from "../../util/hooks/useToggle";
+import { progressIndicator } from "../../util/lib/progressIndicator";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -94,9 +95,12 @@ const Compose: FC<Props> = ({
 
   const saveIssue = useCallback(async () => {
     try {
+      progressIndicator.start();
       await issueService.updateIssue(issue.id, title, content);
     } catch (error) {
       console.error(error);
+    } finally {
+      progressIndicator.done();
     }
   }, [content, issue.id, title]);
 
