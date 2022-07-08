@@ -36,20 +36,13 @@ export const populateIntroIssue = async (
   newsletterId: string
 ) => {
   const content = [
-    "## Hey there 👋",
-    "Before we get going, click **Preview** down below",
-    "Ah, much better! As you can gather, this is a markdown editor",
-    "It's where the magic happens ✨",
-    "And I think that's all you need to know",
-    "Now let's get writing!",
-    "---",
-    "## About me",
-    "I'm Gustaf, the creator of GitLetter",
-    "My goal is to help you compose with joy 🕊",
-    "So if you have suggestions, don't hesitate to reach out",
-    "Talk soon,",
-    "Gustaf (@gdbroman on Twitter)",
+    "Hi there 👋",
+    "This is a markdown editor",
+    "It's where your magic happens ✨",
+    "Try clicking the **Preview** button below",
+    "And that is all you need to know",
+    "Let's get writing!\n",
   ].join("\n\n");
 
-  await createIssue("Compose with joy 🕊", content, authorEmail, newsletterId);
+  await createIssue("Start here 🙋", content, authorEmail, newsletterId);
 };
