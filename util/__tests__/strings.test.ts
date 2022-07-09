@@ -5,6 +5,7 @@ import {
   getTimeAgoString,
   getTitleFromContent,
   stringToMarkdownFileName,
+  stripFrontMatterFromContent,
 } from "../strings";
 
 const generateFakeValidIssueContent = (overrideTitle?: string) =>
@@ -82,6 +83,25 @@ describe("stringToMarkdownFileName", () => {
     "returns a valid markdown file name",
     (string, fileName) => {
       expect(stringToMarkdownFileName(string)).toBe(fileName);
+    }
+  );
+});
+
+describe("stripFrontMatterFromContent", () => {
+  const validFrontMatterAndContent: [string, string][] = [
+    [["---", "title: A title", "---", "", "Content"], "Content"],
+    [["---", "title: A title", "---", ""], ""],
+  ].map(([content, contentWithoutFrontMatter]) => [
+    (content as string[]).join("\n\n"),
+    contentWithoutFrontMatter as string,
+  ]);
+
+  it.each(validFrontMatterAndContent)(
+    "returns the content without frontmatter",
+    (content, contentWithoutFrontMatter) => {
+      expect(stripFrontMatterFromContent(content)).toEqual(
+        contentWithoutFrontMatter
+      );
     }
   );
 });

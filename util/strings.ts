@@ -46,3 +46,12 @@ export const getTitleFromContent = (content: string): string | null => {
   const titleLine = frontMatter.find((line) => line.startsWith("title: "));
   return titleLine.split(":")[1].trim() ?? null;
 };
+
+export const stripFrontMatterFromContent = (content: string): string => {
+  const frontMatter = getFrontMatterFromContent(content);
+  if (!frontMatter) return content;
+  const frontMatterStart = content.indexOf("---");
+  const frontMatterEnd = content.indexOf("---", frontMatterStart + 1);
+  if (frontMatterStart === -1 || frontMatterEnd === -1) return content;
+  return content.slice(frontMatterEnd + 3).trim();
+};
