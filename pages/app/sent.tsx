@@ -53,6 +53,10 @@ const Sent: FC<Props> = ({ newsletter }) => {
   const onItemClick = (issue: IssueWithStrippedDate) => {
     router.push(`/app/compose?n=${newsletterId}&i=${issue.id}`);
   };
+  const onItemDuplicate = async (issue: IssueWithStrippedDate) => {
+    await issueService.createIssue(newsletterId, issue.fileName, issue.content);
+    router.replace(`/app`);
+  };
   const onItemDelete = async (issue: IssueWithStrippedDate) => {
     await issueService.deleteIssue(issue.id);
     router.replace(`/app/sent`);
@@ -78,6 +82,7 @@ const Sent: FC<Props> = ({ newsletter }) => {
               type="sentIssues"
               items={sentIssues}
               onItemClick={onItemClick}
+              onItemDuplicate={onItemDuplicate}
               onItemDelete={onItemDelete}
             />
           )}
