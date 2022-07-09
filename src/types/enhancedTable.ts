@@ -8,7 +8,7 @@ export type Order = "asc" | "desc";
 export type TableType = "drafts" | "sentIssues" | "subscribers";
 
 export type HeadCellType =
-  | "title"
+  | "fileName"
   | "email"
   | "updatedAt"
   | "sentAt"
@@ -23,9 +23,9 @@ export const DefaultOrderBy: Record<TableType, HeadCellType> = {
 export const getItemValues = (item: any, type: TableType) => {
   switch (type) {
     case "drafts":
-      return [item.title, getTimeAgoString(item.updatedAt)];
+      return [item.fileName, getTimeAgoString(item.updatedAt)];
     case "sentIssues":
-      return [item.title, getTimeAgoString(item.sentAt)];
+      return [item.fileName, getTimeAgoString(item.sentAt)];
     case "subscribers":
       return [item.email, getTimeAgoString(item.addedAt)];
   }
@@ -37,9 +37,9 @@ type HeadCell = {
   flex: number;
 };
 
-const titleHeadCell: HeadCell = {
-  id: "title",
-  label: "Title",
+const fileNameHeadCell: HeadCell = {
+  id: "fileName",
+  label: "Name",
   flex: 7,
 };
 
@@ -68,8 +68,8 @@ const addedAtHeadCell: HeadCell = {
 };
 
 export const HeadCells: Record<TableType, readonly HeadCell[]> = {
-  drafts: [titleHeadCell, updatedAtHeadCell],
-  sentIssues: [titleHeadCell, sentAtHeadCell],
+  drafts: [fileNameHeadCell, updatedAtHeadCell],
+  sentIssues: [fileNameHeadCell, sentAtHeadCell],
   subscribers: [nameHeadCell, addedAtHeadCell],
 };
 

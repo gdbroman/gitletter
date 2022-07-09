@@ -13,7 +13,7 @@ import { EmailArticle } from "../../src/components/EmailStyleWrapper";
 import Layout from "../../src/components/Layout";
 import { MarkdownParser } from "../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../src/components/ProtectedPage";
-import { IssueBreadCrumbs } from "../../src/containers/compose/BreadCrumbs";
+import { ComposeBreadCrumbs } from "../../src/containers/compose/ComposeBreadCrumbs";
 import {
   ComposeControls,
   composeControlsFooterHeight,
@@ -25,6 +25,10 @@ import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../util/eatClick";
 import { useToggle } from "../../util/hooks/useToggle";
 import { progressIndicator } from "../../util/lib/progressIndicator";
+import {
+  getTitleFromContent,
+  stripFrontMatterFromContent,
+} from "../../util/strings";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
@@ -86,22 +90,22 @@ const Compose: FC<Props> = ({
 }) => {
   const router = useRouter();
 
-  const [title, setTitle] = useState(issue.title);
+  const [fileName, setFileName] = useState(issue.fileName);
   const [content, setContent] = useState(issue.content);
-  const [savedTitle, setSavedTitle] = useState(issue.title);
+  const [savedFileName, setSavedFileName] = useState(issue.fileName);
   const [savedContent, setSavedContent] = useState(issue.content);
 
-  const isTitleChanged = useMemo(
-    () => title !== savedTitle,
-    [title, savedTitle]
+  const isFileNameChanged = useMemo(
+    () => fileName !== savedFileName,
+    [fileName, savedFileName]
   );
   const isContentChanged = useMemo(
     () => content !== savedContent,
     [content, savedContent]
   );
   const isIssueChanged = useMemo(
-    () => isTitleChanged || isContentChanged,
-    [isTitleChanged, isContentChanged]
+    () => isFileNameChanged || isContentChanged,
+    [isFileNameChanged, isContentChanged]
   );
 
   const isSent = issue.sentAt ? true : false;
@@ -112,17 +116,17 @@ const Compose: FC<Props> = ({
   const saveIssue = useCallback(async () => {
     try {
       progressIndicator.start();
-      await issueService.updateIssue(issue.id, title, content);
+      await issueService.updateIssue(issue.id, fileName, content);
     } catch (error) {
       console.error(error);
     } finally {
       progressIndicator.done();
     }
-  }, [content, issue.id, title]);
+  }, [content, issue.id, fileName]);
 
   const handleTitleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setTitle(e.target.value);
+      setFileName(e.target.value);
     },
     []
   );
@@ -132,12 +136,12 @@ const Compose: FC<Props> = ({
   const handleTitleBlur = useCallback(
     async (e: any) => {
       eatClick(e);
-      if (isTitleChanged) {
+      if (isFileNameChanged) {
         await saveIssue();
-        setSavedTitle(title);
+        setSavedFileName(fileName);
       }
     },
-    [title, isTitleChanged, saveIssue]
+    [fileName, isFileNameChanged, saveIssue]
   );
   const handleContentBlur = useCallback(async () => {
     if (isContentChanged) {
@@ -175,9 +179,9 @@ const Compose: FC<Props> = ({
           />
         }
       >
-        <NextSeo title={title} />
-        <IssueBreadCrumbs
-          title={title}
+        <NextSeo title={fileName} />
+        <ComposeBreadCrumbs
+          fileName={fileName}
           newsletterTitle={newsletterTitle}
           onTitleChange={handleTitleChange}
           onTitleBlur={handleTitleBlur}
@@ -185,8 +189,12 @@ const Compose: FC<Props> = ({
         {preview.isOn ? (
           <Box display="flex" justifyContent="center">
             <EmailArticle
-              title={title}
-              content={<MarkdownParser children={content} />}
+              title={getTitleFromContent(content)}
+              content={
+                <MarkdownParser
+                  children={stripFrontMatterFromContent(content)}
+                />
+              }
             />
           </Box>
         ) : (
@@ -197,8 +205,13 @@ const Compose: FC<Props> = ({
           />
         )}
         {isSent && (
-          <Typography variant="body1" color="textSecondary" my={4}>
-            {`Sent on ${issue.sentAt}`}
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            my={4}
+            textAlign="center"
+          >
+            {`Sent ${new Date(issue.sentAt).toLocaleString()}`}
           </Typography>
         )}
         <Box height={composeControlsFooterHeight} />

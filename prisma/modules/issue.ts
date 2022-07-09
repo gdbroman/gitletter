@@ -1,14 +1,18 @@
+import {
+  createFrontMatter,
+  stringToMarkdownFileName,
+} from "../../util/strings";
 import prisma from "../prisma";
 
 export const createIssue = (
-  title: string,
+  fileName: string,
   content: string,
   authorEmail: string,
   newsletterId: string
 ) =>
   prisma.issue.create({
     data: {
-      title,
+      fileName,
       content,
       author: { connect: { email: authorEmail } },
       newsletter: { connect: { id: newsletterId } },
@@ -27,22 +31,26 @@ export const populateNewIssue = async (
 
   const count = newsletter.issues.length;
   const title = `${newsletter.title} #${count}`;
-  const content = "";
-  return createIssue(title, content, authorEmail, newsletterId);
+  const fileName = stringToMarkdownFileName(title);
+  const content = [createFrontMatter(title), ""].join("\n\n");
+  return createIssue(fileName, content, authorEmail, newsletterId);
 };
 
 export const populateIntroIssue = async (
   authorEmail: string,
   newsletterId: string
 ) => {
+  const title = "Start here";
+  const fileName = "start-here.md";
   const content = [
+    createFrontMatter(title),
     "Hi there 👋",
     "This is a markdown editor",
-    "It's where your magic happens ✨",
+    "It's where the magic happens ✨",
     "Try clicking the **Preview** button below",
     "And that is all you need to know",
     "Let's get writing!\n",
   ].join("\n\n");
 
-  await createIssue("Start here 🙋", content, authorEmail, newsletterId);
+  await createIssue(fileName, content, authorEmail, newsletterId);
 };

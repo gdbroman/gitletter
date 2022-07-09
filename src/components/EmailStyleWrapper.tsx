@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 
 import { siteDomain } from "../../util/constants";
 
-export const emailArticleMaxWidth = "528px";
+export const emailArticleMaxWidthPxs = 528;
 
 type EmailArticleProps = {
   title: string;
@@ -14,7 +14,8 @@ export const EmailArticle: FC<EmailArticleProps> = ({ title, content }) => (
     style={{
       fontSize: "18px",
       width: "100%",
-      maxWidth: emailArticleMaxWidth,
+      maxWidth: `${emailArticleMaxWidthPxs}px`,
+      margin: "0 auto",
     }}
   >
     <h1 style={{ fontSize: "32px", textAlign: "center" }}>{title}</h1>
@@ -40,14 +41,14 @@ export const EmailStyleWrapper: FC<EmailStyleWrapperProps> = ({
     <div
       style={{
         width: "100%",
-        maxWidth: `${emailArticleMaxWidth + 32}px`,
+        maxWidth: `${emailArticleMaxWidthPxs + 32}px`,
         margin: "32px auto",
         padding: "1rem",
       }}
     >
       <EmailArticle title={title} content={content} />
       {newsletterTitle && emailAddress && (
-        <footer style={{ margin: "32px auto" }}>
+        <footer style={{ margin: "64px auto 0 auto" }}>
           <FooterSection>
             <p>
               {newsletterTitle} –{" "}

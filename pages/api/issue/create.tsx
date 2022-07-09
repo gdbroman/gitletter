@@ -10,11 +10,11 @@ export default async function handle(
   const session = await getSession({ req });
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
-  const { title, content, newsletterId } = req.body;
+  const { fileName, content, newsletterId } = req.body;
 
   if (req.method === "POST") {
     const result = await createIssue(
-      title,
+      fileName,
       content,
       session.user.email,
       newsletterId

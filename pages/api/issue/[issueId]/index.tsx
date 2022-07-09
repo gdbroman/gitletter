@@ -11,13 +11,13 @@ export default async function handle(
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
   const issueId = req.query.issueId as string;
-  const { title, content } = req.body;
+  const { fileName, content } = req.body;
 
   if (req.method === "PUT") {
     const result = await prisma.issue.update({
       where: { id: issueId },
       data: {
-        title,
+        fileName,
         content,
       },
     });
