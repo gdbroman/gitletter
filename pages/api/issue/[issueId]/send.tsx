@@ -64,12 +64,13 @@ export default async function handle(
   if (req.method === "POST") {
     sendMail(session, issue, newsletter);
 
+    let deployed = null;
     if (writeToGithub) {
       const { repoName, repoDir, repoOwner, installationId } =
         newsletter.githubIntegration;
 
       try {
-        writeToGithubFn(
+        const octoKitResponse = await writeToGithubFn(
           repoName,
           repoDir,
           repoOwner,
@@ -77,6 +78,7 @@ export default async function handle(
           issue.fileName,
           issue.content
         );
+        deployed = octoKitResponse.data.content.html_url;
       } catch {
         console.log("Error writing to github");
       }
@@ -86,6 +88,7 @@ export default async function handle(
     const result = await prisma.issue.update({
       where: { id: issueId },
       data: {
+        deployed,
         sentAt: new Date(),
       },
     });
@@ -166,7 +169,7 @@ const writeToGithubFn = async (
     name: `GitLetter`,
     email: "hello@gitletter.co",
   };
-  await octokit.repos.createOrUpdateFileContents({
+  return octokit.repos.createOrUpdateFileContents({
     owner: repoOwner,
     repo: repoName,
     path,

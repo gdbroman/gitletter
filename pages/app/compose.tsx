@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { GithubIntegration, Issue } from "@prisma/client";
 import { useRouter } from "next/router";
@@ -211,7 +212,18 @@ const Compose: FC<Props> = ({
             my={4}
             textAlign="center"
           >
-            {`Sent ${new Date(issue.sentAt).toLocaleString()}`}
+            Sent{" "}
+            {!!issue.deployed ? (
+              <>
+                and{" "}
+                <Link href={issue.deployed} target="_blank">
+                  deployed
+                </Link>{" "}
+              </>
+            ) : (
+              ""
+            )}
+            {new Date(issue.sentAt).toLocaleString()}
           </Typography>
         )}
         <Box height={composeControlsFooterHeight} />

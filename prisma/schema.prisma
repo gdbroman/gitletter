@@ -32,16 +32,17 @@ model Subscriber {
 }
 
 model Issue {
-  id          String     @id @default(cuid())
-  fileName    String
-  content     String
-  authorId    String
+  id           String     @id @default(cuid())
+  fileName     String
+  content      String
+  authorId     String
   newsletterId String
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  sentAt      DateTime?
-  author      User       @relation(fields: [authorId], references: [id])
-  newsletter  Newsletter @relation(fields: [newsletterId], references: [id])
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  sentAt       DateTime?
+  author       User       @relation(fields: [authorId], references: [id])
+  newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
+  deployed     String?
 
   @@map("issues")
 }
@@ -52,7 +53,7 @@ model GithubIntegration {
   repoName       String?
   repoDir        String?
   repoOwner      String?
-  newsletterId    String?     @unique
+  newsletterId   String?     @unique
   newsletter     Newsletter? @relation(fields: [newsletterId], references: [id])
 
   @@map("github_integrations")
