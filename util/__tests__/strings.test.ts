@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 
 import {
+  createFrontMatter,
   getFrontMatterFromContent,
   getTimeAgoString,
   getTitleFromContent,
@@ -70,6 +71,14 @@ describe("getFrontMatterFromContent", () => {
       expect(getFrontMatterFromContent(content)).toBeNull();
     }
   );
+});
+
+describe("createFrontMatter", () => {
+  it("returns a valid frontmatter", () => {
+    const title = faker.lorem.sentence(3);
+    const frontMatter = createFrontMatter(title);
+    expect(frontMatter).toEqual(["---", `title: ${title}`, "---"].join("\n"));
+  });
 });
 
 describe("stringToMarkdownFileName", () => {

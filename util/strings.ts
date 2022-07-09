@@ -55,3 +55,5 @@ export const stripFrontMatterFromContent = (content: string): string => {
   if (frontMatterStart === -1 || frontMatterEnd === -1) return content;
   return content.slice(frontMatterEnd + 3).trim();
 };
+
+export const createFrontMatter = (title: string) => `---\ntitle: ${title}\n---`;
