@@ -1,3 +1,5 @@
+import slugify from "slugify";
+
 export const getTimeAgoString = (dateString: Date) => {
   const date = new Date(dateString);
   const now = new Date();
@@ -6,14 +8,41 @@ export const getTimeAgoString = (dateString: Date) => {
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
+  const months = Math.floor(days / 30);
 
-  if (days > 0) {
-    return `${days} days ago`;
-  } else if (hours > 0) {
-    return `${hours} hours ago`;
-  } else if (minutes > 0) {
-    return `${minutes} minutes ago`;
-  } else {
-    return `${seconds} seconds ago`;
+  if (seconds < 60) {
+    return `${seconds} second${seconds === 1 ? "" : "s"} ago`;
+  } else if (minutes < 60) {
+    return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+  } else if (hours < 24) {
+    return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  } else if (days < 30) {
+    return `${days} day${days === 1 ? "" : "s"} ago`;
+  } else if (months < 12) {
+    return `${months} month${months === 1 ? "" : "s"} ago`;
   }
+};
+
+export const stringToMarkdownFileName = (newsletterTitle: string) =>
+  `${slugify(newsletterTitle, {
+    lower: true,
+  })}.md`;
+
+export const getFrontMatterFromContent = (content: string): string[] | null => {
+  const lines = content
+    .trim()
+    .split("\n")
+    .filter((line) => !!line.length);
+  const frontMatterStart = lines.indexOf("---");
+  const frontMatterEnd = lines.indexOf("---", frontMatterStart + 1);
+  if (frontMatterStart === -1 || frontMatterEnd === -1) return null;
+  const frontMatter = lines.slice(frontMatterStart + 1, frontMatterEnd);
+  return frontMatter;
+};
+
+export const getTitleFromContent = (content: string): string | null => {
+  const frontMatter = getFrontMatterFromContent(content);
+  if (!frontMatter) return null;
+  const titleLine = frontMatter.find((line) => line.startsWith("title: "));
+  return titleLine.split(":")[1].trim() ?? null;
 };
