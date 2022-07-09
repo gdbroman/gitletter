@@ -238,7 +238,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
               value={dir}
               onChange={setDir}
               helperText={
-                "Select a directory where you want to store your issues."
+                "Select the directory where you want to push your issues."
               }
               disabled={submitting || disconnecting}
               required

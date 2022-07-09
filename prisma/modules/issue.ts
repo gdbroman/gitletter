@@ -46,7 +46,7 @@ export const populateIntroIssue = async (
     createFrontMatter(title),
     "Hi there 👋",
     "This is a markdown editor",
-    "It's where your magic happens ✨",
+    "It's where the magic happens ✨",
     "Try clicking the **Preview** button below",
     "And that is all you need to know",
     "Let's get writing!\n",
