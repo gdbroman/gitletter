@@ -33,7 +33,7 @@ model Subscriber {
 
 model Issue {
   id          String     @id @default(cuid())
-  title       String
+  fileName    String
   content     String
   authorId    String
   newsletterId String

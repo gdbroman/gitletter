@@ -44,14 +44,14 @@ const StyledAutosizeInput = styled(AutosizeInput)`
 
 type Props = {
   newsletterTitle: string;
-  title: string;
+  fileName: string;
   onTitleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onTitleBlur: (e: any) => void;
 };
 
-export const IssueBreadCrumbs: FC<Props> = ({
+export const ComposeBreadCrumbs: FC<Props> = ({
   newsletterTitle,
-  title,
+  fileName,
   onTitleChange,
   onTitleBlur,
 }) => (
@@ -62,7 +62,7 @@ export const IssueBreadCrumbs: FC<Props> = ({
       </MuiLink>
     </Link>
     <StyledAutosizeInput
-      value={title}
+      value={fileName}
       onChange={onTitleChange}
       onBlur={onTitleBlur}
       onKeyPress={(e) => {

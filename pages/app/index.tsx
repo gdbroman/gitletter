@@ -54,7 +54,7 @@ const Drafts: FC<Props> = ({ newsletter }) => {
     router.push(`/app/compose?n=${newsletterId}&i=${issue.id}`);
   };
   const onItemDuplicate = async (issue: IssueWithStrippedDate) => {
-    await issueService.createIssue(newsletterId, issue.title, issue.content);
+    await issueService.createIssue(newsletterId, issue.fileName, issue.content);
     router.replace(`/app`);
   };
   const onItemDelete = async (issue: IssueWithStrippedDate) => {

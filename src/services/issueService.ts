@@ -2,18 +2,22 @@ import { fetchApi } from "./util";
 
 const createIssue = async (
   newsletterId: string,
-  title: string,
+  fileName: string,
   content: string
 ) =>
   fetchApi("/issue/create", "POST", {
-    title,
+    fileName,
     content,
     newsletterId,
   });
 
-const updateIssue = async (issueId: string, title: string, content: string) =>
+const updateIssue = async (
+  issueId: string,
+  fileName: string,
+  content: string
+) =>
   fetchApi(`/issue/${issueId}`, "PUT", {
-    title,
+    fileName,
     content,
   });
 

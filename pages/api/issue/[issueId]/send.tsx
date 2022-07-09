@@ -7,7 +7,6 @@ import { getSession } from "next-auth/react";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
-import slugify from "slugify";
 
 import { createOctokitClient } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
@@ -15,6 +14,10 @@ import { EmailStyleWrapper } from "../../../../src/components/EmailStyleWrapper"
 import { MarkdownParser } from "../../../../src/components/MarkdownParser";
 import { getEmailAddress } from "../../../../util/getEmailAddress";
 import { getPath } from "../../../../util/getRepoPath";
+import {
+  getTitleFromContent,
+  stripFrontMatterFromContent,
+} from "../../../../util/strings";
 
 type FetchedNewsletter = {
   title: string;
@@ -59,9 +62,8 @@ export default async function handle(
   });
 
   if (req.method === "POST") {
-    const fileName = `${slugify(issue.title).toLowerCase()}.md`;
-
     sendMail(session, issue, newsletter);
+
     if (writeToGithub) {
       const { repoName, repoDir, repoOwner, installationId } =
         newsletter.githubIntegration;
@@ -72,7 +74,7 @@ export default async function handle(
           repoDir,
           repoOwner,
           installationId,
-          fileName,
+          issue.fileName,
           issue.content
         );
       } catch {
@@ -111,17 +113,20 @@ const sendMail = async (
     },
   });
 
+  const title = getTitleFromContent(issue.content);
+  const rawContent = stripFrontMatterFromContent(issue.content);
   const defaultMailOptions: Mail.Options = {
+    subject: title,
     from: `${newsletter.title} <${getEmailAddress(newsletter.title)}>`,
     replyTo: `${userFullName} <${userEmail}>`,
-    subject: issue.title,
   };
+
   newsletter.subscribers.forEach(async (subscriber) => {
     // convert markdown to html
     const htmlString = ReactDOMServer.renderToStaticMarkup(
       <EmailStyleWrapper
-        title={issue.title}
-        content={<MarkdownParser children={issue.content} />}
+        title={title}
+        content={<MarkdownParser children={rawContent} />}
         newsletterId={issue.newsletterId}
         newsletterTitle={newsletter.title}
         emailAddress={subscriber.email}
