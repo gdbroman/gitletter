@@ -86,6 +86,7 @@ describe("stringToMarkdownFileName", () => {
     ["My title", "my-title.md"],
     ["just a string", "just-a-string.md"],
     ["1234", "1234.md"],
+    ["already-correct.md", "already-correct.md"],
   ];
 
   it.each(validStringsAndTitles)(

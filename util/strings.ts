@@ -23,8 +23,8 @@ export const getTimeAgoString = (dateString: Date) => {
   }
 };
 
-export const stringToMarkdownFileName = (newsletterTitle: string) =>
-  `${slugify(newsletterTitle, {
+export const stringToMarkdownFileName = (s: string) =>
+  `${slugify(s.replace(/\.md$/, ""), {
     lower: true,
   })}.md`;
 

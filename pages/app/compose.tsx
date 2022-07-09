@@ -28,6 +28,7 @@ import { useToggle } from "../../util/hooks/useToggle";
 import { progressIndicator } from "../../util/lib/progressIndicator";
 import {
   getTitleFromContent,
+  stringToMarkdownFileName,
   stripFrontMatterFromContent,
 } from "../../util/strings";
 
@@ -114,16 +115,23 @@ const Compose: FC<Props> = ({
   const sending = useToggle(false);
   const areYouSure = useToggle(false);
 
-  const saveIssue = useCallback(async () => {
-    try {
-      progressIndicator.start();
-      await issueService.updateIssue(issue.id, fileName, content);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      progressIndicator.done();
-    }
-  }, [content, issue.id, fileName]);
+  const saveIssue = useCallback(
+    async (overrideFileName?: string) => {
+      try {
+        progressIndicator.start();
+        await issueService.updateIssue(
+          issue.id,
+          overrideFileName ?? fileName,
+          content
+        );
+      } catch (error) {
+        console.error(error);
+      } finally {
+        progressIndicator.done();
+      }
+    },
+    [content, issue.id, fileName]
+  );
 
   const handleTitleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -138,8 +146,10 @@ const Compose: FC<Props> = ({
     async (e: any) => {
       eatClick(e);
       if (isFileNameChanged) {
-        await saveIssue();
-        setSavedFileName(fileName);
+        const lintedFileName = stringToMarkdownFileName(fileName);
+        setFileName(lintedFileName);
+        await saveIssue(lintedFileName);
+        setSavedFileName(lintedFileName);
       }
     },
     [fileName, isFileNameChanged, saveIssue]
@@ -161,7 +171,7 @@ const Compose: FC<Props> = ({
       sending.toggleOn();
       try {
         await issueService.sendIssue(issue.id, writeToGithub);
-        await router.push("/app/sent");
+        router.reload();
       } catch (error) {
         console.error(error);
       }
