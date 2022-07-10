@@ -73,7 +73,7 @@ export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
             style={{
               overflowX: "scroll",
               margin: 0,
-              padding: "8px 16px 16px 16px",
+              padding: "4px 16px 16px 16px",
             }}
           >
             <code className="js">{snippet}</code>
