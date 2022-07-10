@@ -111,7 +111,7 @@ const Compose: FC<Props> = ({
   );
 
   const isSent = issue.sentAt ? true : false;
-  const preview = useToggle(isSent);
+  const previewEmail = useToggle(isSent);
   const sending = useToggle(false);
   const areYouSure = useToggle(false);
 
@@ -183,11 +183,13 @@ const Compose: FC<Props> = ({
     <ProtectedPage>
       <Layout
         footer={
-          <ComposeControls
-            isPreview={preview.isOn}
-            togglePreview={preview.toggle}
-            onClickSend={handleAreYouSure}
-          />
+          !isSent ? (
+            <ComposeControls
+              isPreview={previewEmail.isOn}
+              togglePreview={previewEmail.toggle}
+              onClickSend={handleAreYouSure}
+            />
+          ) : null
         }
       >
         <NextSeo title={fileName} />
@@ -197,7 +199,7 @@ const Compose: FC<Props> = ({
           onTitleChange={handleTitleChange}
           onTitleBlur={handleTitleBlur}
         />
-        {preview.isOn ? (
+        {previewEmail.isOn ? (
           <Box display="flex" justifyContent="center">
             <EmailArticle
               title={getTitleFromContent(content)}
