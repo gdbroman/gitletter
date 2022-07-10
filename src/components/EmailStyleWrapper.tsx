@@ -15,11 +15,12 @@ export const EmailArticle: FC<EmailArticleProps> = ({ title, content }) => (
       fontSize: "18px",
       width: "100%",
       maxWidth: `${emailArticleMaxWidthPxs}px`,
-      margin: "0 auto",
     }}
   >
-    <h1 style={{ fontSize: "32px", textAlign: "center" }}>{title}</h1>
-    <hr />
+    <h1 style={{ fontSize: "32px", margin: "64px 0 0 0", textAlign: "center" }}>
+      {title}
+    </h1>
+    <hr style={{ margin: "32px 0" }} />
     {content}
   </article>
 );
@@ -41,9 +42,8 @@ export const EmailStyleWrapper: FC<EmailStyleWrapperProps> = ({
     <div
       style={{
         width: "100%",
-        maxWidth: `${emailArticleMaxWidthPxs + 32}px`,
-        margin: "32px auto",
-        padding: "1rem",
+        maxWidth: `${emailArticleMaxWidthPxs}px`,
+        margin: "0 auto",
       }}
     >
       <EmailArticle title={title} content={content} />
