@@ -29,15 +29,14 @@ export const stringToMarkdownFileName = (s: string) =>
   })}.md`;
 
 export const getFrontMatterFromContent = (content: string): string[] | null => {
-  const lines = content
-    .trim()
-    .split("\n")
-    .filter((line) => !!line.length);
+  const lines = content.split("\n");
   const frontMatterStart = lines.indexOf("---");
+  if (frontMatterStart === -1 || frontMatterStart > 0) return null;
   const frontMatterEnd = lines.indexOf("---", frontMatterStart + 1);
-  if (frontMatterStart === -1 || frontMatterEnd === -1) return null;
-  const frontMatter = lines.slice(frontMatterStart + 1, frontMatterEnd);
-  return frontMatter;
+  if (frontMatterEnd === -1) return null;
+  return lines
+    .slice(frontMatterStart + 1, frontMatterEnd)
+    .filter((line) => !!line.length);
 };
 
 export const getTitleFromContent = (content: string): string | null => {
@@ -52,7 +51,8 @@ export const stripFrontMatterFromContent = (content: string): string => {
   if (!frontMatter) return content;
   const frontMatterStart = content.indexOf("---");
   const frontMatterEnd = content.indexOf("---", frontMatterStart + 1);
-  if (frontMatterStart === -1 || frontMatterEnd === -1) return content;
+  if (frontMatterStart === -1 || frontMatterStart > 0 || frontMatterEnd === -1)
+    return content;
   return content.slice(frontMatterEnd + 3).trim();
 };
 

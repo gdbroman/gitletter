@@ -18,6 +18,7 @@ const generateFakeValidIssueContent = (overrideTitle?: string) =>
   ].join("\n\n");
 
 const contentWithInvalidFrontMatter: string[] = [
+  ["", "---", "title: A title", "---", faker.lorem.sentences()],
   ["---", "title: A title", "", faker.lorem.sentences()],
   ["title: A title", "---"],
   ["date: 2028-01-01", "---", ""],
