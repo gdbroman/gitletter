@@ -44,7 +44,7 @@ export const getTitleFromContent = (content: string): string | null => {
   const frontMatter = getFrontMatterFromContent(content);
   if (!frontMatter) return null;
   const titleLine = frontMatter.find((line) => line.startsWith("title: "));
-  return titleLine.split(":")[1].trim() ?? null;
+  return titleLine?.split(":")[1].trim() ?? null;
 };
 
 export const stripFrontMatterFromContent = (content: string): string => {
