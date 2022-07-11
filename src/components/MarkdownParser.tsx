@@ -2,6 +2,8 @@ import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 
+import theme from "../../styles/theme";
+
 type Props = {
   children: string;
 };
@@ -24,6 +26,18 @@ export const MarkdownParser: FC<Props> = ({ children }) => (
           </a>
         );
       },
+      blockquote: (props) => (
+        <blockquote
+          style={{
+            margin: 0,
+            paddingLeft: "2rem",
+            borderLeft: `4px solid ${theme.palette.secondary.main}`,
+          }}
+          {...props}
+        >
+          {props.children}
+        </blockquote>
+      ),
     }}
   />
 );
