@@ -133,7 +133,7 @@ const Compose: FC<Props> = ({
     [content, issue.id, fileName]
   );
 
-  const handleTitleChange = useCallback(
+  const handleFileNameChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setFileName(e.target.value);
     },
@@ -142,7 +142,7 @@ const Compose: FC<Props> = ({
   const handleContentChange = useCallback((newValue: string) => {
     setContent(newValue);
   }, []);
-  const handleTitleBlur = useCallback(
+  const handleFileNameBlur = useCallback(
     async (e: any) => {
       eatClick(e);
       if (isFileNameChanged) {
@@ -196,8 +196,9 @@ const Compose: FC<Props> = ({
         <ComposeBreadCrumbs
           fileName={fileName}
           newsletterTitle={newsletterTitle}
-          onTitleChange={handleTitleChange}
-          onTitleBlur={handleTitleBlur}
+          disableEdit={isSent}
+          onChange={handleFileNameChange}
+          onBlur={handleFileNameBlur}
         />
         {previewEmail.isOn ? (
           <Box display="flex" justifyContent="center">

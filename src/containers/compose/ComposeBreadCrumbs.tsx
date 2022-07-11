@@ -39,21 +39,27 @@ const StyledAutosizeInput = styled(AutosizeInput)`
       border: 1px solid rgba(0, 0, 0, 0.23);
       outline: none;
     }
+    &:disabled {
+      color: unset;
+      background-color: unset;
+    }
   }
 `;
 
 type Props = {
   newsletterTitle: string;
   fileName: string;
-  onTitleChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onTitleBlur: (e: any) => void;
+  disableEdit?: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: any) => void;
 };
 
 export const ComposeBreadCrumbs: FC<Props> = ({
   newsletterTitle,
   fileName,
-  onTitleChange,
-  onTitleBlur,
+  disableEdit,
+  onChange,
+  onBlur,
 }) => (
   <StyledBreadCrumbs aria-label="breadcrumb">
     <Link href="/app" passHref>
@@ -62,9 +68,10 @@ export const ComposeBreadCrumbs: FC<Props> = ({
       </MuiLink>
     </Link>
     <StyledAutosizeInput
+      disabled={disableEdit}
       value={fileName}
-      onChange={onTitleChange}
-      onBlur={onTitleBlur}
+      onChange={onChange}
+      onBlur={onBlur}
       onKeyPress={(e) => {
         if (e.key === "Enter") {
           e.target.blur();
