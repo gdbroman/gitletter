@@ -48,8 +48,7 @@ export const populateIntroIssue = async (
     "This is a markdown editor",
     "It's where the magic happens ✨",
     "Try clicking the **Preview** button below",
-    "And that is all you need to know",
-    "Let's get writing!\n",
+    "Now let's get writing!\n",
   ].join("\n\n");
 
   await createIssue(fileName, content, authorEmail, newsletterId);
