@@ -1,6 +1,5 @@
 export const siteTitle = "GitLetter";
-export const siteTagline = "Start a newsletter using GitHub";
-export const shortDescription = "A newsletter tool that writes to your repo.";
+export const siteTagline = "Run your newsletter with GitHub as source";
 export const siteDescription =
   "Keep all your writing in one repository. Integrate with your existing blog.";
 export const siteDomain = "gitletter.co";
