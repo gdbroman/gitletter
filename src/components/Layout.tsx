@@ -31,7 +31,7 @@ type Props = {
 const Layout: FC<Props> = ({ children, footer = <DefaultFooter /> }) => (
   <Box display="flex" flexDirection="column" height="100%">
     <NextSeo
-      title={`GitLetter - ${siteTagline}`}
+      title={`GitLetter · ${siteTagline}`}
       description={siteDescription}
     />
     <Header />
