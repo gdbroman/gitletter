@@ -74,7 +74,7 @@ const sendTestEmail = async (
     },
   });
 
-  const title = getTitleFromContent(issue.content);
+  const title = "[Preview] " + getTitleFromContent(issue.content);
   const rawContent = stripFrontMatterFromContent(issue.content);
   const defaultMailOptions: Mail.Options = {
     subject: title,
