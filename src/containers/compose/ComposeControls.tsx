@@ -1,9 +1,16 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
+import { PreviewMenu } from "./PreviewMenu";
+
 export const composeControlsFooterHeight = "68px";
 
-export const ComposeControls = ({ isPreview, togglePreview, onClickSend }) => (
+export const ComposeControls = ({
+  isPreview,
+  toggleTest,
+  togglePreview,
+  onClickSend,
+}) => (
   <footer
     style={{
       position: "fixed",
@@ -21,9 +28,14 @@ export const ComposeControls = ({ isPreview, togglePreview, onClickSend }) => (
       px={2}
       gap={2}
     >
-      <Button variant="text" onClick={togglePreview}>
-        {isPreview ? "Edit" : "Preview"}
-      </Button>
+      {isPreview ? (
+        <Button variant="text" onClick={togglePreview}>
+          Edit
+        </Button>
+      ) : (
+        <PreviewMenu onSend={toggleTest} onShow={togglePreview} />
+      )}
+
       <Button variant="contained" onClick={onClickSend}>
         Send
       </Button>
