@@ -21,6 +21,7 @@ import {
 } from "../../src/containers/compose/ComposeControls";
 import { Editor } from "../../src/containers/compose/Editor";
 import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
+import { SendTestEmailDialog } from "../../src/containers/compose/SendTestEmailDialog";
 import { issueService } from "../../src/services/issueService";
 import { stripDate } from "../../src/types/stripDate";
 import { eatClick } from "../../util/eatClick";
@@ -70,6 +71,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       props: {
         issue: stripDate(issue),
         newsletterTitle: newsletter.title,
+        userEmail: session.user.email,
         subscriberCount: newsletter.subscribers.length,
         githubIntegration: newsletter.githubIntegration,
       },
@@ -80,6 +82,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 type Props = {
   issue: Issue;
   newsletterTitle: string;
+  userEmail: string;
   subscriberCount: number;
   githubIntegration: GithubIntegration;
 };
@@ -87,6 +90,7 @@ type Props = {
 const Compose: FC<Props> = ({
   issue,
   newsletterTitle,
+  userEmail,
   subscriberCount,
   githubIntegration,
 }) => {
@@ -111,6 +115,7 @@ const Compose: FC<Props> = ({
   );
 
   const isSent = issue.sentAt ? true : false;
+  const sendTestEmail = useToggle(false);
   const previewEmail = useToggle(isSent);
   const sending = useToggle(false);
   const areYouSure = useToggle(false);
@@ -186,6 +191,7 @@ const Compose: FC<Props> = ({
           !isSent ? (
             <ComposeControls
               isPreview={previewEmail.isOn}
+              toggleTest={sendTestEmail.toggleOn}
               togglePreview={previewEmail.toggle}
               onClickSend={handleAreYouSure}
             />
@@ -241,6 +247,12 @@ const Compose: FC<Props> = ({
         )}
         <Box height={composeControlsFooterHeight} />
       </Layout>
+      <SendTestEmailDialog
+        issueId={issue.id}
+        defaultEmailAddress={userEmail}
+        open={sendTestEmail.isOn}
+        onClose={sendTestEmail.toggleOff}
+      />
       <SendIssueDialog
         subscriberCount={subscriberCount}
         githubIntegration={githubIntegration}

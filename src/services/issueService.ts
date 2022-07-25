@@ -29,9 +29,13 @@ const sendIssue = async (issueId: string, writeToGithub: boolean) =>
     writeToGithub,
   });
 
+const sendTestEmail = async (issueId: string, email: string) =>
+  fetchApi(`/issue/${issueId}/send-test/${email}`, "POST");
+
 export const issueService = {
   createIssue,
   updateIssue,
   deleteIssue,
   sendIssue,
+  sendTestEmail,
 };

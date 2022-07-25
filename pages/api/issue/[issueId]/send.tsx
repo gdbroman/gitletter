@@ -19,7 +19,7 @@ import {
   stripFrontMatterFromContent,
 } from "../../../../util/strings";
 
-type FetchedNewsletter = {
+export type FetchedNewsletter = {
   title: string;
   subscribers: { email: string }[];
   githubIntegration: {

@@ -1,0 +1,75 @@
+import LoadingButton from "@mui/lab/LoadingButton";
+import Button from "@mui/material/Button";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import { FC, useCallback, useMemo, useState } from "react";
+
+import { useToggle } from "../../../util/hooks/useToggle";
+import { DialogResponsive } from "../../components/DialogResponsive";
+import { issueService } from "../../services/issueService";
+
+type Props = {
+  issueId: string;
+  defaultEmailAddress: string;
+  open: boolean;
+  onClose: () => void;
+};
+
+export const SendTestEmailDialog: FC<Props> = ({
+  issueId,
+  defaultEmailAddress,
+  open,
+  onClose,
+}) => {
+  const sending = useToggle(false);
+  const [email, setEmail] = useState<string>(defaultEmailAddress);
+  const isEmailValid = useMemo(() => {
+    if (!email) {
+      return false;
+    }
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+  }, [email]);
+
+  const sendTestEmail = useCallback(async () => {
+    sending.toggleOn();
+    try {
+      await issueService.sendTestEmail(issueId, email);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      sending.toggleOff();
+      onClose();
+    }
+  }, [email, issueId, sending, onClose]);
+
+  return (
+    <DialogResponsive open={open} onClose={onClose}>
+      <DialogTitle>Send a test email</DialogTitle>
+      <DialogContent style={{ overflowY: "visible" }}>
+        <TextField
+          fullWidth
+          label="Email address"
+          type="email"
+          value={email}
+          style={{ marginTop: 8 }}
+          onChange={(e) => setEmail(e.currentTarget.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button autoFocus disabled={sending.isOn} onClick={onClose}>
+          Cancel
+        </Button>
+        <LoadingButton
+          loading={sending.isOn}
+          variant={isEmailValid ? "contained" : "outlined"}
+          disabled={!isEmailValid}
+          onClick={sendTestEmail}
+        >
+          Send
+        </LoadingButton>
+      </DialogActions>
+    </DialogResponsive>
+  );
+};
