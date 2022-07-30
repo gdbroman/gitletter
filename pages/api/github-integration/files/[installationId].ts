@@ -6,7 +6,7 @@ import {
   GithubRepoData,
 } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
-import { unstableGetServerSession } from "../../auth/[...nextauth]";
+import { unstableGetServerSession } from "../../auth/getServerSession";
 
 // GET /api/github/:installationId?fileSlug=:fileSlug
 export default async function handler(

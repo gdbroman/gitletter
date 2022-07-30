@@ -17,7 +17,7 @@ import {
   getTitleFromContent,
   stripFrontMatterFromContent,
 } from "../../../../util/strings";
-import { unstableGetServerSession } from "../../auth/[...nextauth]";
+import { unstableGetServerSession } from "../../auth/getServerSession";
 
 export type FetchedNewsletter = {
   title: string;

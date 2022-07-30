@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../prisma/prisma";
-import { unstableGetServerSession } from "../auth/[...nextauth]";
+import { unstableGetServerSession } from "../auth/getServerSession";
 
 // Webhook for GitHub app post installation
 export default async function handle(

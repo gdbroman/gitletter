@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { populateIntroIssue } from "../../prisma/modules/issue";
 import prisma from "../../prisma/prisma";
-import { unstableGetServerSession } from "./auth/[...nextauth]";
+import { unstableGetServerSession } from "./auth/getServerSession";
 
 export default async function handle(
   req: NextApiRequest,

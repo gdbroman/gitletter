@@ -14,7 +14,7 @@ import {
   getTitleFromContent,
   stripFrontMatterFromContent,
 } from "../../../../../util/strings";
-import { unstableGetServerSession } from "../../../auth/[...nextauth]";
+import { unstableGetServerSession } from "../../../auth/getServerSession";
 import { FetchedNewsletter } from "../send";
 
 export default async function handle(
