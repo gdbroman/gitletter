@@ -3,7 +3,6 @@ import inlineCss from "inline-css";
 import { Base64 } from "js-base64";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth/core/types";
-import { getSession } from "next-auth/react";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
@@ -18,6 +17,7 @@ import {
   getTitleFromContent,
   stripFrontMatterFromContent,
 } from "../../../../util/strings";
+import { unstableGetServerSession } from "../../auth/[...nextauth]";
 
 export type FetchedNewsletter = {
   title: string;
@@ -34,7 +34,7 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getSession({ req });
+  const session = await unstableGetServerSession(req, res);
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
   const issueId = req.query.issueId as string;

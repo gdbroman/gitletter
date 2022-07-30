@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
 
 import prisma from "../../../prisma/prisma";
+import { unstableGetServerSession } from "../auth/[...nextauth]";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getSession({ req });
+  const session = await unstableGetServerSession(req, res);
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
   if (req.method === "DELETE") {

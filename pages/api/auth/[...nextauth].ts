@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { NextApiHandler } from "next";
 import NextAuth from "next-auth";
+import unstable_getServerSession from "next-auth/next";
 import GitHubProvider from "next-auth/providers/github";
 
 import prisma from "../../../prisma/prisma";
@@ -23,3 +24,8 @@ const authHandler: NextApiHandler = (
 ) => NextAuth(req, res, options);
 
 export default authHandler;
+
+export const unstableGetServerSession = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => unstable_getServerSession(req, res, options);

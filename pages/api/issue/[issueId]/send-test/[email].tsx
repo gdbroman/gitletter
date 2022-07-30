@@ -2,7 +2,6 @@ import { Issue } from "@prisma/client";
 import inlineCss from "inline-css";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Session } from "next-auth/core/types";
-import { getSession } from "next-auth/react";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
@@ -15,13 +14,14 @@ import {
   getTitleFromContent,
   stripFrontMatterFromContent,
 } from "../../../../../util/strings";
+import { unstableGetServerSession } from "../../../auth/[...nextauth]";
 import { FetchedNewsletter } from "../send";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getSession({ req });
+  const session = await unstableGetServerSession(req, res);
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
   const issueId = req.query.issueId as string;
