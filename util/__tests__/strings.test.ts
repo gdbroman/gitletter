@@ -5,6 +5,7 @@ import {
   getFrontMatterFromContent,
   getTimeAgoString,
   getTitleFromContent,
+  isValidEmail,
   stringToMarkdownFileName,
   stripFrontMatterFromContent,
 } from "../strings";
@@ -166,5 +167,19 @@ describe("getTimeAgoString", () => {
   it("returns 2 months ago for 2 months ago", () => {
     const date = new Date(Date.now() - 5259600000);
     expect(getTimeAgoString(date)).toBe("2 months ago");
+  });
+});
+
+describe("isValidEmail", () => {
+  it("returns true for a valid email", () => {
+    expect(isValidEmail("hello@gmail.com")).toBe(true);
+    expect(isValidEmail("x@proton.me")).toBe(true);
+    expect(isValidEmail("x@y.me")).toBe(true);
+  });
+  it("returns false for an invalid email", () => {
+    expect(isValidEmail("hello@gmail.c")).toBe(false);
+    expect(isValidEmail("hello@gmail")).toBe(false);
+    expect(isValidEmail("@gmail.com")).toBe(false);
+    expect(isValidEmail("")).toBe(false);
   });
 });
