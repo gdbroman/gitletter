@@ -3,13 +3,13 @@ import Box from "@mui/system/Box";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useGetHomeRef } from "../../util/hooks/useGetHomeRef";
+import { useAppHref } from "../../util/hooks/useAppHref";
 
 export const GitLetterLogo = () => {
-  const homeRef = useGetHomeRef();
+  const appHref = useAppHref();
 
   return (
-    <Link href={homeRef}>
+    <Link href={appHref}>
       <Box
         display="flex"
         alignItems="center"

@@ -35,12 +35,10 @@ model Issue {
   id           String     @id @default(cuid())
   fileName     String
   content      String
-  authorId     String
   newsletterId String
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
   sentAt       DateTime?
-  author       User       @relation(fields: [authorId], references: [id])
   newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
   deployed     String?
 
@@ -99,7 +97,6 @@ model User {
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")
   accounts      Account[]
-  issues        Issue[]
   newsletter    Newsletter?
   sessions      Session[]
 

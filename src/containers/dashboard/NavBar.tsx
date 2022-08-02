@@ -8,6 +8,7 @@ import Tabs from "@mui/material/Tabs";
 import Link from "next/link";
 import { FC } from "react";
 
+import { useAppHref } from "../../../util/hooks/useAppHref";
 import { DashboardProps } from "./Dashboard";
 import { NavBarCta } from "./NavBarCta";
 
@@ -15,6 +16,8 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
   value,
   newsletterId,
 }) => {
+  const appHref = useAppHref();
+
   return (
     <Box
       display="flex"
@@ -23,7 +26,7 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
       sx={{ borderBottom: 1, borderColor: "divider" }}
     >
       <Tabs value={value} variant="scrollable" scrollButtons="auto">
-        <Link href="/app" passHref>
+        <Link href={appHref} passHref>
           <Tab
             label={
               <Box display="flex" alignItems="center" gap={1}>
@@ -34,7 +37,7 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
             {...a11yProps(0)}
           />
         </Link>
-        <Link href="/app/sent" passHref>
+        <Link href={`${appHref}/sent`} passHref>
           <Tab
             label={
               <Box display="flex" alignItems="center" gap={1}>
@@ -45,7 +48,7 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
             {...a11yProps(0)}
           />
         </Link>
-        <Link href="/app/subscribers" passHref>
+        <Link href={`${appHref}/subscribers`} passHref>
           <Tab
             label={
               <Box display="flex" alignItems="center" gap={1}>
@@ -56,7 +59,7 @@ export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
             {...a11yProps(1)}
           />
         </Link>
-        <Link href="/app/settings" passHref>
+        <Link href={`${appHref}/settings`} passHref>
           <Tab
             label={
               <Box display="flex" alignItems="center" gap={1}>

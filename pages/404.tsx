@@ -5,10 +5,10 @@ import Link from "next/link";
 import { FC } from "react";
 
 import Layout from "../src/components/Layout";
-import { useGetHomeRef } from "../util/hooks/useGetHomeRef";
+import { useAppHref } from "../util/hooks/useAppHref";
 
 const FourOhFour: FC = () => {
-  const homeRef = useGetHomeRef();
+  const appHref = useAppHref();
 
   return (
     <Layout>
@@ -17,7 +17,7 @@ const FourOhFour: FC = () => {
           <Typography variant="h1" fontWeight="bold" mb="32px">
             404 Not found
           </Typography>
-          <Link href={homeRef} passHref>
+          <Link href={appHref} passHref>
             <Button variant="contained" size="large">
               Return home
             </Button>

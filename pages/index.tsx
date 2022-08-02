@@ -11,6 +11,7 @@ import { FC } from "react";
 
 import Layout from "../src/components/Layout";
 import { calendlyLink, siteDescription, siteTagline } from "../util/constants";
+import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
 import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
@@ -18,6 +19,7 @@ import * as ga from "../util/lib/googleAnalytics";
 const Home: FC = () => {
   const router = useRouter();
   const session = useSession();
+  const appHref = useAppHref();
   const { signIn, loading } = useSignIn();
 
   const redirecting = useToggle(false);
@@ -25,7 +27,7 @@ const Home: FC = () => {
   const goToApp = () => {
     redirecting.toggleOn();
     try {
-      router.push("/app");
+      router.push(appHref);
     } catch (e) {
       console.error(e);
       redirecting.toggleOff();

@@ -4,59 +4,68 @@ import Typography from "@mui/material/Typography";
 import { GithubIntegration, Issue } from "@prisma/client";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
-import { getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-import { populateNewIssue } from "../../prisma/modules/issue";
-import prisma from "../../prisma/prisma";
-import { EmailArticle } from "../../src/components/EmailStyleWrapper";
-import Layout from "../../src/components/Layout";
-import { MarkdownParser } from "../../src/components/MarkdownParser";
-import { ProtectedPage } from "../../src/components/ProtectedPage";
-import { ComposeBreadCrumbs } from "../../src/containers/compose/ComposeBreadCrumbs";
+import { populateNewIssue } from "../../../prisma/modules/issue";
+import prisma from "../../../prisma/prisma";
+import { EmailArticle } from "../../../src/components/EmailStyleWrapper";
+import Layout from "../../../src/components/Layout";
+import { MarkdownParser } from "../../../src/components/MarkdownParser";
+import { ProtectedPage } from "../../../src/components/ProtectedPage";
+import { ComposeBreadCrumbs } from "../../../src/containers/compose/ComposeBreadCrumbs";
 import {
   ComposeControls,
   composeControlsFooterHeight,
-} from "../../src/containers/compose/ComposeControls";
-import { Editor } from "../../src/containers/compose/Editor";
-import { SendIssueDialog } from "../../src/containers/compose/SendIssueDialog";
-import { SendTestEmailDialog } from "../../src/containers/compose/SendTestEmailDialog";
-import { issueService } from "../../src/services/issueService";
-import { stripDate } from "../../src/types/stripDate";
-import { eatClick } from "../../util/eatClick";
-import { useToggle } from "../../util/hooks/useToggle";
-import { progressIndicator } from "../../util/lib/progressIndicator";
+} from "../../../src/containers/compose/ComposeControls";
+import { Editor } from "../../../src/containers/compose/Editor";
+import { SendIssueDialog } from "../../../src/containers/compose/SendIssueDialog";
+import { SendTestEmailDialog } from "../../../src/containers/compose/SendTestEmailDialog";
+import { issueService } from "../../../src/services/issueService";
+import { stripDate } from "../../../src/types/stripDate";
+import { eatClick } from "../../../util/eatClick";
+import { useAppHref } from "../../../util/hooks/useAppHref";
+import { useToggle } from "../../../util/hooks/useToggle";
+import { progressIndicator } from "../../../util/lib/progressIndicator";
 import {
   getTitleFromContent,
   stringToMarkdownFileName,
   stripFrontMatterFromContent,
-} from "../../util/strings";
+} from "../../../util/strings";
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
-  if (!session) {
-    res.statusCode = 401;
-    return { props: { issue: {} } };
-  }
-  const urlSearchParams = new URLSearchParams(
-    req.url.substring(req.url.indexOf("?"))
-  );
-  const newsletterId = urlSearchParams.get("n");
-  const issueId = urlSearchParams.get("i");
+export const getServerSideProps: GetServerSideProps = async ({
+  res,
+  query,
+}) => {
+  const newsletterId = query.newsletterId as string;
+  const issueId = query.i as string;
 
   let issue: Issue = {} as Issue;
+  if (!newsletterId) {
+    res.statusCode = 302;
+    res.setHeader("location", "/404");
+    return { props: { issue: {} } };
+  }
+
   if (issueId) {
     issue = await prisma.issue.findFirst({
       where: { id: issueId },
     });
-  } else if (newsletterId) {
-    issue = await populateNewIssue(session.user.email, newsletterId);
+  } else {
+    issue = await populateNewIssue(newsletterId);
   }
 
   if (!issue) {
     res.statusCode = 302;
-    res.setHeader("location", "/app");
+    res.setHeader("location", "/404");
     return { props: { issue: {} } };
   } else {
     const newsletter = await prisma.newsletter.findFirst({
@@ -70,8 +79,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     return {
       props: {
         issue: stripDate(issue),
+        newsletterId: issue.newsletterId,
         newsletterTitle: newsletter.title,
-        userEmail: session.user.email,
         subscriberCount: newsletter.subscribers.length,
         githubIntegration: newsletter.githubIntegration,
       },
@@ -81,25 +90,36 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
 type Props = {
   issue: Issue;
+  newsletterId: string;
   newsletterTitle: string;
-  userEmail: string;
   subscriberCount: number;
   githubIntegration: GithubIntegration;
 };
 
 const Compose: FC<Props> = ({
   issue,
+  newsletterId,
   newsletterTitle,
-  userEmail,
   subscriberCount,
   githubIntegration,
 }) => {
   const router = useRouter();
+  const { data } = useSession();
+  const appHref = useAppHref();
 
   const [fileName, setFileName] = useState(issue.fileName);
   const [content, setContent] = useState(issue.content);
   const [savedFileName, setSavedFileName] = useState(issue.fileName);
   const [savedContent, setSavedContent] = useState(issue.content);
+
+  useEffect(() => {
+    if (!router.query.i) {
+      router.push(`${appHref}/compose/?i=${issue.id}`, undefined, {
+        shallow: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appHref, issue.id]);
 
   const isFileNameChanged = useMemo(
     () => fileName !== savedFileName,
@@ -176,9 +196,10 @@ const Compose: FC<Props> = ({
       sending.toggleOn();
       try {
         await issueService.sendIssue(issue.id, writeToGithub);
-        router.reload();
       } catch (error) {
         console.error(error);
+      } finally {
+        router.reload();
       }
     },
     [issue.id, router, sending]
@@ -200,8 +221,9 @@ const Compose: FC<Props> = ({
       >
         <NextSeo title={fileName} />
         <ComposeBreadCrumbs
-          fileName={fileName}
+          newsletterId={newsletterId}
           newsletterTitle={newsletterTitle}
+          fileName={fileName}
           disableEdit={isSent}
           onChange={handleFileNameChange}
           onBlur={handleFileNameBlur}
@@ -249,7 +271,7 @@ const Compose: FC<Props> = ({
       </Layout>
       <SendTestEmailDialog
         issueId={issue.id}
-        defaultEmailAddress={userEmail}
+        defaultEmailAddress={data?.user?.email}
         open={sendTestEmail.isOn}
         onClose={sendTestEmail.toggleOff}
       />

@@ -13,6 +13,8 @@ import { Session } from "next-auth/core/types";
 import { signOut, useSession } from "next-auth/react";
 import { FC, MouseEvent, useState } from "react";
 
+import { useAppHref } from "../../../util/hooks/useAppHref";
+
 const HeaderMenuItem = styled(MenuItem)`
   && {
     &:hover {
@@ -38,6 +40,9 @@ const AccountAvatar = ({ sessionData, size = 32 }: AccountAvatarProps) => (
 );
 
 export const AccountAvatarMenu = () => {
+  const session = useSession();
+  const appHref = useAppHref();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -48,8 +53,6 @@ export const AccountAvatarMenu = () => {
     setAnchorEl(null);
   };
 
-  const session = useSession();
-
   return (
     <>
       <Box
@@ -57,8 +60,8 @@ export const AccountAvatarMenu = () => {
         sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
       >
         <AvatarToolTip
-          userName={session.data.user?.name}
-          userEmail={session.data.user?.email}
+          userName={session.data?.user?.name}
+          userEmail={session.data?.user?.email}
         >
           <IconButton
             onClick={handleClick}
@@ -128,7 +131,7 @@ export const AccountAvatarMenu = () => {
           </Box>
         </HeaderMenuItem>
         <Divider />
-        <Link href="/app" passHref>
+        <Link href={appHref} passHref>
           <MenuItem>Dashboard</MenuItem>
         </Link>
         <MenuItem onClick={() => signOut()}>Sign out</MenuItem>

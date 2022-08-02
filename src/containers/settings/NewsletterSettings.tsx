@@ -11,6 +11,7 @@ import { ChangeEvent, FC, useMemo, useState } from "react";
 
 import { maxEmailAddressLength } from "../../../util/constants";
 import { getEmailAddress } from "../../../util/getEmailAddress";
+import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { CustomSnackbar } from "../../components/Snackbar";
 import { newsletterService } from "../../services/newsletterService";
@@ -23,6 +24,7 @@ type Props = {
 export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
   const router = useRouter();
   const session = useSession();
+  const appHref = useAppHref();
 
   const [title, setTitle] = useState(initialTitle);
   const [error, setError] = useState("");
@@ -62,7 +64,7 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
     } finally {
       submitting.toggleOff();
       setSuccess("Newsletter updated!");
-      router.replace(`/app/settings`);
+      router.replace(`${appHref}/settings`);
     }
   };
 
@@ -95,7 +97,7 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
           <TextField
             fullWidth
             label="Reply-to"
-            value={session.data.user.email}
+            value={session.data?.user?.email}
             disabled
           />
         </Tooltip>
