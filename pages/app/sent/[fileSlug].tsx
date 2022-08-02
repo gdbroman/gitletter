@@ -1,7 +1,6 @@
 import Typography from "@mui/material/Typography";
 import { Issue, Newsletter } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
-import { getSession } from "next-auth/react";
 import { FC } from "react";
 
 import prisma from "../../../prisma/prisma";
@@ -11,18 +10,13 @@ import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
 import { getRepoContent } from "../../../src/services/githubIntegrationService";
 
 export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  res,
+  query,
   params,
 }) => {
-  const session = await getSession({ req });
-  if (!session) {
-    res.statusCode = 401;
-    return { props: { newsletter: {}, file: {} } };
-  }
+  const newsletterId = query.newsletterId as string;
 
-  const newsletter = await prisma.newsletter.findFirst({
-    where: { author: { email: session.user.email } },
+  const newsletter = await prisma.newsletter.findUnique({
+    where: { id: newsletterId },
     include: {
       issues: true,
       githubIntegration: true,

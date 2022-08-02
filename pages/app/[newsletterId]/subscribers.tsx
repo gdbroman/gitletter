@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
-import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { FC, useCallback } from "react";
 
@@ -17,15 +16,11 @@ import {
 } from "../../../src/types/stripDate";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
-  if (!session) {
-    res.statusCode = 401;
-    return { props: { newsletter: { subscribers: [] } } };
-  }
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const newsletterId = query.newsletterId as string;
 
-  const newsletter = await prisma.newsletter.findFirst({
-    where: { author: { email: session.user.email } },
+  const newsletter = await prisma.newsletter.findUnique({
+    where: { id: newsletterId },
     select: {
       id: true,
       title: true,

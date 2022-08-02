@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
-import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { FC } from "react";
 
@@ -14,25 +13,20 @@ import { issueService } from "../../../src/services/issueService";
 import { IssueWithStrippedDate, stripDate } from "../../../src/types/stripDate";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const session = await getSession({ req });
-  if (!session) {
-    res.statusCode = 401;
-    return { props: { newsletter: { issues: [] } } };
-  }
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const newsletterId = query.newsletterId as string;
 
-  const newsletter =
-    (await prisma.newsletter.findFirst({
-      where: { author: { email: session.user.email } },
-      select: {
-        id: true,
-        title: true,
-        issues: true,
-      },
-    })) ?? {};
+  const newsletter = await prisma.newsletter.findUnique({
+    where: { id: newsletterId },
+    select: {
+      id: true,
+      title: true,
+      issues: true,
+    },
+  });
 
   return {
-    props: { newsletter: stripDate(newsletter) },
+    props: { newsletter: stripDate(newsletter ?? {}) },
   };
 };
 
