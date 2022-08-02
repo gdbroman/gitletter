@@ -12,14 +12,16 @@ export default async function handle(
   if (!session) return res.status(401).json({ message: "Unauthorized" });
 
   const userEmail = session?.user?.email;
-  const hasExistingNewsletter = await prisma.newsletter.findFirst({
+  const existingNewsletter = await prisma.newsletter.findFirst({
     where: {
       author: { email: userEmail },
     },
   });
 
-  if (hasExistingNewsletter) {
+  let newsletterId;
+  if (existingNewsletter) {
     console.log("ONBOARDING", `${userEmail} has a newsletter.`);
+    newsletterId = existingNewsletter.id;
   } else {
     console.log("ONBOARDING", `Creating newsletter for ${userEmail}.`);
     const newNewsletter = await prisma.newsletter.create({
@@ -28,11 +30,12 @@ export default async function handle(
         author: { connect: { email: userEmail } },
       },
     });
+    newsletterId = newNewsletter.id;
 
     console.log("ONBOARDING", `Populating newsletter with intro issue.`);
-    await populateIntroIssue(userEmail, newNewsletter.id);
+    await populateIntroIssue(newNewsletter.id);
   }
 
   console.log("ONBOARDING", "Redirecting to app.");
-  res.redirect("/app");
+  res.redirect(`/app/${newsletterId}`);
 }

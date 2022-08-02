@@ -13,12 +13,7 @@ export default async function handle(
   const { fileName, content, newsletterId } = req.body;
 
   if (req.method === "POST") {
-    const result = await createIssue(
-      fileName,
-      content,
-      session.user.email,
-      newsletterId
-    );
+    const result = await createIssue(fileName, content, newsletterId);
 
     res.status(201).json(result);
   } else {

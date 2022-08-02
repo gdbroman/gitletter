@@ -11,6 +11,7 @@ import { GithubIntegration } from "@prisma/client";
 import Link from "next/link";
 import { FC } from "react";
 
+import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
 
@@ -31,7 +32,9 @@ export const SendIssueDialog: FC<Props> = ({
   onCancel,
   onSubmit,
 }) => {
-  const emailToAllSubscribers = useToggle(true);
+  const appHref = useAppHref();
+
+  const emailToAllSubscribers = useToggle(subscriberCount > 0);
   const writeToGithub = useToggle(false);
 
   return (
@@ -42,6 +45,7 @@ export const SendIssueDialog: FC<Props> = ({
       <DialogContent>
         <FormGroup>
           <FormControlLabel
+            disabled={subscriberCount === 0}
             label="Email to all subscribers"
             control={
               <Checkbox
@@ -52,9 +56,13 @@ export const SendIssueDialog: FC<Props> = ({
             }
           />
           <Typography variant="caption" color="gray">
-            {`The issue will be sent to ${subscriberCount} subscriber${
-              subscriberCount === 1 ? "" : "s"
-            }.`}
+            The issue will be sent to{" "}
+            <Link href={`${appHref}/subscribers`}>
+              {`${subscriberCount} subscriber${
+                subscriberCount === 1 ? "" : "s"
+              }`}
+            </Link>
+            .
           </Typography>
           <FormControlLabel
             disabled={!githubIntegration}
@@ -76,7 +84,7 @@ export const SendIssueDialog: FC<Props> = ({
             ) : (
               <>
                 You are not{" "}
-                <Link href="/app/settings">connected to GitHub</Link>.
+                <Link href={`${appHref}/settings`}>connected to GitHub</Link>.
               </>
             )}
           </Typography>

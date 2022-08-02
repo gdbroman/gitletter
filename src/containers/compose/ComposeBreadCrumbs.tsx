@@ -47,6 +47,7 @@ const StyledAutosizeInput = styled(AutosizeInput)`
 `;
 
 type Props = {
+  newsletterId: string;
   newsletterTitle: string;
   fileName: string;
   disableEdit?: boolean;
@@ -55,6 +56,7 @@ type Props = {
 };
 
 export const ComposeBreadCrumbs: FC<Props> = ({
+  newsletterId,
   newsletterTitle,
   fileName,
   disableEdit,
@@ -62,7 +64,7 @@ export const ComposeBreadCrumbs: FC<Props> = ({
   onBlur,
 }) => (
   <StyledBreadCrumbs aria-label="breadcrumb">
-    <Link href="/app" passHref>
+    <Link href={`/app/${newsletterId}`} passHref>
       <MuiLink underline="hover" color="inherit" href="/" fontSize="18px">
         {newsletterTitle}
       </MuiLink>

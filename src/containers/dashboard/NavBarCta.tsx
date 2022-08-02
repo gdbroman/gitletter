@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, MouseEvent, useState } from "react";
 
+import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { AddFormDialog } from "./AddFormDialog";
 import { AddSubscriberDialog } from "./AddSubscriberDialog";
@@ -20,15 +21,16 @@ export const NavBarCta: FC<Pick<DashboardProps, "newsletterId">> = ({
   newsletterId,
 }) => {
   const router = useRouter();
+  const appHref = useAppHref();
 
-  switch (router.pathname) {
-    case "/app/settings":
+  switch (router.pathname.split("/")[3]) {
+    case "settings":
       return null;
-    case "/app/subscribers":
+    case "subscribers":
       return <ManageButtonMenu newsletterId={newsletterId} />;
     default:
       return (
-        <Link href={`/app/compose?n=${newsletterId}`} passHref>
+        <Link href={`${appHref}/compose`} passHref>
           <Button
             variant="contained"
             color="success"

@@ -12,6 +12,10 @@ export default async function handle(
 
   const newsletterId = req.query.newsletterId as string;
 
+  if (!newsletterId) {
+    return res.status(422).json({ message: "Missing newsletterId" });
+  }
+
   if (req.method === "GET") {
     const result = await prisma.newsletter.findFirst({
       where: { id: newsletterId },

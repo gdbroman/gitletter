@@ -5,13 +5,16 @@ import { getSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { FC } from "react";
 
-import { getGithubRepos, GithubReposInfo } from "../../prisma/modules/github";
-import prisma from "../../prisma/prisma";
-import Layout from "../../src/components/Layout";
-import { ProtectedPage } from "../../src/components/ProtectedPage";
-import { Dashboard } from "../../src/containers/dashboard/Dashboard";
-import { GithubIntegrationSettings } from "../../src/containers/settings/GithubIntegrationSettings";
-import { NewsletterSettings } from "../../src/containers/settings/NewsletterSettings";
+import {
+  getGithubRepos,
+  GithubReposInfo,
+} from "../../../prisma/modules/github";
+import prisma from "../../../prisma/prisma";
+import Layout from "../../../src/components/Layout";
+import { ProtectedPage } from "../../../src/components/ProtectedPage";
+import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
+import { GithubIntegrationSettings } from "../../../src/containers/settings/GithubIntegrationSettings";
+import { NewsletterSettings } from "../../../src/containers/settings/NewsletterSettings";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });

@@ -58,7 +58,7 @@ export default async function handle(
       );
     }
 
-    res.redirect("/app/settings");
+    res.redirect(`/app/${newsLetter.id}/settings`);
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

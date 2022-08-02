@@ -7,6 +7,9 @@ type NewsletterExtended = Newsletter & {
   githubIntegration: GithubIntegration;
 };
 
+const getNewsletterByEmail = async (email: string) =>
+  fetchApi<string>(`/newsletter/email/${email}`, "GET");
+
 const updateNewsletter = async (newsletterId: string, title: string) =>
   fetchApi<NewsletterExtended>(`/newsletter/${newsletterId}`, "PUT", { title });
 
@@ -17,6 +20,7 @@ const subscribe = async (newsletterId: string, email: string) =>
   });
 
 export const newsletterService = {
+  getNewsletterByEmail,
   updateNewsletter,
   subscribe,
 };
