@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../../prisma/prisma";
+import { isValidEmail } from "../../../../util/strings";
 
 export default async function handle(
   req: NextApiRequest,
@@ -10,6 +11,11 @@ export default async function handle(
 
   if (req.method === "POST") {
     const { email, dontRedirect } = req.body;
+
+    if (!email || !isValidEmail(email)) {
+      return res.status(422).json({ message: "Invalid email" });
+    }
+
     const existingSubscriber = await prisma.subscriber.findFirst({
       where: { email, newsletterId },
     });

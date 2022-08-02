@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
 import { useToggle } from "../../../util/hooks/useToggle";
+import { isValidEmail as isValidEmailFn } from "../../../util/strings";
 import { DialogResponsive } from "../../components/DialogResponsive";
 import { newsletterService } from "../../services/newsletterService";
 
@@ -28,12 +29,7 @@ export const AddSubscriberDialog: FC<Props> = ({
   const adding = useToggle(false);
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string | undefined>();
-  const isEmailValid = useMemo(() => {
-    if (!email) {
-      return false;
-    }
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-  }, [email]);
+  const isValidEmail = useMemo(() => isValidEmailFn(email), [email]);
 
   const handleSubmit = async () => {
     adding.toggleOn();
@@ -80,8 +76,8 @@ export const AddSubscriberDialog: FC<Props> = ({
         </Button>
         <LoadingButton
           loading={adding.isOn}
-          variant={isEmailValid ? "contained" : "outlined"}
-          disabled={!isEmailValid}
+          variant={isValidEmail ? "contained" : "outlined"}
+          disabled={!isValidEmail}
           onClick={handleSubmit}
         >
           Add subscriber
