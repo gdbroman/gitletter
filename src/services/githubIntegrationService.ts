@@ -28,16 +28,6 @@ const updateGithubIntegration = async (
 export const getReposInfo = async (installationId: string) =>
   fetchApi<GithubReposInfo>(`/github-integration/files/${installationId}`);
 
-export const getRepoContent = async (
-  installationId: string,
-  fileSlug?: string
-) =>
-  fetchApi<any[] | null>(
-    `/github-integration/files/${installationId}${
-      fileSlug ? `?fileSlug=${fileSlug}` : ""
-    }`
-  ); // TODO: move fileslug to body
-
 export const githubIntegrationService = {
   getGithubIntegration,
   updateGithubIntegration,
