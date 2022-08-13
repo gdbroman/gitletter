@@ -39,7 +39,7 @@ export const populateIntroIssue = async (newsletterId: string) => {
     "Hi there 👋",
     "This is a markdown editor",
     "It's where the magic happens ✨",
-    "Try clicking the **Preview** button below",
+    "Try clicking the preview eye icon below",
     "Now let's get writing!\n",
   ].join("\n\n");
 
