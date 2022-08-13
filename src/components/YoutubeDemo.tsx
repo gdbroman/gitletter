@@ -21,7 +21,7 @@ export const YoutubeDemo = () => (
     <iframe
       width="560"
       height="315"
-      src="https://www.youtube.com/embed/PoJV0ay9PRc"
+      src="https://www.youtube.com/embed/7w1ltoPMC3M"
       title="YouTube video player"
       frameBorder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
