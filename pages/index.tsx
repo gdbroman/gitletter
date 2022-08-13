@@ -47,7 +47,7 @@ const Home: FC = () => {
   return (
     <Layout>
       <main>
-        <Box mx="auto" my={6} textAlign="center" maxWidth={580}>
+        <Box mx="auto" my={6} textAlign="center" maxWidth={640}>
           <Typography variant="h1" fontWeight="bold">
             {siteTagline}
           </Typography>
@@ -60,7 +60,7 @@ const Home: FC = () => {
             mr="auto"
             style={{
               fontSize: "2rem",
-              maxWidth: "500px",
+              maxWidth: "480px",
             }}
           >
             {siteDescription}

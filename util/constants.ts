@@ -1,7 +1,7 @@
 export const siteTitle = "GitLetter";
-export const siteTagline = "Run your newsletter from your repo";
+export const siteTagline = "Add a newsletter to your markdown blog";
 export const siteDescription =
-  "Keep all your writing on GitHub. Integrate with your existing blog.";
+  "Keep all your writing on GitHub. No more duplication headaches.";
 export const siteDomain = "gitletter.co";
 
 export const maxEmailAddressLength = 64;
