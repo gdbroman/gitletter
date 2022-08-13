@@ -4,7 +4,6 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FC } from "react";
@@ -47,7 +46,7 @@ const Home: FC = () => {
   return (
     <Layout>
       <main>
-        <Box mx="auto" my={6} textAlign="center" maxWidth={620}>
+        <Box mx="auto" my={6} textAlign="center" maxWidth={580}>
           <Typography variant="h1" fontWeight="bold">
             {siteTagline}
           </Typography>
@@ -56,8 +55,11 @@ const Home: FC = () => {
             fontWeight="medium"
             mt={3}
             mb={4}
+            ml="auto"
+            mr="auto"
             style={{
               fontSize: "2rem",
+              maxWidth: "500px",
             }}
           >
             {siteDescription}
@@ -97,11 +99,14 @@ const Home: FC = () => {
           </Box>
         </Box>
         <Box textAlign="center">
-          <Image
-            src={"/demo/screen1.png"}
-            alt="GitLetter demo"
-            width={603}
-            height={360}
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/PoJV0ay9PRc"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
           />
         </Box>
       </main>
