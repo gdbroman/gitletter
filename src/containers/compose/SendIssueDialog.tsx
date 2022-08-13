@@ -76,11 +76,19 @@ export const SendIssueDialog: FC<Props> = ({
           />
           <Typography variant="caption" color="gray" mb={1}>
             {!!githubIntegration ? (
-              `The issue will be saved to ${
-                !githubIntegration.repoDir ? "./" : githubIntegration.repoDir
-              } in ${githubIntegration.repoOwner}/${
-                githubIntegration.repoName
-              }.`
+              <>
+                The issue will be saved to{" "}
+                <Typography fontWeight={600} variant="caption" color="gray">
+                  {!githubIntegration.repoDir
+                    ? "./"
+                    : githubIntegration.repoDir}
+                </Typography>{" "}
+                in{" "}
+                <Typography fontWeight={600} variant="caption" color="gray">
+                  {githubIntegration.repoOwner}/{githubIntegration.repoName}
+                </Typography>
+                .
+              </>
             ) : (
               <>
                 You are not{" "}

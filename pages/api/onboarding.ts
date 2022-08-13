@@ -20,10 +20,10 @@ export default async function handle(
 
   let newsletterId;
   if (existingNewsletter) {
-    console.log("ONBOARDING", `${userEmail} has a newsletter.`);
+    console.info("ONBOARDING", `${userEmail} has a newsletter.`);
     newsletterId = existingNewsletter.id;
   } else {
-    console.log("ONBOARDING", `Creating newsletter for ${userEmail}.`);
+    console.info("ONBOARDING", `Creating newsletter for ${userEmail}.`);
     const newNewsletter = await prisma.newsletter.create({
       data: {
         title: `${session?.user?.name.split(" ")[0]}'s letter`,
@@ -32,10 +32,10 @@ export default async function handle(
     });
     newsletterId = newNewsletter.id;
 
-    console.log("ONBOARDING", `Populating newsletter with intro issue.`);
+    console.info("ONBOARDING", `Populating newsletter with intro issue.`);
     await populateIntroIssue(newNewsletter.id);
   }
 
-  console.log("ONBOARDING", "Redirecting to app.");
+  console.info("ONBOARDING", "Redirecting to app.");
   res.redirect(`/app/${newsletterId}`);
 }

@@ -21,7 +21,7 @@ export default async function handle(
     });
 
     if (newsLetter) {
-      console.log("Existing newsletter found", JSON.stringify(newsLetter));
+      console.info("Existing newsletter found", JSON.stringify(newsLetter));
     } else {
       const firstName = session?.user?.name?.split(" ")[0];
       newsLetter = await prisma.newsletter.create({
@@ -31,7 +31,7 @@ export default async function handle(
           author: { connect: { email: session?.user?.email } },
         },
       });
-      console.log(
+      console.info(
         "Created new newsletter",
         JSON.stringify(newsLetter, null, 2)
       );
@@ -44,7 +44,7 @@ export default async function handle(
     });
 
     if (githubIntegration) {
-      console.log("Existing GitHub integration found");
+      console.info("Existing GitHub integration found");
     } else {
       githubIntegration = await prisma.githubIntegration.create({
         data: {
@@ -52,7 +52,7 @@ export default async function handle(
           newsletter: { connect: { id: newsLetter.id } },
         },
       });
-      console.log(
+      console.info(
         "Created new GitHub integration",
         JSON.stringify(githubIntegration, null, 2)
       );

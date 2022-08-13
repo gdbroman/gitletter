@@ -80,7 +80,7 @@ export default async function handle(
         );
         deployed = octoKitResponse.data.content.html_url;
       } catch {
-        console.log("Error writing to github");
+        console.error("Error writing to github");
       }
     }
 
@@ -145,9 +145,9 @@ const sendMail = async (
     };
     transport.sendMail(mailOptions, (err, info) => {
       if (err) {
-        console.log(err);
+        console.error(err);
       } else {
-        console.log(info);
+        console.info(info);
       }
     });
   });

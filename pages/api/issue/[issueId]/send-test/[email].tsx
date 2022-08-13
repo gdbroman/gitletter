@@ -101,9 +101,9 @@ const sendTestEmail = async (
   };
   transport.sendMail(mailOptions, (err, info) => {
     if (err) {
-      console.log(err);
+      console.info(err);
     } else {
-      console.log(info);
+      console.error(info);
     }
   });
 };

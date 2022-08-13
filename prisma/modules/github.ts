@@ -16,8 +16,6 @@ export async function getGithubRepos(installationId: string) {
     client.apps.listReposAccessibleToInstallation
   );
 
-  console.log("GETTING REPOS");
-
   const githubReposInfo: GithubReposInfo = await Promise.all(
     repos.map(async (repo) => {
       let infos: RepoInfo[] = [];
