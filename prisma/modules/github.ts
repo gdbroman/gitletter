@@ -16,6 +16,8 @@ export async function getGithubRepos(installationId: string) {
     client.apps.listReposAccessibleToInstallation
   );
 
+  console.log("GETTING REPOS");
+
   const githubReposInfo: GithubReposInfo = await Promise.all(
     repos.map(async (repo) => {
       let infos: RepoInfo[] = [];
@@ -26,27 +28,19 @@ export async function getGithubRepos(installationId: string) {
         } as any,
       ];
 
-      try {
-        const repoContent: OctokitResponse<GithubRepoData> =
-          await client.repos.getContent({
-            repo: repo.name,
-            owner: repo.owner.login,
-            path: "",
-          });
-        if (Array.isArray(repoContent.data)) {
-          repoContentData.push(...repoContent.data);
-        }
-      } catch (error) {
-        console.error("Could not get repo content, perhaps it's empty.");
-      }
+      const directories = await getRepoDirectoriesRecursively(client, repo);
+      repoContentData.push(...directories);
 
-      infos = repoContentData
-        .filter(({ type }) => type === "dir")
-        .map(({ path }) => ({ dir: path, owner: repo.owner.login }));
+      // Reformat the data as directory-owner paths
+      infos = repoContentData.map(({ path }) => ({
+        dir: path,
+        owner: repo.owner.login,
+      }));
 
       return [repo.name, infos];
     })
   );
+
   return githubReposInfo;
 }
 
@@ -68,3 +62,47 @@ export const createOctokitClient = (installationId?: string): Octokit => {
       : undefined
   );
 };
+
+async function fetchRepoContent(client: Octokit, repo: any, path: string) {
+  try {
+    return client.repos.getContent({
+      repo: repo.name,
+      owner: repo.owner.login,
+      path,
+    });
+  } catch (error) {
+    console.error("Could not get repo content, perhaps it's empty.");
+  }
+}
+
+async function getRepoDirectoriesRecursively(
+  client: Octokit,
+  repo: any,
+  path = ""
+) {
+  const repoContent: OctokitResponse<GithubRepoData> = await fetchRepoContent(
+    client,
+    repo,
+    path
+  );
+  const directories = Array.isArray(repoContent.data)
+    ? repoContent.data.filter((item) => item.type === "dir")
+    : [];
+
+  if (directories.length === 0) {
+    return [];
+  }
+
+  const subDirectories = await Promise.all(
+    directories.map(async (directory) => {
+      const subDirectories = await getRepoDirectoriesRecursively(
+        client,
+        repo,
+        [path, directory.name].join("/")
+      );
+      return subDirectories;
+    })
+  );
+
+  return [...directories, ...subDirectories.flat()];
+}
