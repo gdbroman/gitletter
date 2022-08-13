@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { FC } from "react";
 
 import Layout from "../src/components/Layout";
+import { YoutubeDemo } from "../src/components/YoutubeDemo";
 import { calendlyLink, siteDescription, siteTagline } from "../util/constants";
 import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
@@ -99,15 +100,7 @@ const Home: FC = () => {
           </Box>
         </Box>
         <Box textAlign="center">
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/PoJV0ay9PRc"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          <YoutubeDemo />
         </Box>
       </main>
     </Layout>
