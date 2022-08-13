@@ -9,6 +9,7 @@ export const maxEmailAddressLength = 64;
 export const calendlyLink = "https://calendly.com/gdbroman";
 
 export const gitLetterSocialLinks = {
+  personalTwitter: "https://twitter.com/gdbroman",
   twitter: "https://twitter.com/gitletterco",
   email: "hello@gitletter.co",
 };

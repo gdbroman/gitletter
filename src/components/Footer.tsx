@@ -21,7 +21,7 @@ export const Footer: FC = () => (
     </Typography>
     <Box>
       <IconButton
-        href={gitLetterSocialLinks.twitter}
+        href={gitLetterSocialLinks.personalTwitter}
         title="@GitLetterCo on Twitter"
         target="_blank"
       >
