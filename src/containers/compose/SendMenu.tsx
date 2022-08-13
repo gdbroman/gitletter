@@ -58,13 +58,13 @@ export const SendMenu: FC<SendMenuProps> = ({ toggleTest, toggleSend }) => {
           <ListItemIcon>
             <AlternateEmailIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Send test email</ListItemText>
+          <ListItemText>Send a test email</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleSend}>
           <ListItemIcon>
             <SendIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Send & deploy issue</ListItemText>
+          <ListItemText>Send issue</ListItemText>
         </MenuItem>
       </Menu>
     </div>

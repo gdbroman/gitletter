@@ -23,12 +23,18 @@ export const DialogResponsive: FC<Props> = ({
 
   return (
     <Dialog
-      style={{ overflowX: "hidden" }}
+      style={{
+        overflowX: "hidden",
+      }}
       fullScreen={fullScreen}
       open={open}
       onClose={onClose}
     >
-      <Box padding={1} maxWidth={theme.breakpoints.values[breakPoint]}>
+      <Box
+        padding={1}
+        minWidth={fullScreen ? "100%" : "320px"}
+        maxWidth={theme.breakpoints.values[breakPoint]}
+      >
         {children}
       </Box>
     </Dialog>

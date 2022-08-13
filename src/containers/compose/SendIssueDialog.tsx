@@ -74,7 +74,7 @@ export const SendIssueDialog: FC<Props> = ({
               />
             }
           />
-          <Typography variant="caption" color="gray">
+          <Typography variant="caption" color="gray" mb={1}>
             {!!githubIntegration ? (
               `The issue will be saved to ${
                 !githubIntegration.repoDir ? "./" : githubIntegration.repoDir

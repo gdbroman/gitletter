@@ -80,7 +80,7 @@ export const AddSubscriberDialog: FC<Props> = ({
           disabled={!isValidEmail}
           onClick={handleSubmit}
         >
-          Add subscriber
+          Add
         </LoadingButton>
       </DialogActions>
     </DialogResponsive>
