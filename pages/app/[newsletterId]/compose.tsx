@@ -21,11 +21,11 @@ import { EmailArticle } from "../../../src/components/EmailStyleWrapper";
 import Layout from "../../../src/components/Layout";
 import { MarkdownParser } from "../../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
+import { ComposeBreadCrumbs } from "../../../src/containers/compose/ComposeBreadCrumbs";
 import {
   ComposeControls,
   composeControlsFooterHeight,
 } from "../../../src/containers/compose/ComposeControls";
-import { ComposeHeader } from "../../../src/containers/compose/ComposeHeader";
 import { Editor } from "../../../src/containers/compose/Editor";
 import { SendIssueDialog } from "../../../src/containers/compose/SendIssueDialog";
 import { SendTestEmailDialog } from "../../../src/containers/compose/SendTestEmailDialog";
@@ -211,6 +211,8 @@ const Compose: FC<Props> = ({
         footer={
           !isSent ? (
             <ComposeControls
+              isPreview={previewEmail.isOn}
+              togglePreview={previewEmail.toggle}
               toggleTest={sendTestEmail.toggleOn}
               toggleSend={handleAreYouSure}
             />
@@ -218,10 +220,7 @@ const Compose: FC<Props> = ({
         }
       >
         <NextSeo title={fileName} />
-        <ComposeHeader
-          isSent={isSent}
-          isPreview={previewEmail.isOn}
-          togglePreview={previewEmail.toggle}
+        <ComposeBreadCrumbs
           newsletterId={newsletterId}
           newsletterTitle={newsletterTitle}
           fileName={fileName}

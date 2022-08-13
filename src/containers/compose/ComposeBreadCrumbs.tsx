@@ -8,9 +8,7 @@ import AutosizeInput from "react-input-autosize";
 import theme from "../../../styles/theme";
 
 const StyledBreadCrumbs = styled(Breadcrumbs)`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 8px;
   ol {
     flex-wrap: nowrap;
     overflow: hidden;
