@@ -8,7 +8,9 @@ import AutosizeInput from "react-input-autosize";
 import theme from "../../../styles/theme";
 
 const StyledBreadCrumbs = styled(Breadcrumbs)`
-  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   ol {
     flex-wrap: nowrap;
     overflow: hidden;
@@ -34,7 +36,7 @@ const StyledAutosizeInput = styled(AutosizeInput)`
     padding: 4px;
     border: 1px solid rgba(255, 255, 255, 0);
     font-family: ${theme.typography.fontFamily};
-    font-size: 18px;
+    font-size: 16px;
     &:focus {
       border: 1px solid rgba(0, 0, 0, 0.23);
       outline: none;
@@ -46,7 +48,7 @@ const StyledAutosizeInput = styled(AutosizeInput)`
   }
 `;
 
-type Props = {
+export type ComposeBreadCrumbsProps = {
   newsletterId: string;
   newsletterTitle: string;
   fileName: string;
@@ -55,7 +57,7 @@ type Props = {
   onBlur: (e: any) => void;
 };
 
-export const ComposeBreadCrumbs: FC<Props> = ({
+export const ComposeBreadCrumbs: FC<ComposeBreadCrumbsProps> = ({
   newsletterId,
   newsletterTitle,
   fileName,
@@ -65,7 +67,7 @@ export const ComposeBreadCrumbs: FC<Props> = ({
 }) => (
   <StyledBreadCrumbs aria-label="breadcrumb">
     <Link href={`/app/${newsletterId}`} passHref>
-      <MuiLink underline="hover" color="inherit" href="/" fontSize="18px">
+      <MuiLink underline="hover" color="inherit" href="/" fontSize="16px">
         {newsletterTitle}
       </MuiLink>
     </Link>
