@@ -45,6 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {
       newsletterId,
       newsletterTitle: newsletter.title,
+      githubIntegration: newsletter.githubIntegration,
       githubReposInfo,
       stripeProductId: newsletter.author.stripeProductId,
       products,

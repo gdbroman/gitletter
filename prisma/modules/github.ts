@@ -78,6 +78,11 @@ async function getRepoDirectoriesRecursively(
   repo: any,
   path = ""
 ) {
+  // Only recurse two levels deep
+  if (path.split("/").length > 2) {
+    return [];
+  }
+
   const repoContent: OctokitResponse<GithubRepoData> = await fetchRepoContent(
     client,
     repo,
