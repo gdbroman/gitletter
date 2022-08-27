@@ -129,7 +129,7 @@ const Home: FC = () => {
             </LoadingButton>
           )}
         </Box>
-        <Box mt={6} mb={10}>
+        <Box my={10}>
           <YoutubeDemo />
         </Box>
         <Typography variant="h3" fontWeight="bold" textAlign="center" mb={4}>
@@ -148,7 +148,7 @@ const Home: FC = () => {
             price="$0 / month"
             features={[
               `${numberToStringWithSpaces(freeSubscriberLimit)} subscribers`,
-              "Upgrade any time",
+              "Full access to all features",
             ]}
             fullWidth={mediumScreen}
             button={

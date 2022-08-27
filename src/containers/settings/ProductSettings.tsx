@@ -14,9 +14,13 @@ import { useRouter } from "next/router";
 import { ChangeEvent, FC, useMemo, useState } from "react";
 
 import { Product } from "../../../prisma/modules/stripe";
+import { freeSubscriberLimit } from "../../../util/constants";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
-import { stripePriceToString } from "../../../util/strings";
+import {
+  numberToStringWithSpaces,
+  stripePriceToString,
+} from "../../../util/strings";
 import { productService } from "../../services/productService";
 
 type Props = {
@@ -80,12 +84,12 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
         paddingTop={4}
       >
         <FormControl fullWidth>
-          <InputLabel id="productId-select-label">Subscriber limit</InputLabel>
+          <InputLabel id="productId-select-label">Select plan</InputLabel>
           <Select
             labelId="productId-select-label"
             id="demo-simple-select"
             value={productId}
-            label="Subscriber limit"
+            label="Select plan"
             onChange={handleOnChangeProduct}
           >
             {products.map(({ id, name, price }) => (
@@ -97,6 +101,24 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
             ))}
           </Select>
         </FormControl>
+        <ul style={{ margin: 0 }}>
+          <li>
+            <Typography variant="body2" color="gray">
+              The free and paid plan both give full access to all features.
+            </Typography>
+          </li>
+          <li>
+            <Typography variant="body2" color="gray">
+              The free plan only allows up to{" "}
+              {numberToStringWithSpaces(freeSubscriberLimit)} subscribers.
+            </Typography>
+          </li>
+          <li>
+            <Typography variant="body2" color="gray">
+              The paid plan allows unlimited subscribers.
+            </Typography>
+          </li>
+        </ul>
         {error && (
           <Typography variant="caption" color="red">
             {error}
