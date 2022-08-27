@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
+import { useRef } from "react";
 
 import { useSignIn } from "../../../util/hooks/useSignIn";
 import { AccountAvatarMenu } from "./AccountAvatarMenu";
@@ -17,7 +18,8 @@ export const LoadingButtonWithBlackSpinner = styled(LoadingButton)`
 
 export const HeaderNavRight = () => {
   const { status } = useSession();
-  const { signIn, loading } = useSignIn();
+  const { signIn, loadingRef } = useSignIn();
+  const signInButtonRef = useRef<HTMLButtonElement>(null);
 
   switch (status) {
     case "loading":
@@ -36,8 +38,9 @@ export const HeaderNavRight = () => {
       return (
         <LoadingButtonWithBlackSpinner
           variant="outlined"
-          loading={loading}
-          onClick={signIn}
+          ref={signInButtonRef}
+          loading={loadingRef === signInButtonRef}
+          onClick={() => signIn(signInButtonRef)}
           style={{ marginRight: "6px" }}
         >
           Log in

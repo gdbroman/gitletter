@@ -4,12 +4,15 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { FC } from "react";
+import { FC, useRef } from "react";
 
 import Layout from "../src/components/Layout";
+import { SubscriptionCard } from "../src/components/SubscriptionCard";
 import { YoutubeDemo } from "../src/components/YoutubeDemo";
+import theme from "../styles/theme";
 import { calendlyLink, siteDescription, siteTagline } from "../util/constants";
 import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
@@ -20,9 +23,13 @@ const Home: FC = () => {
   const router = useRouter();
   const session = useSession();
   const appHref = useAppHref();
-  const { signIn, loading } = useSignIn();
-
+  const { signIn, loadingRef } = useSignIn();
   const redirecting = useToggle(false);
+  const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const getStartedFreeButtonRef = useRef<HTMLButtonElement>(null);
+  const freeTierButtonRef = useRef<HTMLButtonElement>(null);
+  const fullAccessButtonRef = useRef<HTMLButtonElement>(null);
 
   const goToApp = () => {
     redirecting.toggleOn();
@@ -35,9 +42,27 @@ const Home: FC = () => {
   };
 
   const getStartedFree = () => {
-    signIn();
+    signIn(getStartedFreeButtonRef);
     ga.event({
       action: "Get started free CTA",
+      params: {
+        view: "Landing page",
+      },
+    });
+  };
+  const getStartedFreeTier = () => {
+    signIn(freeTierButtonRef);
+    ga.event({
+      action: "Free tier CTA",
+      params: {
+        view: "Landing page",
+      },
+    });
+  };
+  const getStartedFullAccess = () => {
+    signIn(fullAccessButtonRef);
+    ga.event({
+      action: "Full access CTA",
       params: {
         view: "Landing page",
       },
@@ -91,7 +116,8 @@ const Home: FC = () => {
                 variant="contained"
                 startIcon={<GitHubIcon />}
                 style={{ fontSize: "1rem" }}
-                loading={loading}
+                ref={getStartedFreeButtonRef}
+                loading={loadingRef === getStartedFreeButtonRef}
                 onClick={getStartedFree}
               >
                 Get started free
@@ -101,6 +127,51 @@ const Home: FC = () => {
         </Box>
         <Box textAlign="center">
           <YoutubeDemo />
+        </Box>
+        <Box
+          display="flex"
+          flexDirection={mediumScreen ? "column-reverse" : "row"}
+          justifyContent="center"
+          alignItems="center"
+          my={8}
+          gap={4}
+        >
+          <SubscriptionCard
+            title="✍️ Indie writer"
+            price="$0 / month"
+            features={["1 000 subscribers", "Upgrade any time"]}
+            fullWidth={mediumScreen}
+            button={
+              <LoadingButton
+                size="large"
+                fullWidth
+                variant="outlined"
+                ref={freeTierButtonRef}
+                loading={loadingRef === freeTierButtonRef}
+                onClick={getStartedFreeTier}
+              >
+                Get started
+              </LoadingButton>
+            }
+          />
+          <SubscriptionCard
+            title="💥 Beast mode"
+            price="$29 / month"
+            features={["Unlimited subscribers", "100% Money-back guarantee"]}
+            fullWidth={mediumScreen}
+            button={
+              <LoadingButton
+                size="large"
+                fullWidth
+                variant="contained"
+                ref={freeTierButtonRef}
+                loading={loadingRef === fullAccessButtonRef}
+                onClick={getStartedFullAccess}
+              >
+                Get started
+              </LoadingButton>
+            }
+          />
         </Box>
       </main>
     </Layout>
