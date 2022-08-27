@@ -1,0 +1,131 @@
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Typography from "@mui/material/Typography";
+import { loadStripe } from "@stripe/stripe-js";
+import { useRouter } from "next/router";
+import { ChangeEvent, FC, useMemo, useState } from "react";
+
+import { Product } from "../../../prisma/modules/stripe";
+import { useAppHref } from "../../../util/hooks/useAppHref";
+import { useToggle } from "../../../util/hooks/useToggle";
+import { stripePriceToString } from "../../../util/strings";
+import { productService } from "../../services/productService";
+
+type Props = {
+  initialProductId: string;
+  products: Product[];
+};
+
+export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
+  const router = useRouter();
+  const appHref = useAppHref();
+
+  const [productId, setProductId] = useState(initialProductId);
+  const [error, setError] = useState("");
+  const submitting = useToggle(false);
+
+  const isValid = useMemo(() => {
+    return !!productId;
+  }, [productId]);
+  const isChanged = useMemo(
+    () => productId !== initialProductId,
+    [initialProductId, productId]
+  );
+
+  const handleOnChangeProduct = (event: ChangeEvent<HTMLInputElement>) => {
+    setProductId(event.target.value);
+  };
+  const handleCancel = () => {
+    setProductId(initialProductId);
+  };
+  const handleSubmit = async () => {
+    submitting.toggleOn();
+    setError("");
+    try {
+      const priceId = products.find(({ id }) => id === productId)!.priceId;
+      const sessionId = await productService.createSession(priceId);
+      if (!sessionId) {
+        throw new Error();
+      }
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+      );
+      await stripe.redirectToCheckout({ sessionId });
+    } catch {
+      setError("Something went wrong.");
+    } finally {
+      submitting.toggleOff();
+      router.replace(`${appHref}/settings`);
+    }
+  };
+
+  return (
+    <Card variant="outlined">
+      <Alert severity="info" icon={<AttachMoneyIcon />}>
+        Plan
+      </Alert>
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={3}
+        padding={2}
+        paddingTop={4}
+      >
+        <FormControl fullWidth>
+          <InputLabel id="productId-select-label">Subscriber limit</InputLabel>
+          <Select
+            labelId="productId-select-label"
+            id="demo-simple-select"
+            value={productId}
+            label="Subscriber limit"
+            onChange={handleOnChangeProduct}
+          >
+            {products.map(({ id, name, price }) => (
+              <MenuItem key={id} value={id}>
+                <Typography variant="body1">
+                  {name} ({stripePriceToString(price)} US$/month)
+                </Typography>
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {error && (
+          <Typography variant="caption" color="red">
+            {error}
+          </Typography>
+        )}
+        <Box display="flex" gap={1} justifyContent="end">
+          {isChanged && (
+            <Button
+              variant="text"
+              size="medium"
+              color="primary"
+              disabled={submitting.isOn}
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          )}
+          <LoadingButton
+            variant={isChanged && isValid ? "contained" : "outlined"}
+            size="medium"
+            color="primary"
+            disabled={!isChanged || !isValid}
+            loading={submitting.isOn}
+            onClick={handleSubmit}
+          >
+            Update
+          </LoadingButton>
+        </Box>
+      </Box>
+    </Card>
+  );
+};

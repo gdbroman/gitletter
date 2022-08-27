@@ -1,5 +1,5 @@
 export const siteTitle = "GitLetter";
-export const siteTagline = "Add a newsletter to your markdown blog";
+export const siteTagline = "Add a Newsletter to Your Markdown Blog";
 export const siteDescription =
   "Keep all your writing on GitHub. No more copy pasting.";
 export const siteDomain = "gitletter.co";
@@ -13,3 +13,5 @@ export const gitLetterSocialLinks = {
   twitter: "https://twitter.com/gitletterco",
   email: "hello@gitletter.co",
 };
+
+export const freeSubscriberLimit = 1000;

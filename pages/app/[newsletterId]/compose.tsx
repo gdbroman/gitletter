@@ -16,6 +16,7 @@ import {
 } from "react";
 
 import { populateNewIssue } from "../../../prisma/modules/issue";
+import { getFreeProductId } from "../../../prisma/modules/stripe";
 import prisma from "../../../prisma/prisma";
 import { EmailArticle } from "../../../src/components/EmailStyleWrapper";
 import Layout from "../../../src/components/Layout";
@@ -74,8 +75,16 @@ export const getServerSideProps: GetServerSideProps = async ({
         title: true,
         githubIntegration: true,
         subscribers: true,
+        author: {
+          select: {
+            stripeProductId: true,
+          },
+        },
       },
     });
+    const freeProductId = await getFreeProductId();
+    const hasFreeProduct = newsletter.author.stripeProductId === freeProductId;
+
     return {
       props: {
         issue: stripDate(issue),
@@ -83,6 +92,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         newsletterTitle: newsletter.title,
         subscriberCount: newsletter.subscribers.length,
         githubIntegration: newsletter.githubIntegration,
+        hasFreeProduct,
       },
     };
   }
@@ -94,6 +104,7 @@ type Props = {
   newsletterTitle: string;
   subscriberCount: number;
   githubIntegration: GithubIntegration;
+  hasFreeProduct: boolean;
 };
 
 const Compose: FC<Props> = ({
@@ -102,6 +113,7 @@ const Compose: FC<Props> = ({
   newsletterTitle,
   subscriberCount,
   githubIntegration,
+  hasFreeProduct,
 }) => {
   const router = useRouter();
   const { data } = useSession();
@@ -278,6 +290,7 @@ const Compose: FC<Props> = ({
       />
       <SendIssueDialog
         subscriberCount={subscriberCount}
+        hasFreeProduct={hasFreeProduct}
         githubIntegration={githubIntegration}
         open={areYouSure.isOn}
         loading={sending.isOn}

@@ -1,17 +1,19 @@
 import { signIn as nextAuthSignIn } from "next-auth/react";
 import { useState } from "react";
 
-export const useSignIn = () => {
-  const [loading, setLoading] = useState(false);
+import { ButtonRef } from "../types";
 
-  const signIn = async () => {
-    setLoading(true);
+export const useSignIn = () => {
+  const [loadingRef, setLoadingRef] = useState<ButtonRef | null>(null);
+
+  const signIn = async (buttonRef: ButtonRef) => {
+    setLoadingRef(buttonRef);
     try {
       nextAuthSignIn("github", { callbackUrl: "/api/onboarding" });
     } catch {
-      setLoading(false);
+      setLoadingRef(null);
     }
   };
 
-  return { signIn, loading };
+  return { signIn, loadingRef };
 };

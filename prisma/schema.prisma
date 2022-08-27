@@ -89,16 +89,18 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
-  name          String?
-  email         String?     @unique
-  emailVerified DateTime?   @map("email_verified")
-  image         String?
-  createdAt     DateTime    @default(now()) @map("created_at")
-  updatedAt     DateTime    @updatedAt @map("updated_at")
-  accounts      Account[]
-  newsletter    Newsletter?
-  sessions      Session[]
+  id               String      @id @default(cuid())
+  name             String?
+  email            String?     @unique
+  emailVerified    DateTime?   @map("email_verified")
+  image            String?
+  createdAt        DateTime    @default(now()) @map("created_at")
+  updatedAt        DateTime    @updatedAt @map("updated_at")
+  accounts         Account[]
+  newsletter       Newsletter?
+  sessions         Session[]
+  stripeCustomerId String?     @unique @map("stripe_customer_id")
+  stripeProductId  String?     @map("stripe_product_id")
 
   @@map("users")
 }

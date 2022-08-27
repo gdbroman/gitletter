@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { GithubIntegration, Newsletter } from "@prisma/client";
+import { GithubIntegration } from "@prisma/client";
 import { GetServerSideProps } from "next/types";
 import { NextSeo } from "next-seo";
 import { FC } from "react";
@@ -8,12 +8,14 @@ import {
   getGithubRepos,
   GithubReposInfo,
 } from "../../../prisma/modules/github";
+import { getProducts, Product } from "../../../prisma/modules/stripe";
 import prisma from "../../../prisma/prisma";
 import Layout from "../../../src/components/Layout";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
 import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
 import { GithubIntegrationSettings } from "../../../src/containers/settings/GithubIntegrationSettings";
 import { NewsletterSettings } from "../../../src/containers/settings/NewsletterSettings";
+import { ProductSettings } from "../../../src/containers/settings/ProductSettings";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const newsletterId = query.newsletterId as string;
@@ -22,6 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     where: { id: newsletterId },
     include: {
       githubIntegration: true,
+      author: true,
     },
   });
 
@@ -36,39 +39,54 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     }
   }
 
+  const products = await getProducts();
+
   return {
-    props: { newsletter, githubReposInfo },
+    props: {
+      newsletterId,
+      newsletterTitle: newsletter.title,
+      githubReposInfo,
+      stripeProductId: newsletter.author.stripeProductId,
+      products,
+    },
   };
 };
 
 type Props = {
-  newsletter: Newsletter & {
-    githubIntegration?: GithubIntegration;
-  };
+  newsletterId: string;
+  newsletterTitle: string;
+  githubIntegration?: GithubIntegration;
   githubReposInfo: GithubReposInfo | null;
+  stripeProductId: string;
+  products: Product[];
 };
 
-const AppSettings: FC<Props> = ({ newsletter, githubReposInfo }) => {
-  const title = newsletter?.title;
-  const githubIntegration = newsletter?.githubIntegration;
-  const newsletterId = newsletter.id;
-
-  return (
-    <ProtectedPage>
-      <Layout>
-        <NextSeo title="Settings" />
-        <Dashboard title={title} value={3} newsletterId={newsletterId}>
-          <Box display="flex" flexDirection="column" gap={2}>
-            <GithubIntegrationSettings
-              githubIntegration={githubIntegration}
-              githubReposInfo={githubReposInfo}
-            />
-            <NewsletterSettings id={newsletterId} title={title} />
-          </Box>
-        </Dashboard>
-      </Layout>
-    </ProtectedPage>
-  );
-};
+const AppSettings: FC<Props> = ({
+  newsletterId,
+  newsletterTitle,
+  githubIntegration,
+  githubReposInfo,
+  stripeProductId,
+  products,
+}) => (
+  <ProtectedPage>
+    <Layout>
+      <NextSeo title="Settings" />
+      <Dashboard title={newsletterTitle} value={3} newsletterId={newsletterId}>
+        <Box display="flex" flexDirection="column" gap={2}>
+          <GithubIntegrationSettings
+            githubIntegration={githubIntegration}
+            githubReposInfo={githubReposInfo}
+          />
+          <NewsletterSettings id={newsletterId} title={newsletterTitle} />
+          <ProductSettings
+            initialProductId={stripeProductId}
+            products={products}
+          />
+        </Box>
+      </Dashboard>
+    </Layout>
+  </ProtectedPage>
+);
 
 export default AppSettings;
