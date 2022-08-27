@@ -99,6 +99,7 @@ model User {
   accounts      Account[]
   newsletter    Newsletter?
   sessions      Session[]
+  stripeId      String?     @unique @map("stripe_id")
 
   @@map("users")
 }
