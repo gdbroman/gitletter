@@ -71,70 +71,71 @@ const Home: FC = () => {
 
   return (
     <Layout>
-      <main>
-        <Box mx="auto" my={6} textAlign="center" maxWidth={640}>
-          <Typography variant="h1" fontWeight="bold">
-            {siteTagline}
-          </Typography>
-          <Typography
-            variant="body1"
-            fontWeight="medium"
-            mt={3}
-            mb={4}
-            ml="auto"
-            mr="auto"
-            style={{
-              fontSize: "2rem",
-              maxWidth: "480px",
-            }}
+      <Box mx="auto" my={6} textAlign="center" maxWidth={640}>
+        <Typography variant="h1" fontWeight="bold">
+          {siteTagline}
+        </Typography>
+        <Typography
+          variant="body1"
+          fontWeight="medium"
+          mt={3}
+          mb={4}
+          ml="auto"
+          mr="auto"
+          style={{
+            fontSize: "2rem",
+            maxWidth: "480px",
+          }}
+        >
+          {siteDescription}
+        </Typography>
+        <Box display="flex" justifyContent="center" gap={2}>
+          <Button
+            size="large"
+            variant="outlined"
+            href={calendlyLink}
+            target="_blank"
           >
-            {siteDescription}
-          </Typography>
-          <Box display="flex" justifyContent="center" gap={2}>
-            <Button
+            Book demo
+          </Button>
+          {session.status === "authenticated" ? (
+            <LoadingButton
               size="large"
-              variant="outlined"
-              href={calendlyLink}
-              target="_blank"
+              variant="contained"
+              endIcon={<ArrowForwardIcon />}
+              style={{ fontSize: "1rem" }}
+              loading={redirecting.isOn}
+              onClick={goToApp}
             >
-              Book demo
-            </Button>
-            {session.status === "authenticated" ? (
-              <LoadingButton
-                size="large"
-                variant="contained"
-                endIcon={<ArrowForwardIcon />}
-                style={{ fontSize: "1rem" }}
-                loading={redirecting.isOn}
-                onClick={goToApp}
-              >
-                Go to app
-              </LoadingButton>
-            ) : (
-              <LoadingButton
-                size="large"
-                variant="contained"
-                startIcon={<GitHubIcon />}
-                style={{ fontSize: "1rem" }}
-                ref={getStartedFreeButtonRef}
-                loading={loadingRef === getStartedFreeButtonRef}
-                onClick={getStartedFree}
-              >
-                Get started free
-              </LoadingButton>
-            )}
-          </Box>
+              Go to app
+            </LoadingButton>
+          ) : (
+            <LoadingButton
+              size="large"
+              variant="contained"
+              startIcon={<GitHubIcon />}
+              style={{ fontSize: "1rem" }}
+              ref={getStartedFreeButtonRef}
+              loading={loadingRef === getStartedFreeButtonRef}
+              onClick={getStartedFree}
+            >
+              Get started free
+            </LoadingButton>
+          )}
         </Box>
-        <Box textAlign="center">
+        <Box mt={6} mb={10}>
           <YoutubeDemo />
         </Box>
+        <Typography variant="h3" fontWeight="bold" textAlign="center" mb={4}>
+          Become Your Own Publisher
+        </Typography>
         <Box
           display="flex"
           flexDirection={mediumScreen ? "column-reverse" : "row"}
           justifyContent="center"
           alignItems="center"
-          my={8}
           gap={4}
+          mb={4}
         >
           <SubscriptionCard
             title="✍️ Indie writer"
@@ -173,7 +174,7 @@ const Home: FC = () => {
             }
           />
         </Box>
-      </main>
+      </Box>
     </Layout>
   );
 };

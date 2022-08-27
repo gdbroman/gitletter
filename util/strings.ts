@@ -60,3 +60,5 @@ export const createFrontMatter = (title: string) => `---\ntitle: ${title}\n---`;
 
 export const isValidEmail = (email: string) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+export const stripePriceToString = (price: number) => `${price / 100}`;

@@ -21,7 +21,7 @@ export const SubscriptionCard: FC<SubscriptionCardProps> = ({
 }) => (
   <Card style={{ width: fullWidth ? "100%" : "auto", maxWidth: "480px" }}>
     <Box px={4} py={3} textAlign="center">
-      <Typography variant="h4" fontWeight="medium">
+      <Typography variant="h5" fontWeight="medium">
         {title}
       </Typography>
       <Typography variant="h3" fontWeight="medium" my={3}>
