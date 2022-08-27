@@ -13,3 +13,5 @@ export const gitLetterSocialLinks = {
   twitter: "https://twitter.com/gitletterco",
   email: "hello@gitletter.co",
 };
+
+export const freeSubscriberLimit = 1000;

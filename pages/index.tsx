@@ -13,11 +13,17 @@ import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
 import { YoutubeDemo } from "../src/components/YoutubeDemo";
 import theme from "../styles/theme";
-import { calendlyLink, siteDescription, siteTagline } from "../util/constants";
+import {
+  calendlyLink,
+  freeSubscriberLimit,
+  siteDescription,
+  siteTagline,
+} from "../util/constants";
 import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
 import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
+import { numberToStringWithSpaces } from "../util/strings";
 
 const Home: FC = () => {
   const router = useRouter();
@@ -140,7 +146,10 @@ const Home: FC = () => {
           <SubscriptionCard
             title="✍️ Indie writer"
             price="$0 / month"
-            features={["1 000 subscribers", "Upgrade any time"]}
+            features={[
+              `${numberToStringWithSpaces(freeSubscriberLimit)} subscribers`,
+              "Upgrade any time",
+            ]}
             fullWidth={mediumScreen}
             button={
               <LoadingButton
