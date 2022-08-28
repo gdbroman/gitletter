@@ -22,9 +22,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const newsletter = await prisma.newsletter.findUnique({
     where: { id: newsletterId },
-    include: {
+    select: {
+      title: true,
+      author: {
+        select: {
+          stripeProductId: true,
+        },
+      },
       githubIntegration: true,
-      author: true,
     },
   });
 
