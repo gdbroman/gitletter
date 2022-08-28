@@ -1,30 +1,19 @@
 import Box from "@mui/material/Box";
 import { FC, ReactNode } from "react";
 
-import { NavBar } from "./NavBar";
+import { TabsNavBar } from "./TabsNavBar";
 
 export type DashboardProps = {
-  title?: string;
-  value: number;
-  newsletterId: string;
+  title: string;
   children: ReactNode;
 };
 
-export const Dashboard: FC<DashboardProps> = ({
-  title,
-  value,
-  newsletterId,
-  children,
-}) => (
+export const Dashboard: FC<DashboardProps> = ({ title, children }) => (
   <main>
-    <h1>{title ? title : "Your newsletter"}</h1>
-    <NavBar value={value} newsletterId={newsletterId} />
-    <div
-      role="tabpanel"
-      id={`simple-tabpanel-${value}`}
-      aria-labelledby={`simple-tab-${value}`}
-    >
-      <Box my={3}>{children}</Box>
-    </div>
+    <h1>{title}</h1>
+    <TabsNavBar />
+    <Box role="tabpanel" my={3}>
+      {children}
+    </Box>
   </main>
 );

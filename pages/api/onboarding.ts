@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { populateIntroIssue } from "../../prisma/modules/issue";
 import { getFreeProductId, stripe } from "../../prisma/modules/stripe";
 import prisma from "../../prisma/prisma";
+import { getAppBasePath } from "../../util/hooks/useAppHref";
 import { unstableGetServerSession } from "./auth/getServerSession";
 
 export default async function handle(
@@ -69,5 +70,5 @@ export default async function handle(
   }
 
   console.info("ONBOARDING", "Redirecting to app.");
-  res.redirect(`/app/${newsletterId}`);
+  res.redirect(getAppBasePath(newsletterId));
 }

@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { stripe } from "../../../prisma/modules/stripe";
 import prisma from "../../../prisma/prisma";
+import { getAppBasePath } from "../../../util/hooks/useAppHref";
 import { unstableGetServerSession } from "../auth/getServerSession";
 
 export default async function handle(
@@ -35,8 +36,12 @@ export default async function handle(
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: lineItems,
-      success_url: `${process.env.APP_URL}/app/${user.newsletter.id}/settings`,
-      cancel_url: `${process.env.APP_URL}/app/${user.newsletter.id}/settings`,
+      success_url: `${process.env.APP_URL}${getAppBasePath(
+        user.newsletter.id
+      )}/settings/billing`,
+      cancel_url: `${process.env.APP_URL}${getAppBasePath(
+        user.newsletter.id
+      )}/settings/billing`,
       metadata: {
         userId: user.id,
       },

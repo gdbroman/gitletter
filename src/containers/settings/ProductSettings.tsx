@@ -74,7 +74,7 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
   return (
     <Card variant="outlined">
       <Alert severity="info" icon={<AttachMoneyIcon />}>
-        Plan
+        Billing
       </Alert>
       <Box
         display="flex"

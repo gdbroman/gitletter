@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import { FC, useEffect } from "react";
 
-import { NewsletterContextProvider } from "../contexts/newsletter";
 import theme from "../styles/theme";
 import * as ga from "../util/lib/googleAnalytics";
 import { progressIndicator } from "../util/lib/progressIndicator";
@@ -60,12 +59,10 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <SessionProvider session={pageProps.session}>
-      <NewsletterContextProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </NewsletterContextProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </SessionProvider>
   );
 };
