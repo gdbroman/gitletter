@@ -1,9 +1,9 @@
+import { useRouter } from "next/router";
 import { useMemo } from "react";
 
-import { useNewsletterContext } from "../../contexts/newsletter";
-
 export const useAppHref = () => {
-  const { newsletterId } = useNewsletterContext();
+  const router = useRouter();
+  const newsletterId = router.query.newsletterId as string;
 
   const appHref = useMemo(() => {
     if (newsletterId) {
