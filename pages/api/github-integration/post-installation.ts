@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../prisma/prisma";
+import { getAppBasePath } from "../../../util/hooks/useAppHref";
 import { unstableGetServerSession } from "../auth/getServerSession";
 
 // Webhook for GitHub app post installation
@@ -58,7 +59,7 @@ export default async function handle(
       );
     }
 
-    res.redirect(`/app/${newsLetter.id}/settings`);
+    res.redirect(`${getAppBasePath(newsLetter.id)}/settings`);
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }

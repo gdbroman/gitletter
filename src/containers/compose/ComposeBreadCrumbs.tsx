@@ -6,6 +6,7 @@ import { ChangeEvent, FC } from "react";
 import AutosizeInput from "react-input-autosize";
 
 import theme from "../../../styles/theme";
+import { getAppBasePath } from "../../../util/hooks/useAppHref";
 
 const StyledBreadCrumbs = styled(Breadcrumbs)`
   margin-bottom: 8px;
@@ -64,7 +65,7 @@ export const ComposeBreadCrumbs: FC<ComposeBreadCrumbsProps> = ({
   onBlur,
 }) => (
   <StyledBreadCrumbs aria-label="breadcrumb">
-    <Link href={`/app/${newsletterId}`} passHref>
+    <Link href={getAppBasePath(newsletterId)} passHref>
       <MuiLink underline="hover" color="inherit" href="/" fontSize="16px">
         {newsletterTitle}
       </MuiLink>

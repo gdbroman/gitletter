@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../../prisma/prisma";
+import { getAppBasePath } from "../../../../util/hooks/useAppHref";
 import { isValidEmail } from "../../../../util/strings";
 
 export default async function handle(
@@ -34,7 +35,7 @@ export default async function handle(
     if (dontRedirect) {
       res.status(200).json({ message: "Subscriber added." });
     } else {
-      res.redirect(`/app/${newsletterId}/subscribed`);
+      res.redirect(`${getAppBasePath(newsletterId)}/subscribed`);
     }
   } else {
     res.status(405).json({ message: "Method not allowed" });
