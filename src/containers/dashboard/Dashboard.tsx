@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { FC, ReactNode } from "react";
 
-import { NavBar } from "./NavBar";
+import { TabsNavBar } from "./TabsNavBar";
 
 export type DashboardProps = {
   title: string;
@@ -11,7 +11,7 @@ export type DashboardProps = {
 export const Dashboard: FC<DashboardProps> = ({ title, children }) => (
   <main>
     <h1>{title}</h1>
-    <NavBar />
+    <TabsNavBar />
     <Box role="tabpanel" my={3}>
       {children}
     </Box>

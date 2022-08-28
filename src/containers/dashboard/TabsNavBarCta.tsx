@@ -15,11 +15,12 @@ import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { AddFormDialog } from "./AddFormDialog";
 import { AddSubscriberDialog } from "./AddSubscriberDialog";
-import { DashboardProps } from "./Dashboard";
 
-export const NavBarCta: FC<Pick<DashboardProps, "newsletterId">> = ({
-  newsletterId,
-}) => {
+type Props = {
+  newsletterId: string;
+};
+
+export const TabsNavBarCta: FC<Props> = ({ newsletterId }) => {
   const router = useRouter();
   const appHref = useAppHref();
 
@@ -44,9 +45,7 @@ export const NavBarCta: FC<Pick<DashboardProps, "newsletterId">> = ({
   }
 };
 
-const ManageButtonMenu: FC<Pick<DashboardProps, "newsletterId">> = ({
-  newsletterId,
-}) => {
+const ManageButtonMenu: FC<Props> = ({ newsletterId }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
   const addIntegrationDialogOpen = useToggle(false);

@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
-import { NavBarCta } from "./NavBarCta";
+import { TabsNavBarCta } from "./TabsNavBarCta";
 
 // Style tab with hover effect
 const StyledTab = styled(Tab)`
@@ -46,7 +46,7 @@ const tabs = {
   },
 };
 
-export const NavBar: FC = () => {
+export const TabsNavBar: FC = () => {
   const router = useRouter();
   const appHref = useAppHref();
   const newsletterId = router.query.newsletterId as string;
@@ -75,7 +75,7 @@ export const NavBar: FC = () => {
           </Link>
         ))}
       </Tabs>
-      <NavBarCta newsletterId={newsletterId} />
+      <TabsNavBarCta newsletterId={newsletterId} />
     </Box>
   );
 };
