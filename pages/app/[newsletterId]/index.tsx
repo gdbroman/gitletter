@@ -70,7 +70,7 @@ const Drafts: FC<Props> = ({ newsletter }) => {
     <ProtectedPage>
       <Layout>
         <NextSeo title="Drafts" />
-        <Dashboard title={title} value={0} newsletterId={newsletterId}>
+        <Dashboard title={title} value={0}>
           {!drafts.length ? (
             <EmptyTab
               emoji="📝"

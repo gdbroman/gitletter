@@ -4,21 +4,15 @@ import { FC, ReactNode } from "react";
 import { NavBar } from "./NavBar";
 
 export type DashboardProps = {
-  title?: string;
+  title: string;
   value: number;
-  newsletterId: string;
   children: ReactNode;
 };
 
-export const Dashboard: FC<DashboardProps> = ({
-  title,
-  value,
-  newsletterId,
-  children,
-}) => (
+export const Dashboard: FC<DashboardProps> = ({ title, value, children }) => (
   <main>
-    <h1>{title ? title : "Your newsletter"}</h1>
-    <NavBar value={value} newsletterId={newsletterId} />
+    <h1>{title}</h1>
+    <NavBar value={value} />
     <div
       role="tabpanel"
       id={`simple-tabpanel-${value}`}

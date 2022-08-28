@@ -6,17 +6,17 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FC } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { DashboardProps } from "./Dashboard";
 import { NavBarCta } from "./NavBarCta";
 
-export const NavBar: FC<Pick<DashboardProps, "value" | "newsletterId">> = ({
-  value,
-  newsletterId,
-}) => {
+export const NavBar: FC<Pick<DashboardProps, "value">> = ({ value }) => {
+  const router = useRouter();
   const appHref = useAppHref();
+  const newsletterId = router.query.newsletterId as string;
 
   return (
     <Box

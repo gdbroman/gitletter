@@ -62,7 +62,7 @@ const Sent: FC<Props> = ({ newsletter }) => {
     <ProtectedPage>
       <Layout>
         <NextSeo title="Sent" />
-        <Dashboard title={title} value={1} newsletterId={newsletterId}>
+        <Dashboard title={title} value={1}>
           {!sentIssues.length ? (
             <EmptyTab
               emoji="📭"

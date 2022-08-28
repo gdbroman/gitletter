@@ -78,7 +78,7 @@ const AppSettings: FC<Props> = ({
   <ProtectedPage>
     <Layout>
       <NextSeo title="Settings" />
-      <Dashboard title={newsletterTitle} value={3} newsletterId={newsletterId}>
+      <Dashboard title={newsletterTitle} value={3}>
         <Box display="flex" flexDirection="column" gap={2}>
           <GithubIntegrationSettings
             githubIntegration={githubIntegration}
