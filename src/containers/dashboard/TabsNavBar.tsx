@@ -16,13 +16,16 @@ import { TabsNavBarCta } from "./TabsNavBarCta";
 // Style tab with hover effect
 const StyledTab = styled(Tab)`
   && {
-    height: 30px;
-    min-height: 30px;
-    margin: 9px 8px 9px 0;
-    padding: 0 8px;
-    border-radius: 6px;
+    padding: 12px 0;
+    .MuiBox-root {
+      height: 30px;
+      padding: 0 8px;
+      border-radius: 6px;
+    }
     &:hover {
-      background-color: #eeeeee;
+      .MuiBox-root {
+        background-color: #eeeeee;
+      }
     }
   }
 `;
@@ -70,6 +73,7 @@ export const TabsNavBar: FC = () => {
                   {label}
                 </Box>
               }
+              disableRipple
               {...a11yProps(path)}
             />
           </Link>
