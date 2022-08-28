@@ -6,6 +6,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -18,8 +19,8 @@ const StyledTab = styled(Tab)`
   && {
     padding: 12px 0;
     .MuiBox-root {
-      height: 30px;
-      padding: 0 8px;
+      height: 40px;
+      padding: 8px 12px;
       border-radius: 6px;
     }
     &:hover {
@@ -54,7 +55,7 @@ export const TabsNavBar: FC = () => {
   const appHref = useAppHref();
   const newsletterId = router.query.newsletterId as string;
 
-  const path = router.pathname.split("/")[3] ?? "";
+  const currentPath = router.pathname.split("/")[3] ?? "";
 
   return (
     <Box
@@ -63,14 +64,23 @@ export const TabsNavBar: FC = () => {
       justifyContent="space-between"
       sx={{ borderBottom: 1, borderColor: "divider" }}
     >
-      <Tabs value={Object.keys(tabs).indexOf(path)} variant="scrollable">
+      <Tabs value={Object.keys(tabs).indexOf(currentPath)} variant="scrollable">
         {Object.entries(tabs).map(([path, { label, icon }]) => (
           <Link href={`${appHref}/${path}`} passHref key={path}>
             <StyledTab
               label={
                 <Box display="flex" alignItems="center" gap={1}>
                   {icon}
-                  {label}
+                  <Typography
+                    variant="body2"
+                    fontWeight={500}
+                    lineHeight="24px"
+                    sx={{
+                      color: path === currentPath ? "#000" : "#666",
+                    }}
+                  >
+                    {label}
+                  </Typography>
                 </Box>
               }
               disableRipple

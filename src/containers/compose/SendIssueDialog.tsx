@@ -108,7 +108,10 @@ export const SendIssueDialog: FC<Props> = ({
               ) : (
                 <>
                   You are not{" "}
-                  <Link href={`${appHref}/settings`}>connected to GitHub</Link>.
+                  <Link href={`${appHref}/settings/github`}>
+                    connected to GitHub
+                  </Link>
+                  .
                 </>
               )}
             </Typography>

@@ -38,10 +38,10 @@ export default async function handle(
       line_items: lineItems,
       success_url: `${process.env.APP_URL}${getAppBasePath(
         user.newsletter.id
-      )}/settings`,
+      )}/settings/billing`,
       cancel_url: `${process.env.APP_URL}${getAppBasePath(
         user.newsletter.id
-      )}/settings`,
+      )}/settings/billing`,
       metadata: {
         userId: user.id,
       },
