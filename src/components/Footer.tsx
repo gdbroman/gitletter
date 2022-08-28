@@ -20,7 +20,10 @@ export const Footer: FC = () => (
         Twitter
       </Link>{" "}
       or{" "}
-      <Link href={gitLetterSocialLinks.email} target="_blank">
+      <Link
+        href={`mailto:${gitLetterSocialLinks.email}?subject=GitLetter question`}
+        target="_blank"
+      >
         email
       </Link>
       .
