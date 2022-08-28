@@ -63,8 +63,6 @@ export const SideSettingsMenu: FC = () => {
   const currentPath = router.pathname.split("/")[4] ?? "";
   const breakpoint = useMediaQuery(theme.breakpoints.down("md"));
 
-  console.log(currentPath);
-
   return (
     <StyledList>
       {Object.entries(sideSettingsTabs).map(([path, { label }]) => (
