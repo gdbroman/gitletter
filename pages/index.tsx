@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FC, useRef } from "react";
 
@@ -19,33 +18,18 @@ import {
   siteDescription,
   siteTagline,
 } from "../util/constants";
-import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
-import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
 import { numberToStringWithSpaces } from "../util/strings";
 
 const Home: FC = () => {
-  const router = useRouter();
   const session = useSession();
-  const appHref = useAppHref();
   const { signIn, loadingRef } = useSignIn();
-  const redirecting = useToggle(false);
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const getStartedFreeButtonRef = useRef<HTMLButtonElement>(null);
   const freeTierButtonRef = useRef<HTMLButtonElement>(null);
   const fullAccessButtonRef = useRef<HTMLButtonElement>(null);
-
-  const goToApp = () => {
-    redirecting.toggleOn();
-    try {
-      router.push(appHref);
-    } catch (e) {
-      console.error(e);
-      redirecting.toggleOff();
-    }
-  };
 
   const getStartedFree = () => {
     signIn(getStartedFreeButtonRef);
@@ -110,8 +94,9 @@ const Home: FC = () => {
               variant="contained"
               endIcon={<ArrowForwardIcon />}
               style={{ fontSize: "1rem" }}
-              loading={redirecting.isOn}
-              onClick={goToApp}
+              ref={getStartedFreeButtonRef}
+              loading={loadingRef === getStartedFreeButtonRef}
+              onClick={getStartedFree}
             >
               Go to app
             </LoadingButton>
