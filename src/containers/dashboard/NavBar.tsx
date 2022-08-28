@@ -10,13 +10,17 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
-import { DashboardProps } from "./Dashboard";
 import { NavBarCta } from "./NavBarCta";
 
-export const NavBar: FC<Pick<DashboardProps, "value">> = ({ value }) => {
+const tabs = ["/", "sent", "subscribers", "settings"];
+
+export const NavBar: FC = () => {
   const router = useRouter();
   const appHref = useAppHref();
   const newsletterId = router.query.newsletterId as string;
+
+  const path = router.pathname.split("/")[3] ?? "/";
+  console.log(path);
 
   return (
     <Box
@@ -25,7 +29,11 @@ export const NavBar: FC<Pick<DashboardProps, "value">> = ({ value }) => {
       justifyContent="space-between"
       sx={{ borderBottom: 1, borderColor: "divider" }}
     >
-      <Tabs value={value} variant="scrollable" scrollButtons="auto">
+      <Tabs
+        value={tabs.indexOf(path)}
+        variant="scrollable"
+        scrollButtons="auto"
+      >
         <Link href={appHref} passHref>
           <Tab
             label={
@@ -78,7 +86,7 @@ export const NavBar: FC<Pick<DashboardProps, "value">> = ({ value }) => {
 
 const a11yProps = (index: number) => {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `dashboard-tab-${index}`,
+    "aria-controls": `dashboard-tabpanel-${index}`,
   };
 };

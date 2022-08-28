@@ -60,7 +60,7 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
     <ProtectedPage>
       <Layout>
         <NextSeo title="Subscribers" />
-        <Dashboard title={title} value={2}>
+        <Dashboard title={title}>
           {subscribers.length > 0 ? (
             <EnhancedTable
               type="subscribers"
