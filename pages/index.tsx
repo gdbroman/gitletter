@@ -58,6 +58,15 @@ const Home: FC = () => {
       },
     });
   };
+  const bookDemo = () => {
+    ga.event({
+      action: UserAction.CLICK_BOOK_DEMO,
+      params: {
+        view: PageView.LANDING_PAGE,
+      },
+    });
+    router.push(calendlyLink);
+  };
 
   return (
     <Layout>
@@ -80,12 +89,7 @@ const Home: FC = () => {
           {siteDescription}
         </Typography>
         <Box display="flex" justifyContent="center" gap={2}>
-          <Button
-            size="large"
-            variant="outlined"
-            href={calendlyLink}
-            target="_blank"
-          >
+          <Button size="large" variant="outlined" onClick={bookDemo}>
             Book demo
           </Button>
           {session.status === "authenticated" ? (
