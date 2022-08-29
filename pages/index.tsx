@@ -18,6 +18,7 @@ import {
   calendlyLink,
   freeSubscriberLimit,
   siteDescription,
+  siteH1,
   siteTagline,
 } from "../util/constants";
 import { useAppHref } from "../util/hooks/useAppHref";
@@ -62,7 +63,7 @@ const Home: FC = () => {
     <Layout>
       <Box mx="auto" my={6} textAlign="center" maxWidth={640}>
         <Typography variant="h1" fontWeight="bold">
-          {siteTagline}
+          {siteH1}
         </Typography>
         <Typography
           variant="body1"
@@ -122,7 +123,7 @@ const Home: FC = () => {
           <YoutubeDemo />
         </Box>
         <Typography variant="h3" fontWeight="bold" textAlign="center" mb={4}>
-          Become Your Own Publisher
+          {siteTagline}
         </Typography>
         <Box
           display="flex"
