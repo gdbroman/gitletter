@@ -11,6 +11,7 @@ const StyledHeader = styled.header`
   min-height: 64px;
   padding: 8px;
   align-items: center;
+  border-bottom: 1px solid #e0e0e0;
 `;
 
 const StyledNav = styled.nav`
@@ -18,6 +19,7 @@ const StyledNav = styled.nav`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-width: 0;
 `;
 
 type Props = {
@@ -27,7 +29,7 @@ type Props = {
 export const Header: FC<Props> = ({ title }) => (
   <StyledHeader>
     <StyledNav>
-      <Box display="flex" ml={1}>
+      <Box display="flex" ml={1} flex={1} minWidth={0}>
         <GitLetterLogo title={title} />
       </Box>
       <HeaderNavRight />

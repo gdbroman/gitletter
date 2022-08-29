@@ -20,6 +20,7 @@ export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
         alignItems="center"
         gap={1}
         style={{ cursor: "pointer" }}
+        minWidth={0}
       >
         <Image
           src="/logo.svg"
@@ -29,9 +30,11 @@ export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
           layout="fixed"
         />
         <Typography
+          flex={1}
           color="secondary"
           variant="h2"
           fontWeight="bold"
+          noWrap
           style={{
             fontSize: "20px",
           }}
