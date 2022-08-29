@@ -5,22 +5,15 @@ import { FC, ReactNode } from "react";
 
 import { siteDescription, siteTagline } from "../../util/constants";
 import { Header } from "../containers/header/Header";
+import { DynamicMaxWidthWrapper } from "./DynamicMaxWidthWrapper";
 import { Footer as DefaultFooter } from "./Footer";
 
-const maxWidth = 780;
-export const maxWidthMinusMargin = maxWidth - 32;
-
-const StyledDiv = styled.div`
+const StyledDiv = styled(DynamicMaxWidthWrapper)`
   flex: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: ${maxWidth}px;
-  margin: 0 auto;
-  padding: 16px 0;
-  @media (max-width: ${maxWidthMinusMargin}px) {
-    padding: 16px;
-  }
+  padding-top: 16px;
+  padding-bottom: 16px;
 `;
 
 type Props = {
