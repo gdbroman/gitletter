@@ -42,7 +42,7 @@ const Sent: FC<Props> = ({ newsletter }) => {
   const router = useRouter();
   const appHref = useAppHref();
 
-  const title = newsletter.title;
+  const newsletterTitle = newsletter.title;
   const sentIssues = newsletter.issues.filter((issue) => !!issue.sentAt);
   const newsletterId = newsletter.id;
 
@@ -60,9 +60,9 @@ const Sent: FC<Props> = ({ newsletter }) => {
 
   return (
     <ProtectedPage>
-      <Layout>
+      <Layout headerTitle={newsletterTitle}>
         <NextSeo title="Sent" />
-        <Dashboard title={title}>
+        <Dashboard>
           {!sentIssues.length ? (
             <EmptyTab
               emoji="📭"

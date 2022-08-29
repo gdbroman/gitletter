@@ -220,6 +220,7 @@ const Compose: FC<Props> = ({
   return (
     <ProtectedPage>
       <Layout
+        headerTitle={newsletterTitle}
         footer={
           !isSent ? (
             <ComposeControls

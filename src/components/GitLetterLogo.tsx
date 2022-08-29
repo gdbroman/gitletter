@@ -2,10 +2,15 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
 import Image from "next/image";
 import Link from "next/link";
+import { FC } from "react";
 
 import { useAppHref } from "../../util/hooks/useAppHref";
 
-export const GitLetterLogo = () => {
+type Props = {
+  title?: string;
+};
+
+export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
   const appHref = useAppHref();
 
   return (
@@ -23,7 +28,6 @@ export const GitLetterLogo = () => {
           height={32}
           layout="fixed"
         />
-
         <Typography
           color="secondary"
           variant="h2"
@@ -32,7 +36,7 @@ export const GitLetterLogo = () => {
             fontSize: "20px",
           }}
         >
-          GitLetter
+          {title}
         </Typography>
       </Box>
     </Link>

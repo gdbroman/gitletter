@@ -57,9 +57,9 @@ const AppSettings: FC<Props> = ({
   githubReposInfo,
 }) => (
   <ProtectedPage>
-    <Layout>
+    <Layout headerTitle={newsletterTitle}>
       <NextSeo title="Settings" />
-      <Dashboard title={newsletterTitle}>
+      <Dashboard>
         <SettingsContentWrapper>
           <GithubIntegrationSettings
             githubIntegration={githubIntegration}

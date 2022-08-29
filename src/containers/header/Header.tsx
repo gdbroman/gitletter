@@ -20,11 +20,15 @@ const StyledNav = styled.nav`
   justify-content: space-between;
 `;
 
-export const Header: FC = () => (
+type Props = {
+  title?: string;
+};
+
+export const Header: FC<Props> = ({ title }) => (
   <StyledHeader>
     <StyledNav>
       <Box display="flex" ml={1}>
-        <GitLetterLogo />
+        <GitLetterLogo title={title} />
       </Box>
       <HeaderNavRight />
     </StyledNav>

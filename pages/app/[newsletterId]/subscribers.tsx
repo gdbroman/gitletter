@@ -45,7 +45,7 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
   const router = useRouter();
   const appHref = useAppHref();
 
-  const title = newsletter.title;
+  const newsletterTitle = newsletter.title;
   const subscribers = newsletter.subscribers;
 
   const onItemDelete = useCallback(
@@ -58,9 +58,9 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
 
   return (
     <ProtectedPage>
-      <Layout>
+      <Layout headerTitle={newsletterTitle}>
         <NextSeo title="Subscribers" />
-        <Dashboard title={title}>
+        <Dashboard>
           {subscribers.length > 0 ? (
             <EnhancedTable
               type="subscribers"

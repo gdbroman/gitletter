@@ -24,17 +24,22 @@ const StyledDiv = styled.div`
 `;
 
 type Props = {
+  headerTitle?: string;
   children: ReactNode;
   footer?: ReactNode;
 };
 
-const Layout: FC<Props> = ({ children, footer = <DefaultFooter /> }) => (
+const Layout: FC<Props> = ({
+  headerTitle,
+  children,
+  footer = <DefaultFooter />,
+}) => (
   <Box display="flex" flexDirection="column" height="100%">
     <NextSeo
       title={`GitLetter · ${siteTagline}`}
       description={siteDescription}
     />
-    <Header />
+    <Header title={headerTitle} />
     <StyledDiv>{children}</StyledDiv>
     {footer}
   </Box>

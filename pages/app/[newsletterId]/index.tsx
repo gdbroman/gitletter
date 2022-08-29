@@ -50,7 +50,7 @@ const Drafts: FC<Props> = ({ newsletter }) => {
   const router = useRouter();
   const appHref = useAppHref();
 
-  const title = newsletter.title;
+  const newsletterTitle = newsletter.title;
   const drafts = newsletter.issues?.filter((issue) => !issue.sentAt) ?? [];
   const newsletterId = newsletter.id;
 
@@ -68,9 +68,9 @@ const Drafts: FC<Props> = ({ newsletter }) => {
 
   return (
     <ProtectedPage>
-      <Layout>
+      <Layout headerTitle={newsletterTitle}>
         <NextSeo title="Drafts" />
-        <Dashboard title={title}>
+        <Dashboard>
           {!drafts.length ? (
             <EmptyTab
               emoji="📝"

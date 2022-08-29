@@ -54,9 +54,9 @@ const AppSettings: FC<Props> = ({
   products,
 }) => (
   <ProtectedPage>
-    <Layout>
+    <Layout headerTitle={newsletterTitle}>
       <NextSeo title="Settings" />
-      <Dashboard title={newsletterTitle}>
+      <Dashboard>
         <SettingsContentWrapper>
           <ProductSettings
             initialProductId={stripeProductId}
