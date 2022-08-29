@@ -58,7 +58,7 @@ const AppSettings: FC<Props> = ({
 }) => (
   <ProtectedPage>
     <Layout headerTitle={newsletterTitle}>
-      <NextSeo title="Settings" />
+      <NextSeo title={`GitHub Settings – ${newsletterTitle}`} />
       <Dashboard>
         <SettingsContentWrapper>
           <GithubIntegrationSettings

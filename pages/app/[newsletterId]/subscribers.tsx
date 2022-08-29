@@ -59,7 +59,7 @@ const Subscribers: FC<Props> = ({ newsletter }) => {
   return (
     <ProtectedPage>
       <Layout headerTitle={newsletterTitle}>
-        <NextSeo title="Subscribers" />
+        <NextSeo title={`Subscribers – ${newsletterTitle}`} />
         <Dashboard>
           {subscribers.length > 0 ? (
             <EnhancedTable

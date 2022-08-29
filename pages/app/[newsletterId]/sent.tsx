@@ -61,7 +61,7 @@ const Sent: FC<Props> = ({ newsletter }) => {
   return (
     <ProtectedPage>
       <Layout headerTitle={newsletterTitle}>
-        <NextSeo title="Sent" />
+        <NextSeo title={`Sent – ${newsletterTitle}`} />
         <Dashboard>
           {!sentIssues.length ? (
             <EmptyTab

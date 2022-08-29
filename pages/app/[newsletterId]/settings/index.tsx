@@ -35,7 +35,7 @@ type Props = {
 const AppSettings: FC<Props> = ({ newsletterId, newsletterTitle }) => (
   <ProtectedPage>
     <Layout headerTitle={newsletterTitle}>
-      <NextSeo title="Settings" />
+      <NextSeo title={`General Settings – ${newsletterTitle}`} />
       <Dashboard>
         <SettingsContentWrapper>
           <NewsletterSettings id={newsletterId} title={newsletterTitle} />

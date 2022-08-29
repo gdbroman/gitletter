@@ -69,7 +69,7 @@ const Drafts: FC<Props> = ({ newsletter }) => {
   return (
     <ProtectedPage>
       <Layout headerTitle={newsletterTitle}>
-        <NextSeo title="Drafts" />
+        <NextSeo title={`Drafts – ${newsletterTitle}`} />
         <Dashboard>
           {!drafts.length ? (
             <EmptyTab

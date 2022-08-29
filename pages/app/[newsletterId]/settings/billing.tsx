@@ -55,7 +55,7 @@ const AppSettings: FC<Props> = ({
 }) => (
   <ProtectedPage>
     <Layout headerTitle={newsletterTitle}>
-      <NextSeo title="Settings" />
+      <NextSeo title={`Billing Settings – ${newsletterTitle}`} />
       <Dashboard>
         <SettingsContentWrapper>
           <ProductSettings
