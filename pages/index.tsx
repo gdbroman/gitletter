@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { FC, useRef } from "react";
 
@@ -18,41 +19,38 @@ import {
   siteDescription,
   siteTagline,
 } from "../util/constants";
+import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
+import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
 import { numberToStringWithSpaces } from "../util/strings";
+import { ButtonRef } from "../util/types";
 
 const Home: FC = () => {
+  const router = useRouter();
+  const appHref = useAppHref();
   const session = useSession();
   const { signIn, loadingRef } = useSignIn();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const redirecting = useToggle(false);
 
   const getStartedFreeButtonRef = useRef<HTMLButtonElement>(null);
   const freeTierButtonRef = useRef<HTMLButtonElement>(null);
   const fullAccessButtonRef = useRef<HTMLButtonElement>(null);
 
-  const getStartedFree = () => {
-    signIn(getStartedFreeButtonRef);
-    ga.event({
-      action: "Get started free CTA",
-      params: {
-        view: "Landing page",
-      },
-    });
+  const goToApp = () => {
+    try {
+      router.push(appHref);
+    } catch (e) {
+      console.error(e);
+      redirecting.toggleOff();
+    }
   };
-  const getStartedFreeTier = () => {
-    signIn(freeTierButtonRef);
+  const getStarted = (ref: ButtonRef, action: string) => {
+    signIn(ref);
     ga.event({
-      action: "Free tier CTA",
-      params: {
-        view: "Landing page",
-      },
-    });
-  };
-  const getStartedFullAccess = () => {
-    signIn(fullAccessButtonRef);
-    ga.event({
-      action: "Full access CTA",
+      action,
       params: {
         view: "Landing page",
       },
@@ -96,7 +94,7 @@ const Home: FC = () => {
               style={{ fontSize: "1rem" }}
               ref={getStartedFreeButtonRef}
               loading={loadingRef === getStartedFreeButtonRef}
-              onClick={getStartedFree}
+              onClick={goToApp}
             >
               Go to app
             </LoadingButton>
@@ -108,7 +106,9 @@ const Home: FC = () => {
               style={{ fontSize: "1rem" }}
               ref={getStartedFreeButtonRef}
               loading={loadingRef === getStartedFreeButtonRef}
-              onClick={getStartedFree}
+              onClick={() =>
+                getStarted(getStartedFreeButtonRef, "Get started free")
+              }
             >
               Get started free
             </LoadingButton>
@@ -143,7 +143,7 @@ const Home: FC = () => {
                 variant="outlined"
                 ref={freeTierButtonRef}
                 loading={loadingRef === freeTierButtonRef}
-                onClick={getStartedFreeTier}
+                onClick={() => getStarted(freeTierButtonRef, "Indie writer")}
               >
                 Get started
               </LoadingButton>
@@ -161,7 +161,7 @@ const Home: FC = () => {
                 variant="contained"
                 ref={freeTierButtonRef}
                 loading={loadingRef === fullAccessButtonRef}
-                onClick={getStartedFullAccess}
+                onClick={() => getStarted(freeTierButtonRef, "Beast mode")}
               >
                 Get started
               </LoadingButton>
