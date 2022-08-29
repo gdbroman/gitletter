@@ -12,6 +12,7 @@ import { FC, useRef } from "react";
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
 import { YoutubeDemo } from "../src/components/YoutubeDemo";
+import { PageView, UserAction } from "../src/types/analytics";
 import theme from "../styles/theme";
 import {
   calendlyLink,
@@ -52,7 +53,7 @@ const Home: FC = () => {
     ga.event({
       action,
       params: {
-        view: "Landing page",
+        view: PageView.LANDING_PAGE,
       },
     });
   };
@@ -107,7 +108,10 @@ const Home: FC = () => {
               ref={getStartedFreeButtonRef}
               loading={loadingRef === getStartedFreeButtonRef}
               onClick={() =>
-                getStarted(getStartedFreeButtonRef, "Get started free")
+                getStarted(
+                  getStartedFreeButtonRef,
+                  UserAction.CLICK_GET_STARTED_FREE
+                )
               }
             >
               Get started free
@@ -143,7 +147,9 @@ const Home: FC = () => {
                 variant="outlined"
                 ref={freeTierButtonRef}
                 loading={loadingRef === freeTierButtonRef}
-                onClick={() => getStarted(freeTierButtonRef, "Indie writer")}
+                onClick={() =>
+                  getStarted(freeTierButtonRef, UserAction.CLICK_FREE_TIER)
+                }
               >
                 Get started
               </LoadingButton>
@@ -161,7 +167,9 @@ const Home: FC = () => {
                 variant="contained"
                 ref={freeTierButtonRef}
                 loading={loadingRef === fullAccessButtonRef}
-                onClick={() => getStarted(freeTierButtonRef, "Beast mode")}
+                onClick={() =>
+                  getStarted(freeTierButtonRef, UserAction.CLICK_PAID_TIER)
+                }
               >
                 Get started
               </LoadingButton>

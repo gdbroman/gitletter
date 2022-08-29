@@ -1,0 +1,9 @@
+export enum PageView {
+  LANDING_PAGE = "LANDING_PAGE",
+}
+
+export enum UserAction {
+  CLICK_GET_STARTED_FREE = "CLICK_GET_STARTED_FREE",
+  CLICK_FREE_TIER = "CLICK_FREE_TIER",
+  CLICK_PAID_TIER = "CLICK_PAID_TIER",
+}
