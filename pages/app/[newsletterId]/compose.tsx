@@ -226,7 +226,13 @@ const Compose: FC<Props> = ({
             ) : (
               ""
             )}
-            {new Date(issue.sentAt).toLocaleString()}
+            {new Date(issue.sentAt).toLocaleString([], {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </Typography>
         )}
         <Box height={composeControlsFooterHeight} />
