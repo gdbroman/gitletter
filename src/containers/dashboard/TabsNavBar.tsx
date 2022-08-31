@@ -64,7 +64,11 @@ export const TabsNavBar: FC = () => {
       justifyContent="space-between"
       sx={{ borderBottom: 1, borderColor: "divider" }}
     >
-      <Tabs value={Object.keys(tabs).indexOf(currentPath)} variant="scrollable">
+      <Tabs
+        value={Object.keys(tabs).indexOf(currentPath)}
+        variant="scrollable"
+        scrollButtons={false}
+      >
         {Object.entries(tabs).map(([path, { label, icon }]) => (
           <Link href={`${appHref}/${path}`} passHref key={path}>
             <StyledTab
