@@ -3,10 +3,13 @@ import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
 
 import { eatClick } from "../../../util/eatClick";
+import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { stringToMarkdownFileName } from "../../../util/strings";
 import { DialogResponsive } from "../../components/DialogResponsive";
@@ -25,6 +28,8 @@ export const IssueSettingsDialog: FC<Props> = ({
   open,
   onClose,
 }) => {
+  const appHref = useAppHref();
+
   const [fileName, setFileName] = useState(initialFileName);
   const [savedFileName, setSavedFileName] = useState(initialFileName);
 
@@ -89,7 +94,12 @@ export const IssueSettingsDialog: FC<Props> = ({
           style={{ marginTop: 8 }}
           onBlur={handleFileNameBlur}
           onChange={handleFileNameChange}
-          helperText="This is what the file will be named in your repository if you have GitHub deployment enabled."
+          helperText={
+            <Typography variant="caption" color="gray">
+              This is what the file will be named in your repository if you have{" "}
+              <Link href={`${appHref}/settings/github`}>GitHub connected</Link>.
+            </Typography>
+          }
         />
       </DialogContent>
 
