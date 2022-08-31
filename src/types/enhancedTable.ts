@@ -1,14 +1,17 @@
 import { MouseEvent } from "react";
 
 import { getTimeAgoString } from "../../util/strings";
-import { IssueWithStrippedDate, SubscriberWithStrippedDate } from "./stripDate";
+import {
+  IssueWithParsedTitleAndStrippedDate,
+  SubscriberWithStrippedDate,
+} from "./stripDate";
 
 export type Order = "asc" | "desc";
 
 export type TableType = "drafts" | "sentIssues" | "subscribers";
 
 export type HeadCellType =
-  | "fileName"
+  | "title"
   | "email"
   | "updatedAt"
   | "sentAt"
@@ -23,9 +26,9 @@ export const DefaultOrderBy: Record<TableType, HeadCellType> = {
 export const getItemValues = (item: any, type: TableType) => {
   switch (type) {
     case "drafts":
-      return [item.fileName, getTimeAgoString(item.updatedAt)];
+      return [item.title, getTimeAgoString(item.updatedAt)];
     case "sentIssues":
-      return [item.fileName, getTimeAgoString(item.sentAt)];
+      return [item.title, getTimeAgoString(item.sentAt)];
     case "subscribers":
       return [item.email, getTimeAgoString(item.addedAt)];
   }
@@ -38,8 +41,8 @@ type HeadCell = {
 };
 
 const fileNameHeadCell: HeadCell = {
-  id: "fileName",
-  label: "Name",
+  id: "title",
+  label: "Title",
   flex: 7,
 };
 
@@ -82,15 +85,15 @@ export type EnhancedTableHeadProps = {
 
 export type EnhancedTableProps = {
   type: TableType;
-  items: IssueWithStrippedDate[] | SubscriberWithStrippedDate[];
+  items: IssueWithParsedTitleAndStrippedDate[] | SubscriberWithStrippedDate[];
   onItemClick?: (
-    item: IssueWithStrippedDate | SubscriberWithStrippedDate
+    item: IssueWithParsedTitleAndStrippedDate | SubscriberWithStrippedDate
   ) => void;
   onItemDuplicate?: (
-    item: IssueWithStrippedDate | SubscriberWithStrippedDate
+    item: IssueWithParsedTitleAndStrippedDate | SubscriberWithStrippedDate
   ) => void;
   onItemDelete: (
-    item: IssueWithStrippedDate | SubscriberWithStrippedDate
+    item: IssueWithParsedTitleAndStrippedDate | SubscriberWithStrippedDate
   ) => void;
 };
 

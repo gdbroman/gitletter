@@ -10,58 +10,78 @@ import Layout from "../../../src/components/Layout";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
 import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
 import { issueService } from "../../../src/services/issueService";
-import { IssueWithStrippedDate, stripDate } from "../../../src/types/stripDate";
+import {
+  IssueWithParsedTitleAndStrippedDate,
+  stripDate,
+} from "../../../src/types/stripDate";
 import { useAppHref } from "../../../util/hooks/useAppHref";
+import { getTitleFromContent } from "../../../util/strings";
+
+type Props = {
+  newsletterId: string;
+  newsletterTitle: string;
+  draftIssues: IssueWithParsedTitleAndStrippedDate[];
+};
+
+const emptyServerProps: Props = {
+  newsletterId: "",
+  newsletterTitle: "",
+  draftIssues: [],
+};
 
 export const getServerSideProps: GetServerSideProps = async ({
-  query,
   res,
+  query,
 }) => {
   const newsletterId = query.newsletterId as string;
   if (!newsletterId) {
     res.statusCode = 401;
-    return { props: { newsletter: { issues: [] } } };
+    res.setHeader("location", "/404");
+    return { props: emptyServerProps };
   }
 
-  const newsletter =
-    (await prisma.newsletter.findFirst({
-      where: { id: newsletterId },
-      select: {
-        id: true,
-        title: true,
-        issues: true,
-      },
-    })) ?? {};
+  const newsletter = await prisma.newsletter.findFirst({
+    where: { id: newsletterId },
+    select: {
+      id: true,
+      title: true,
+      issues: true,
+    },
+  });
+
+  if (!newsletter) {
+    res.statusCode = 302;
+    res.setHeader("location", "/404");
+    return { props: emptyServerProps };
+  }
+
+  const draftIssues =
+    newsletter.issues
+      ?.filter((issue) => !issue.sentAt)
+      .map((issue) => ({
+        ...stripDate(issue),
+        title: getTitleFromContent(issue.content),
+      })) ?? [];
 
   return {
-    props: { newsletter: stripDate(newsletter) },
+    props: { newsletterId, newsletterTitle: newsletter.title, draftIssues },
   };
 };
 
-type Props = {
-  newsletter: {
-    id: string;
-    title: string;
-    issues: IssueWithStrippedDate[];
-  };
-};
-
-const Drafts: FC<Props> = ({ newsletter }) => {
+const Drafts: FC<Props> = ({ newsletterId, newsletterTitle, draftIssues }) => {
   const router = useRouter();
   const appHref = useAppHref();
 
-  const newsletterTitle = newsletter.title;
-  const drafts = newsletter.issues?.filter((issue) => !issue.sentAt) ?? [];
-  const newsletterId = newsletter.id;
-
-  const onItemClick = (issue: IssueWithStrippedDate) => {
+  const onItemClick = (issue: IssueWithParsedTitleAndStrippedDate) => {
     router.push(`${appHref}/compose?i=${issue.id}`);
   };
-  const onItemDuplicate = async (issue: IssueWithStrippedDate) => {
+  const onItemDuplicate = async (
+    issue: IssueWithParsedTitleAndStrippedDate
+  ) => {
     await issueService.createIssue(newsletterId, issue.fileName, issue.content);
     router.replace(appHref);
   };
-  const onItemDelete = async (issue: IssueWithStrippedDate) => {
+  const onItemDelete = async (issue: IssueWithParsedTitleAndStrippedDate) => {
     await issueService.deleteIssue(issue.id);
     router.replace(appHref);
   };
@@ -71,10 +91,10 @@ const Drafts: FC<Props> = ({ newsletter }) => {
       <Layout headerTitle={newsletterTitle}>
         <NextSeo title={`Drafts – ${newsletterTitle}`} />
         <Dashboard>
-          {!drafts.length ? (
+          {!draftIssues.length ? (
             <EmptyTab
               emoji="📝"
-              title="No drafts found"
+              title="No draftIssues found"
               subtitle={
                 <>
                   Click <b>Compose</b> to get going
@@ -84,7 +104,7 @@ const Drafts: FC<Props> = ({ newsletter }) => {
           ) : (
             <EnhancedTable
               type="drafts"
-              items={drafts}
+              items={draftIssues}
               onItemClick={onItemClick}
               onItemDuplicate={onItemDuplicate}
               onItemDelete={onItemDelete}

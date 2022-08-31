@@ -23,7 +23,7 @@ import {
   Order,
 } from "../types/enhancedTable";
 import {
-  IssueWithStrippedDate,
+  IssueWithParsedTitleAndStrippedDate,
   SubscriberWithStrippedDate,
 } from "../types/stripDate";
 import { EditRowButton } from "./EditRowButton";
@@ -134,7 +134,11 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
               .sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(
-                (item: IssueWithStrippedDate | SubscriberWithStrippedDate) => (
+                (
+                  item:
+                    | IssueWithParsedTitleAndStrippedDate
+                    | SubscriberWithStrippedDate
+                ) => (
                   <StyledTableRow
                     hover
                     key={item.id}

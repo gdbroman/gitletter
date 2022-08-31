@@ -6,6 +6,10 @@ export type IssueWithStrippedDate = Issue & {
   updatedAt: string;
 };
 
+export type IssueWithParsedTitleAndStrippedDate = IssueWithStrippedDate & {
+  title: string;
+};
+
 export type SubscriberWithStrippedDate = Subscriber & {
   addedAt: string;
 };
