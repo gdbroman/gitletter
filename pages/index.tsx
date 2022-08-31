@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { NextPage } from "next/types";
 import { useSession } from "next-auth/react";
@@ -12,7 +13,6 @@ import { useRef } from "react";
 
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
-import { YoutubeDemo } from "../src/components/YoutubeDemo";
 import { PageView, UserAction } from "../src/types/analytics";
 import theme from "../styles/theme";
 import {
@@ -125,7 +125,16 @@ const LandingPage: NextPage = () => {
           )}
         </Box>
         <Box my={10}>
-          <YoutubeDemo />
+          {/* <YoutubeDemo /> */}
+          <div
+            style={{
+              boxShadow: "0 0 0 1px rgba(0,0,0,0.1)",
+              borderRadius: "0.5rem",
+              overflow: "hidden",
+            }}
+          >
+            <Image src="/demo/demo.png" width={1662} height={1042} />
+          </div>
         </Box>
         <Typography variant="h3" fontWeight="bold" textAlign="center" mb={4}>
           {siteTagline}
