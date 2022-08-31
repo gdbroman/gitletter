@@ -16,8 +16,26 @@ import {
 } from "../../../src/types/stripDate";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+type Props = {
+  newsletterTitle: string;
+  subscribers: SubscriberWithStrippedDate[];
+};
+
+const emptyServerProps: Props = {
+  newsletterTitle: "",
+  subscribers: [],
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  res,
+  query,
+}) => {
   const newsletterId = query.newsletterId as string;
+  if (!newsletterId) {
+    res.statusCode = 401;
+    res.setHeader("location", "/404");
+    return { props: emptyServerProps };
+  }
 
   const newsletter = await prisma.newsletter.findUnique({
     where: { id: newsletterId },
@@ -28,25 +46,23 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     },
   });
 
+  if (!newsletter) {
+    res.statusCode = 302;
+    res.setHeader("location", "/404");
+    return { props: emptyServerProps };
+  }
+
   return {
-    props: { newsletter: stripDate(newsletter) },
+    props: {
+      newsletterTitle: newsletter.title,
+      subscribers: newsletter.subscribers.map(stripDate),
+    },
   };
 };
 
-type Props = {
-  newsletter: {
-    id: string;
-    title: string;
-    subscribers: SubscriberWithStrippedDate[];
-  };
-};
-
-const Subscribers: FC<Props> = ({ newsletter }) => {
+const Subscribers: FC<Props> = ({ newsletterTitle, subscribers }) => {
   const router = useRouter();
   const appHref = useAppHref();
-
-  const newsletterTitle = newsletter.title;
-  const subscribers = newsletter.subscribers;
 
   const onItemDelete = useCallback(
     async (subscriber: SubscriberWithStrippedDate) => {
