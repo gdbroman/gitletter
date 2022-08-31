@@ -1,7 +1,6 @@
 import { GithubIntegration } from "@prisma/client";
-import { GetServerSideProps } from "next/types";
+import { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import { FC } from "react";
 
 import { GithubReposInfo } from "../../../../prisma/modules/github";
 import { getProducts, Product } from "../../../../prisma/modules/stripe";
@@ -48,7 +47,7 @@ type Props = {
   products: Product[];
 };
 
-const AppSettings: FC<Props> = ({
+const BillingSettingsPage: NextPage<Props> = ({
   newsletterTitle,
   stripeProductId,
   products,
@@ -68,4 +67,4 @@ const AppSettings: FC<Props> = ({
   </ProtectedPage>
 );
 
-export default AppSettings;
+export default BillingSettingsPage;

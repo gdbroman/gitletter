@@ -1,6 +1,5 @@
-import { GetServerSideProps } from "next/types";
+import { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import { FC } from "react";
 
 import prisma from "../../../prisma/prisma";
 import Layout from "../../../src/components/Layout";
@@ -25,7 +24,7 @@ type Props = {
   newsletterTitle: string;
 };
 
-const UnsubscribedPage: FC<Props> = ({ newsletterTitle }) => (
+const UnsubscribedPage: NextPage<Props> = ({ newsletterTitle }) => (
   <Layout>
     <NextSeo title="Farewell 👋" />
     <ResultBox

@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { GetServerSideProps } from "next/types";
+import { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 import { FC } from "react";
 
@@ -54,7 +54,7 @@ type Props = {
   newsletterTitle: string;
 };
 
-const SubscribedPage: FC<Props> = ({ newsletterTitle }) => (
+const SubscribedPage: NextPage<Props> = ({ newsletterTitle }) => (
   <Layout>
     <NextSeo title="Success! 🎉" />
     <ResultBox

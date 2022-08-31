@@ -3,10 +3,10 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { GithubIntegration, Issue } from "@prisma/client";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next/types";
+import { GetServerSideProps, NextPage } from "next/types";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { populateNewIssue } from "../../../prisma/modules/issue";
 import { getFreeProductId } from "../../../prisma/modules/stripe";
@@ -96,7 +96,7 @@ type Props = {
   hasFreeProduct: boolean;
 };
 
-const Compose: FC<Props> = ({
+const ComposePage: NextPage<Props> = ({
   issue,
   newsletterTitle,
   subscriberCount,
@@ -262,4 +262,4 @@ const Compose: FC<Props> = ({
   );
 };
 
-export default Compose;
+export default ComposePage;

@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next/types";
+import { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import { FC } from "react";
 
 import prisma from "../../../prisma/prisma";
 import { EmptyTab } from "../../../src/components/EmptyTab";
@@ -68,7 +67,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-const Sent: FC<Props> = ({ newsletterId, newsletterTitle, sentIssues }) => {
+const SentPage: NextPage<Props> = ({
+  newsletterId,
+  newsletterTitle,
+  sentIssues,
+}) => {
   const router = useRouter();
   const appHref = useAppHref();
 
@@ -116,4 +119,4 @@ const Sent: FC<Props> = ({ newsletterId, newsletterTitle, sentIssues }) => {
   );
 };
 
-export default Sent;
+export default SentPage;

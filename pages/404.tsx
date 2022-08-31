@@ -2,12 +2,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { FC } from "react";
+import { NextPage } from "next/types";
 
 import Layout from "../src/components/Layout";
 import { useAppHref } from "../util/hooks/useAppHref";
 
-const FourOhFour: FC = () => {
+const FourOhFourPage: NextPage = () => {
   const appHref = useAppHref();
 
   return (
@@ -28,4 +28,4 @@ const FourOhFour: FC = () => {
   );
 };
 
-export default FourOhFour;
+export default FourOhFourPage;

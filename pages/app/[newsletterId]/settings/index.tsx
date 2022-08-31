@@ -1,6 +1,5 @@
-import { GetServerSideProps } from "next/types";
+import { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import { FC } from "react";
 
 import prisma from "../../../../prisma/prisma";
 import Layout from "../../../../src/components/Layout";
@@ -32,7 +31,10 @@ type Props = {
   newsletterTitle: string;
 };
 
-const AppSettings: FC<Props> = ({ newsletterId, newsletterTitle }) => (
+const NewsletterSettingsPage: NextPage<Props> = ({
+  newsletterId,
+  newsletterTitle,
+}) => (
   <ProtectedPage>
     <Layout headerTitle={newsletterTitle}>
       <NextSeo title={`General Settings – ${newsletterTitle}`} />
@@ -45,4 +47,4 @@ const AppSettings: FC<Props> = ({ newsletterId, newsletterTitle }) => (
   </ProtectedPage>
 );
 
-export default AppSettings;
+export default NewsletterSettingsPage;

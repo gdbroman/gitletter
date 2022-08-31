@@ -6,8 +6,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useRouter } from "next/router";
+import { NextPage } from "next/types";
 import { useSession } from "next-auth/react";
-import { FC, useRef } from "react";
+import { useRef } from "react";
 
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
@@ -28,7 +29,7 @@ import * as ga from "../util/lib/googleAnalytics";
 import { numberToStringWithSpaces } from "../util/strings";
 import { ButtonRef } from "../util/types";
 
-const Home: FC = () => {
+const LandingPage: NextPage = () => {
   const router = useRouter();
   const appHref = useAppHref();
   const session = useSession();
@@ -186,4 +187,4 @@ const Home: FC = () => {
   );
 };
 
-export default Home;
+export default LandingPage;

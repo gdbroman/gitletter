@@ -1,7 +1,6 @@
 import { GithubIntegration } from "@prisma/client";
-import { GetServerSideProps } from "next/types";
+import { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import { FC } from "react";
 
 import {
   getGithubRepos,
@@ -51,7 +50,7 @@ type Props = {
   githubReposInfo: GithubReposInfo | null;
 };
 
-const AppSettings: FC<Props> = ({
+const GithubSettingsPage: NextPage<Props> = ({
   newsletterTitle,
   githubIntegration,
   githubReposInfo,
@@ -71,4 +70,4 @@ const AppSettings: FC<Props> = ({
   </ProtectedPage>
 );
 
-export default AppSettings;
+export default GithubSettingsPage;
