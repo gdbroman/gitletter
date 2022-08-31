@@ -87,6 +87,7 @@ export const EnhancedTableHead: FC<EnhancedTableHeadProps> = ({
 export const EnhancedTable: FC<EnhancedTableProps> = ({
   type,
   items,
+  disablePagination,
   onItemClick,
   onItemDuplicate,
   onItemDelete,
@@ -177,14 +178,16 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        component="div"
-        page={page}
-        rowsPerPage={rowsPerPage}
-        count={items.length}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {!disablePagination && (
+        <TablePagination
+          component="div"
+          page={page}
+          rowsPerPage={rowsPerPage}
+          count={items.length}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </Card>
   );
 };

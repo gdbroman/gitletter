@@ -86,6 +86,7 @@ export type EnhancedTableHeadProps = {
 export type EnhancedTableProps = {
   type: TableType;
   items: IssueWithParsedTitleAndStrippedDate[] | SubscriberWithStrippedDate[];
+  disablePagination?: boolean;
   onItemClick?: (
     item: IssueWithParsedTitleAndStrippedDate | SubscriberWithStrippedDate
   ) => void;

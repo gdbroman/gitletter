@@ -108,6 +108,7 @@ const Drafts: FC<Props> = ({ newsletterId, newsletterTitle, draftIssues }) => {
               onItemClick={onItemClick}
               onItemDuplicate={onItemDuplicate}
               onItemDelete={onItemDelete}
+              disablePagination
             />
           )}
         </Dashboard>
