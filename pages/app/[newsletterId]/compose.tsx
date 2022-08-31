@@ -6,14 +6,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next/types";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
-import {
-  ChangeEvent,
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
 import { populateNewIssue } from "../../../prisma/modules/issue";
 import { getFreeProductId } from "../../../prisma/modules/stripe";
@@ -22,23 +15,21 @@ import { EmailArticle } from "../../../src/components/EmailStyleWrapper";
 import Layout from "../../../src/components/Layout";
 import { MarkdownParser } from "../../../src/components/MarkdownParser";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
-import { ComposeBreadCrumbs } from "../../../src/containers/compose/ComposeBreadCrumbs";
 import {
   ComposeControls,
   composeControlsFooterHeight,
 } from "../../../src/containers/compose/ComposeControls";
 import { Editor } from "../../../src/containers/compose/Editor";
+import { IssueSettingsDialog } from "../../../src/containers/compose/IssueSettingsDialog";
 import { SendIssueDialog } from "../../../src/containers/compose/SendIssueDialog";
 import { SendTestEmailDialog } from "../../../src/containers/compose/SendTestEmailDialog";
 import { issueService } from "../../../src/services/issueService";
 import { stripDate } from "../../../src/types/stripDate";
-import { eatClick } from "../../../util/eatClick";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { progressIndicator } from "../../../util/lib/progressIndicator";
 import {
   getTitleFromContent,
-  stringToMarkdownFileName,
   stripFrontMatterFromContent,
 } from "../../../util/strings";
 
@@ -88,7 +79,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         issue: stripDate(issue),
-        newsletterId: issue.newsletterId,
         newsletterTitle: newsletter.title,
         subscriberCount: newsletter.subscribers.length,
         githubIntegration: newsletter.githubIntegration,
@@ -100,7 +90,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 type Props = {
   issue: Issue;
-  newsletterId: string;
   newsletterTitle: string;
   subscriberCount: number;
   githubIntegration: GithubIntegration;
@@ -109,7 +98,6 @@ type Props = {
 
 const Compose: FC<Props> = ({
   issue,
-  newsletterId,
   newsletterTitle,
   subscriberCount,
   githubIntegration,
@@ -119,9 +107,7 @@ const Compose: FC<Props> = ({
   const { data } = useSession();
   const appHref = useAppHref();
 
-  const [fileName, setFileName] = useState(issue.fileName);
   const [content, setContent] = useState(issue.content);
-  const [savedFileName, setSavedFileName] = useState(issue.fileName);
   const [savedContent, setSavedContent] = useState(issue.content);
 
   useEffect(() => {
@@ -133,76 +119,45 @@ const Compose: FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appHref, issue.id]);
 
-  const isFileNameChanged = useMemo(
-    () => fileName !== savedFileName,
-    [fileName, savedFileName]
-  );
+  const title = useMemo(() => getTitleFromContent(content), [content]);
   const isContentChanged = useMemo(
     () => content !== savedContent,
     [content, savedContent]
   );
-  const isIssueChanged = useMemo(
-    () => isFileNameChanged || isContentChanged,
-    [isFileNameChanged, isContentChanged]
-  );
+  const isSent = useMemo(() => !!issue.sentAt, [issue.sentAt]);
 
-  const isSent = issue.sentAt ? true : false;
+  const showSetings = useToggle(false);
   const sendTestEmail = useToggle(false);
   const previewEmail = useToggle(isSent);
   const sending = useToggle(false);
   const areYouSure = useToggle(false);
 
-  const saveIssue = useCallback(
-    async (overrideFileName?: string) => {
-      try {
-        progressIndicator.start();
-        await issueService.updateIssue(
-          issue.id,
-          overrideFileName ?? fileName,
-          content
-        );
-      } catch (error) {
-        console.error(error);
-      } finally {
-        progressIndicator.done();
-      }
-    },
-    [content, issue.id, fileName]
-  );
+  const saveIssueContent = useCallback(async () => {
+    try {
+      progressIndicator.start();
+      await issueService.updateIssue({ issueId: issue.id, content });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      progressIndicator.done();
+    }
+  }, [content, issue.id]);
 
-  const handleFileNameChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setFileName(e.target.value);
-    },
-    []
-  );
   const handleContentChange = useCallback((newValue: string) => {
     setContent(newValue);
   }, []);
-  const handleFileNameBlur = useCallback(
-    async (e: any) => {
-      eatClick(e);
-      if (isFileNameChanged) {
-        const lintedFileName = stringToMarkdownFileName(fileName);
-        setFileName(lintedFileName);
-        await saveIssue(lintedFileName);
-        setSavedFileName(lintedFileName);
-      }
-    },
-    [fileName, isFileNameChanged, saveIssue]
-  );
   const handleContentBlur = useCallback(async () => {
     if (isContentChanged) {
-      await saveIssue();
+      await saveIssueContent();
       setSavedContent(content);
     }
-  }, [content, isContentChanged, saveIssue]);
+  }, [content, isContentChanged, saveIssueContent]);
   const handleAreYouSure = useCallback(async () => {
     areYouSure.toggleOn();
-    if (isIssueChanged) {
-      await saveIssue();
+    if (isContentChanged) {
+      await saveIssueContent();
     }
-  }, [areYouSure, isIssueChanged, saveIssue]);
+  }, [areYouSure, isContentChanged, saveIssueContent]);
   const handleSend = useCallback(
     async (writeToGithub: boolean) => {
       sending.toggleOn();
@@ -225,6 +180,7 @@ const Compose: FC<Props> = ({
           !isSent ? (
             <ComposeControls
               isPreview={previewEmail.isOn}
+              toggleSettings={showSetings.toggle}
               togglePreview={previewEmail.toggle}
               toggleTest={sendTestEmail.toggleOn}
               toggleSend={handleAreYouSure}
@@ -232,15 +188,7 @@ const Compose: FC<Props> = ({
           ) : null
         }
       >
-        <NextSeo title={fileName} />
-        <ComposeBreadCrumbs
-          newsletterId={newsletterId}
-          newsletterTitle={newsletterTitle}
-          fileName={fileName}
-          disableEdit={isSent}
-          onChange={handleFileNameChange}
-          onBlur={handleFileNameBlur}
-        />
+        <NextSeo title={title} />
 
         {previewEmail.isOn ? (
           <Box display="flex" justifyContent="center">
@@ -278,11 +226,23 @@ const Compose: FC<Props> = ({
             ) : (
               ""
             )}
-            {new Date(issue.sentAt).toLocaleString()}
+            {new Date(issue.sentAt).toLocaleString([], {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </Typography>
         )}
         <Box height={composeControlsFooterHeight} />
       </Layout>
+      <IssueSettingsDialog
+        issueId={issue.id}
+        initialFileName={issue.fileName}
+        open={showSetings.isOn}
+        onClose={showSetings.toggleOff}
+      />
       <SendTestEmailDialog
         issueId={issue.id}
         defaultEmailAddress={data?.user?.email}

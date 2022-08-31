@@ -11,11 +11,13 @@ const createIssue = async (
     newsletterId,
   });
 
-const updateIssue = async (
-  issueId: string,
-  fileName: string,
-  content: string
-) =>
+type UpdateIssue = {
+  issueId: string;
+  fileName?: string;
+  content?: string;
+};
+
+const updateIssue = async ({ issueId, fileName, content }: UpdateIssue) =>
   fetchApi(`/issue/${issueId}`, "PUT", {
     fileName,
     content,

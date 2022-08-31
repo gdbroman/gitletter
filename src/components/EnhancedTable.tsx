@@ -23,7 +23,7 @@ import {
   Order,
 } from "../types/enhancedTable";
 import {
-  IssueWithStrippedDate,
+  IssueWithParsedTitleAndStrippedDate,
   SubscriberWithStrippedDate,
 } from "../types/stripDate";
 import { EditRowButton } from "./EditRowButton";
@@ -87,6 +87,7 @@ export const EnhancedTableHead: FC<EnhancedTableHeadProps> = ({
 export const EnhancedTable: FC<EnhancedTableProps> = ({
   type,
   items,
+  disablePagination,
   onItemClick,
   onItemDuplicate,
   onItemDelete,
@@ -134,7 +135,11 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
               .sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(
-                (item: IssueWithStrippedDate | SubscriberWithStrippedDate) => (
+                (
+                  item:
+                    | IssueWithParsedTitleAndStrippedDate
+                    | SubscriberWithStrippedDate
+                ) => (
                   <StyledTableRow
                     hover
                     key={item.id}
@@ -173,14 +178,16 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        component="div"
-        page={page}
-        rowsPerPage={rowsPerPage}
-        count={items.length}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {!disablePagination && (
+        <TablePagination
+          component="div"
+          page={page}
+          rowsPerPage={rowsPerPage}
+          count={items.length}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </Card>
   );
 };

@@ -32,14 +32,15 @@ export const populateNewIssue = async (newsletterId: string) => {
 };
 
 export const populateIntroIssue = async (newsletterId: string) => {
-  const title = "Start here";
+  const title = "Start here ✍️";
   const fileName = "start-here.md";
   const content = [
     createFrontMatter(title),
     "Hi there 👋",
     "This is a markdown editor",
-    "It's where the magic happens ✨",
-    "Try clicking the preview eye icon below",
+    "It's where the magic happens 🧙‍♂️",
+    "Try clicking the **preview** 👁 icon at the bottom",
+    "It shows you what the email will look like when sent out",
     "Now let's get writing!\n",
   ].join("\n\n");
 

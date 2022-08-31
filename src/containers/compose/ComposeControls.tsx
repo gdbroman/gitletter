@@ -1,3 +1,4 @@
+import SettingsIcon from "@mui/icons-material/Settings";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Box from "@mui/material/Box";
@@ -11,11 +12,13 @@ export const composeControlsFooterHeight = "68px";
 
 type Props = SendMenuProps & {
   isPreview: boolean;
+  toggleSettings: () => void;
   togglePreview: () => void;
 };
 
 export const ComposeControls: FC<Props> = ({
   isPreview,
+  toggleSettings,
   togglePreview,
   toggleTest,
   toggleSend,
@@ -31,18 +34,24 @@ export const ComposeControls: FC<Props> = ({
   >
     <Box
       display="flex"
-      justifyContent="end"
+      justifyContent="space-between"
       alignItems="center"
       height={composeControlsFooterHeight}
       px={2}
-      gap={2}
     >
-      <Tooltip title={isPreview ? "Hide preview" : "Show preview"}>
-        <IconButton onClick={togglePreview}>
-          {isPreview ? <VisibilityOffIcon /> : <VisibilityIcon />}
+      <Tooltip title={"Settings"}>
+        <IconButton onClick={toggleSettings}>
+          <SettingsIcon />
         </IconButton>
       </Tooltip>
-      <SendMenu toggleTest={toggleTest} toggleSend={toggleSend} />
+      <Box display="flex" alignItems="center" gap={2}>
+        <Tooltip title={isPreview ? "Hide preview" : "Show preview"}>
+          <IconButton onClick={togglePreview}>
+            {isPreview ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          </IconButton>
+        </Tooltip>
+        <SendMenu toggleTest={toggleTest} toggleSend={toggleSend} />
+      </Box>
     </Box>
   </footer>
 );
