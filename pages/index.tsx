@@ -13,7 +13,6 @@ import { useRef } from "react";
 
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
-import { EventAction, EventLabel } from "../src/types/analytics";
 import theme from "../styles/theme";
 import {
   calendlyLink,
@@ -26,6 +25,7 @@ import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
 import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
+import { EventAction } from "../util/lib/googleAnalytics";
 import { numberToStringWithSpaces } from "../util/strings";
 import { ButtonRef } from "../util/types";
 
@@ -44,23 +44,27 @@ const LandingPage: NextPage = () => {
 
   const goToApp = () => {
     try {
+      ga.sendEvent({
+        action: EventAction.LOGIN,
+        label: "Go to App",
+      });
       router.push(appHref);
     } catch (e) {
       console.error(e);
       redirecting.toggleOff();
     }
   };
-  const getStarted = (ref: ButtonRef, label: EventLabel) => {
+  const getStarted = (ref: ButtonRef, label: string) => {
     signIn(ref);
-    ga.event({
-      action: EventAction.CLICK,
+    ga.sendEvent({
+      action: EventAction.SIGN_UP,
       label,
     });
   };
   const bookDemo = () => {
-    ga.event({
-      action: EventAction.CLICK,
-      label: EventLabel.BOOK_DEMO,
+    ga.sendEvent({
+      action: EventAction.SIGN_UP,
+      label: "Book demo",
     });
     router.push(calendlyLink);
   };
@@ -110,7 +114,7 @@ const LandingPage: NextPage = () => {
               ref={getStartedFreeButtonRef}
               loading={loadingRef === getStartedFreeButtonRef}
               onClick={() =>
-                getStarted(getStartedFreeButtonRef, EventLabel.GET_STARTED_FREE)
+                getStarted(getStartedFreeButtonRef, "Get started free")
               }
             >
               Get started free
@@ -155,9 +159,7 @@ const LandingPage: NextPage = () => {
                 variant="outlined"
                 ref={freeTierButtonRef}
                 loading={loadingRef === freeTierButtonRef}
-                onClick={() =>
-                  getStarted(freeTierButtonRef, EventLabel.FREE_TIER)
-                }
+                onClick={() => getStarted(freeTierButtonRef, "Indie writer")}
               >
                 Get started
               </LoadingButton>
@@ -175,9 +177,7 @@ const LandingPage: NextPage = () => {
                 variant="contained"
                 ref={freeTierButtonRef}
                 loading={loadingRef === fullAccessButtonRef}
-                onClick={() =>
-                  getStarted(freeTierButtonRef, EventLabel.PAID_TIER)
-                }
+                onClick={() => getStarted(freeTierButtonRef, "Beast mode")}
               >
                 Get started
               </LoadingButton>

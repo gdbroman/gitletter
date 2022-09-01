@@ -1,6 +1,14 @@
-import { EventAction, EventLabel } from "../../src/types/analytics";
+// https://developers.google.com/analytics/devguides/collection/gtagjs/events
+export enum EventAction {
+  LOGIN = "login",
+  SEARCH = "search",
+  SELECT_CONTENT = "select_content",
+  VIEW_ITEM = "view_item",
+  SIGN_UP = "sign_up",
+  SHARE = "share",
+}
 
-export const pageview = (url: URL) => {
+export const sendPageView = (url: URL) => {
   window.gtag("config", process.env.GOOGLE_ANALYTICS_TRACKING_ID, {
     page_path: url,
   });
@@ -8,12 +16,12 @@ export const pageview = (url: URL) => {
 
 type GTagEvent = {
   action: EventAction;
-  label: EventLabel;
-  category?: "general";
+  label: string;
+  category?: "ecommerce" | "engagement" | "general";
   value?: number;
 };
 
-export const event = ({
+export const sendEvent = ({
   action,
   label,
   category = "general",
