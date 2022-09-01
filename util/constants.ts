@@ -2,7 +2,7 @@ export const siteTitle = "GitLetter";
 export const siteH1 = "Add a Newsletter to Your Markdown Blog";
 export const siteTagline = "Become Your Own Publisher";
 export const siteDescription =
-  "Keep all your writing on GitHub. No more copy pasting.";
+  "Connect to GitHub and keep all your writing in one repository.";
 export const siteDomain = "gitletter.co";
 
 export const maxEmailAddressLength = 64;
