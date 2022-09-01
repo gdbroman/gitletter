@@ -13,7 +13,7 @@ import { useRef } from "react";
 
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
-import { PageView, UserAction } from "../src/types/analytics";
+import { EventAction, EventLabel } from "../src/types/analytics";
 import theme from "../styles/theme";
 import {
   calendlyLink,
@@ -50,21 +50,17 @@ const LandingPage: NextPage = () => {
       redirecting.toggleOff();
     }
   };
-  const getStarted = (ref: ButtonRef, action: string) => {
+  const getStarted = (ref: ButtonRef, label: EventLabel) => {
     signIn(ref);
     ga.event({
-      action,
-      params: {
-        view: PageView.LANDING_PAGE,
-      },
+      action: EventAction.CLICK,
+      label,
     });
   };
   const bookDemo = () => {
     ga.event({
-      action: UserAction.CLICK_BOOK_DEMO,
-      params: {
-        view: PageView.LANDING_PAGE,
-      },
+      action: EventAction.CLICK,
+      label: EventLabel.BOOK_DEMO,
     });
     router.push(calendlyLink);
   };
@@ -114,10 +110,7 @@ const LandingPage: NextPage = () => {
               ref={getStartedFreeButtonRef}
               loading={loadingRef === getStartedFreeButtonRef}
               onClick={() =>
-                getStarted(
-                  getStartedFreeButtonRef,
-                  UserAction.CLICK_GET_STARTED_FREE
-                )
+                getStarted(getStartedFreeButtonRef, EventLabel.GET_STARTED_FREE)
               }
             >
               Get started free
@@ -163,7 +156,7 @@ const LandingPage: NextPage = () => {
                 ref={freeTierButtonRef}
                 loading={loadingRef === freeTierButtonRef}
                 onClick={() =>
-                  getStarted(freeTierButtonRef, UserAction.CLICK_FREE_TIER)
+                  getStarted(freeTierButtonRef, EventLabel.FREE_TIER)
                 }
               >
                 Get started
@@ -183,7 +176,7 @@ const LandingPage: NextPage = () => {
                 ref={freeTierButtonRef}
                 loading={loadingRef === fullAccessButtonRef}
                 onClick={() =>
-                  getStarted(freeTierButtonRef, UserAction.CLICK_PAID_TIER)
+                  getStarted(freeTierButtonRef, EventLabel.PAID_TIER)
                 }
               >
                 Get started

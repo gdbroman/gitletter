@@ -44,7 +44,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   }, [router]);
 
   useEffect(() => {
-    const handleRouteChange = (url) => {
+    const handleRouteChange = (url: URL) => {
       ga.pageview(url);
     };
     //When the component is mounted, subscribe to router changes
