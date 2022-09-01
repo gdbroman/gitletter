@@ -25,7 +25,7 @@ import { useAppHref } from "../util/hooks/useAppHref";
 import { useSignIn } from "../util/hooks/useSignIn";
 import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
-import { EventAction } from "../util/lib/googleAnalytics";
+import { GAEventAction } from "../util/lib/googleAnalytics";
 import { numberToStringWithSpaces } from "../util/strings";
 import { ButtonRef } from "../util/types";
 
@@ -45,7 +45,7 @@ const LandingPage: NextPage = () => {
   const goToApp = () => {
     try {
       ga.sendEvent({
-        action: EventAction.LOGIN,
+        action: GAEventAction.LOGIN,
         label: "Go to App",
       });
       router.push(appHref);
@@ -57,13 +57,13 @@ const LandingPage: NextPage = () => {
   const getStarted = (ref: ButtonRef, label: string) => {
     signIn(ref);
     ga.sendEvent({
-      action: EventAction.SIGN_UP,
+      action: GAEventAction.SIGN_UP,
       label,
     });
   };
   const bookDemo = () => {
     ga.sendEvent({
-      action: EventAction.SIGN_UP,
+      action: GAEventAction.SIGN_UP,
       label: "Book demo",
     });
     router.push(calendlyLink);
