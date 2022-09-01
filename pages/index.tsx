@@ -175,9 +175,9 @@ const LandingPage: NextPage = () => {
                 size="large"
                 fullWidth
                 variant="contained"
-                ref={freeTierButtonRef}
+                ref={fullAccessButtonRef}
                 loading={loadingRef === fullAccessButtonRef}
-                onClick={() => getStarted(freeTierButtonRef, "Beast mode")}
+                onClick={() => getStarted(fullAccessButtonRef, "Beast mode")}
               >
                 Get started
               </LoadingButton>
