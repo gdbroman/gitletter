@@ -1,8 +1,12 @@
 import styled from "@emotion/styled";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import HomeIcon from "@mui/icons-material/Home";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
@@ -133,9 +137,19 @@ export const AccountAvatarMenu = () => {
         </HeaderMenuItem>
         <Divider />
         <Link href={appHref} passHref>
-          <MenuItem>Dashboard</MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText>Dashboard</ListItemText>
+          </MenuItem>
         </Link>
-        <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
+        <MenuItem onClick={() => signOut()}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText>Sign out</ListItemText>
+        </MenuItem>
         <Divider />
         <Box
           px={2}
