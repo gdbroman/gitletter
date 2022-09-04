@@ -2,6 +2,7 @@ import { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 
 import prisma from "../../../prisma/prisma";
+import { FeedbackFooter } from "../../../src/components/FeedbackFooter";
 import Layout from "../../../src/components/Layout";
 import { ResultBox } from "./subscribed";
 
@@ -25,7 +26,7 @@ type Props = {
 };
 
 const UnsubscribedPage: NextPage<Props> = ({ newsletterTitle }) => (
-  <Layout>
+  <Layout footer={<FeedbackFooter />}>
     <NextSeo title="Farewell 👋" />
     <ResultBox
       title="Farewell"

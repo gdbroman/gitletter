@@ -5,6 +5,7 @@ import { NextSeo } from "next-seo";
 import { FC } from "react";
 
 import prisma from "../../../prisma/prisma";
+import { FeedbackFooter } from "../../../src/components/FeedbackFooter";
 import Layout from "../../../src/components/Layout";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -55,7 +56,7 @@ type Props = {
 };
 
 const SubscribedPage: NextPage<Props> = ({ newsletterTitle }) => (
-  <Layout>
+  <Layout footer={<FeedbackFooter />}>
     <NextSeo title="Success! 🎉" />
     <ResultBox
       title="Success!"

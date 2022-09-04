@@ -14,6 +14,7 @@ import { signOut, useSession } from "next-auth/react";
 import { FC, MouseEvent, useState } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
+import { feedbackCopy } from "../../components/FeedbackFooter";
 
 const HeaderMenuItem = styled(MenuItem)`
   && {
@@ -135,6 +136,19 @@ export const AccountAvatarMenu = () => {
           <MenuItem>Dashboard</MenuItem>
         </Link>
         <MenuItem onClick={() => signOut()}>Sign out</MenuItem>
+        <Divider />
+        <Box
+          px={2}
+          pb={0.75}
+          maxWidth="236px"
+          style={{
+            lineHeight: 1,
+          }}
+        >
+          <Typography variant="caption" lineHeight={1}>
+            {feedbackCopy}
+          </Typography>
+        </Box>
       </Menu>
     </>
   );

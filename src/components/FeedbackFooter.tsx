@@ -12,21 +12,27 @@ const StyledFooter = styled.footer`
   background-color: #eeeeee;
 `;
 
-export const Footer: FC = () => (
+export const feedbackCopy = (
+  <>
+    Questions or feedback? Reach out on{" "}
+    <Link href={gitLetterSocialLinks.twitter} target="_blank">
+      Twitter
+    </Link>{" "}
+    or{" "}
+    <Link
+      href={`mailto:${gitLetterSocialLinks.email}?subject=GitLetter question`}
+      target="_blank"
+    >
+      email
+    </Link>
+    .
+  </>
+);
+
+export const FeedbackFooter: FC = () => (
   <StyledFooter>
     <Typography variant="body2" color="secondary">
-      Questions or feedback? Reach out on{" "}
-      <Link href={gitLetterSocialLinks.twitter} target="_blank">
-        Twitter
-      </Link>{" "}
-      or{" "}
-      <Link
-        href={`mailto:${gitLetterSocialLinks.email}?subject=GitLetter question`}
-        target="_blank"
-      >
-        email
-      </Link>
-      .
+      {feedbackCopy}
     </Typography>
   </StyledFooter>
 );

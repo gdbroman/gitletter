@@ -6,7 +6,6 @@ import { FC, ReactNode } from "react";
 import { siteDescription, siteTagline } from "../../util/constants";
 import { Header } from "../containers/header/Header";
 import { DynamicMaxWidthWrapper } from "./DynamicMaxWidthWrapper";
-import { Footer as DefaultFooter } from "./Footer";
 
 const StyledDiv = styled(DynamicMaxWidthWrapper)`
   flex: 1;
@@ -22,11 +21,7 @@ type Props = {
   footer?: ReactNode;
 };
 
-const Layout: FC<Props> = ({
-  headerTitle,
-  children,
-  footer = <DefaultFooter />,
-}) => (
+const Layout: FC<Props> = ({ headerTitle, children, footer }) => (
   <Box display="flex" flexDirection="column" height="100%">
     <NextSeo
       title={`GitLetter · ${siteTagline}`}

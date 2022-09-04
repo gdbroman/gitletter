@@ -11,6 +11,7 @@ import { NextPage } from "next/types";
 import { useSession } from "next-auth/react";
 import { useRef } from "react";
 
+import { FeedbackFooter } from "../src/components/FeedbackFooter";
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
 import theme from "../styles/theme";
@@ -70,7 +71,7 @@ const LandingPage: NextPage = () => {
   };
 
   return (
-    <Layout>
+    <Layout footer={<FeedbackFooter />}>
       <Box mx="auto" my={6} textAlign="center" maxWidth={640}>
         <Typography variant="h1" fontWeight="bold">
           {siteH1}
