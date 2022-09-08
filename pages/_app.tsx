@@ -59,7 +59,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <SessionProvider session={pageProps.session}>
       <NewsletterContextProvider>
-        <ThemeContextProvider initialColorMode="light">
+        <ThemeContextProvider>
           <Component {...pageProps} />
         </ThemeContextProvider>
       </NewsletterContextProvider>

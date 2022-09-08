@@ -5,10 +5,13 @@ import {
   createContext,
   FC,
   ReactNode,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
+import { useCookies } from "react-cookie";
 
 import { ColorMode, createTheme } from "../../styles/theme";
 
@@ -20,25 +23,38 @@ interface IThemeContext {
 
 interface IColorModeContextProvider {
   children: ReactNode;
-  initialColorMode: ColorMode;
 }
 
 const ThemeContext = createContext<IThemeContext>({} as IThemeContext);
 
 export const ThemeContextProvider: FC<IColorModeContextProvider> = ({
   children,
-  initialColorMode,
 }) => {
+  const defaultColorMode = "dark";
   const [colorMode, setColorMode] =
-    useState<IThemeContext["colorMode"]>(initialColorMode);
+    useState<IThemeContext["colorMode"]>(defaultColorMode);
   const theme = useMemo(() => createTheme(colorMode), [colorMode]);
+
+  const [cookies, setCookie] = useCookies(["color-mode"]);
+
+  useEffect(() => {
+    setColorMode(cookies["color-mode"]);
+  }, [cookies]);
+
+  const handleSetColorMode = useCallback(
+    (colorMode: ColorMode) => {
+      setColorMode(colorMode);
+      setCookie("color-mode", colorMode);
+    },
+    [setCookie]
+  );
 
   return (
     <ThemeContext.Provider
       value={{
         theme,
         colorMode,
-        setColorMode,
+        setColorMode: handleSetColorMode,
       }}
     >
       <Head>
