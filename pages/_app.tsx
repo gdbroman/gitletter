@@ -1,15 +1,13 @@
 import "../styles/globals.css";
 import "../styles/nprogress.css";
 
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import { FC, useEffect } from "react";
 
 import { NewsletterContextProvider } from "../src/contexts/newsletter";
-import theme from "../styles/theme";
+import { ThemeContextProvider } from "../src/contexts/theme";
 import * as ga from "../util/lib/googleAnalytics";
 import { progressIndicator } from "../util/lib/progressIndicator";
 
@@ -61,10 +59,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <SessionProvider session={pageProps.session}>
       <NewsletterContextProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+        <ThemeContextProvider initialColorMode="light">
           <Component {...pageProps} />
-        </ThemeProvider>
+        </ThemeContextProvider>
       </NewsletterContextProvider>
     </SessionProvider>
   );

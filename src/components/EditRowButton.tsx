@@ -1,4 +1,5 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
+
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";

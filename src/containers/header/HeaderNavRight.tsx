@@ -1,4 +1,5 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
+
 import LoadingButton from "@mui/lab/LoadingButton";
 import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";

@@ -2,14 +2,11 @@ import { ServerStyleSheets } from "@mui/styles";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import { Children } from "react";
 
-import theme from "../styles/theme";
-
 export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
         <Head>
-          <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="apple-touch-icon"
             sizes="180x180"

@@ -1,4 +1,5 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
+
 import Box from "@mui/material/Box";
 import { NextSeo } from "next-seo";
 import { FC, ReactNode } from "react";

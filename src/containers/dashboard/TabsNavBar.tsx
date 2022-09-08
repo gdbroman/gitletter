@@ -1,9 +1,9 @@
-import styled from "@emotion/styled";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import PeopleIcon from "@mui/icons-material/People";
 import SendIcon from "@mui/icons-material/Send";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
@@ -25,7 +25,7 @@ const StyledTab = styled(Tab)`
     }
     &:hover {
       .MuiBox-root {
-        background-color: #eeeeee;
+        background-color: ${({ theme }) => theme.palette.grey[200]};
       }
     }
   }

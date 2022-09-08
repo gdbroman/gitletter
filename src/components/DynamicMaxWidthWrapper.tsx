@@ -1,9 +1,9 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
 
 const maxWidth = 780;
 const maxWidthMinusMargin = maxWidth - 32;
 
-export const DynamicMaxWidthWrapper = styled.div`
+export const DynamicMaxWidthWrapper = styled("div")`
   width: 100%;
   max-width: ${maxWidth}px;
   margin: 0 auto;

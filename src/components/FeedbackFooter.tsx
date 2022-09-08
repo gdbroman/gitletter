@@ -1,15 +1,15 @@
-import styled from "@emotion/styled";
 import { Link } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
 import { gitLetterSocialLinks } from "../../util/constants";
 
-const StyledFooter = styled.footer`
+const StyledFooter = styled("footer")`
   padding: 16px 64px;
   text-align: center;
   justify-content: center;
-  background-color: #eeeeee;
+  background-color: ${({ theme }) => theme.palette.grey[100]};
 `;
 
 export const feedbackCopy = (

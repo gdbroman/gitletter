@@ -3,6 +3,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
@@ -14,7 +15,6 @@ import { useRef } from "react";
 import { FeedbackFooter } from "../src/components/FeedbackFooter";
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
-import theme from "../styles/theme";
 import {
   calendlyLink,
   freeSubscriberLimit,
@@ -35,6 +35,7 @@ const LandingPage: NextPage = () => {
   const appHref = useAppHref();
   const session = useSession();
   const { signIn, loadingRef } = useSignIn();
+  const theme = useTheme();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const redirecting = useToggle(false);

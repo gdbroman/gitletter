@@ -3,12 +3,12 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import copy from "copy-to-clipboard";
 import { FC } from "react";
 
-import theme from "../../../styles/theme";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 };
 
 export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
+  const theme = useTheme();
   const copied = useToggle(false);
   const snippet = [
     `<form method="POST" action="https://gitletter.co/api/newsletter/${newsletterId}/subscribe">`,
@@ -46,7 +47,7 @@ export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
           maxWidth={theme.breakpoints.down("xs")}
           style={{
             position: "relative",
-            backgroundColor: "#eee",
+            backgroundColor: theme.palette.grey[200],
             borderRadius: 4,
           }}
         >

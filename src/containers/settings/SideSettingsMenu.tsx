@@ -1,15 +1,14 @@
-import styled from "@emotion/styled";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
+import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 
-import theme from "../../../styles/theme";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 
 const StyledList = styled(List)`
@@ -20,7 +19,8 @@ const StyledList = styled(List)`
     padding: 0;
     gap: 8px;
 
-    @media screen and (max-width: ${theme.breakpoints.values.md}px) {
+    @media screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.values.md}px) {
       margin-bottom: 16px;
     }
   }
@@ -39,7 +39,7 @@ const StyledListItemButton = styled(ListItemButton)`
     padding: 8px 12px;
     border-radius: 6px;
     &:hover {
-      background-color: #eeeeee;
+      background-color: ${({ theme }) => theme.palette.grey[200]};
     }
   }
 `;
@@ -61,6 +61,7 @@ export const SideSettingsMenu: FC = () => {
   const appHref = useAppHref();
 
   const currentPath = router.pathname.split("/")[4] ?? "";
+  const theme = useTheme();
   const breakpoint = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
