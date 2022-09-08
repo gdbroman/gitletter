@@ -30,7 +30,7 @@ const ThemeContext = createContext<IThemeContext>({} as IThemeContext);
 export const ThemeContextProvider: FC<IColorModeContextProvider> = ({
   children,
 }) => {
-  const defaultColorMode = "dark";
+  const defaultColorMode: ColorMode = "light";
   const [colorMode, setColorMode] =
     useState<IThemeContext["colorMode"]>(defaultColorMode);
   const theme = useMemo(() => createTheme(colorMode), [colorMode]);
