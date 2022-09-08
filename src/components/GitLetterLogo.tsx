@@ -5,12 +5,14 @@ import Link from "next/link";
 import { FC } from "react";
 
 import { useAppHref } from "../../util/hooks/useAppHref";
+import { useThemeContext } from "../contexts/theme";
 
 type Props = {
   title?: string;
 };
 
 export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
+  const { colorMode } = useThemeContext();
   const appHref = useAppHref();
 
   return (
@@ -28,6 +30,9 @@ export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
           width={32}
           height={32}
           layout="fixed"
+          style={{
+            filter: colorMode === "dark" ? "invert(1)" : "none",
+          }}
         />
         <Typography
           flex={1}

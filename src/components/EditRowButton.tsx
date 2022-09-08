@@ -16,7 +16,8 @@ const StyledRowButton = styled(Button)`
   min-width: 32px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  background-color: white;
+  color: ${({ theme }) => theme.palette.secondary.main};
+  background-color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 type Props = {

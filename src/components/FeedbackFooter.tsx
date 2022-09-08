@@ -15,13 +15,14 @@ const StyledFooter = styled("footer")`
 export const feedbackCopy = (
   <>
     Questions or feedback? Reach out on{" "}
-    <Link href={gitLetterSocialLinks.twitter} target="_blank">
+    <Link href={gitLetterSocialLinks.twitter} target="_blank" color="secondary">
       Twitter
     </Link>{" "}
     or{" "}
     <Link
       href={`mailto:${gitLetterSocialLinks.email}?subject=GitLetter question`}
       target="_blank"
+      color="secondary"
     >
       email
     </Link>

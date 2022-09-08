@@ -28,6 +28,7 @@
     "@octokit/rest": "^18.12.0",
     "@prisma/client": "^4.2.1",
     "@stripe/stripe-js": "^1.35.0",
+    "@uiw/codemirror-theme-github": "^4.12.1",
     "@uiw/react-codemirror": "^4.10.4",
     "copy-to-clipboard": "^3.3.1",
     "inline-css": "^3.0.0",

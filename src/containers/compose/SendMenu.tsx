@@ -36,6 +36,7 @@ export const SendMenu: FC<SendMenuProps> = ({ toggleTest, toggleSend }) => {
     <div>
       <Button
         variant="contained"
+        color="secondary"
         id="basic-button"
         aria-controls={open ? "preview-menu" : undefined}
         aria-haspopup="true"

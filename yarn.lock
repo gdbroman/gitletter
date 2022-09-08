@@ -2198,6 +2198,22 @@
     "@typescript-eslint/types" "5.27.1"
     eslint-visitor-keys "^3.3.0"
 
+"@uiw/codemirror-theme-github@^4.12.1":
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/@uiw/codemirror-theme-github/-/codemirror-theme-github-4.12.1.tgz#1a93ba8ef6cf2f311c4634206c3f4444d7dcb1e8"
+  integrity sha512-tJGNqIrcGSHZrsE8DK3KqRnCk6N7nQ/Dr7/JaSParLjKXBh49/a3PM9Z7CM6sd+LoF+Xl2pEU/Advny/R7fOVw==
+  dependencies:
+    "@uiw/codemirror-themes" "4.12.1"
+
+"@uiw/codemirror-themes@4.12.1":
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/@uiw/codemirror-themes/-/codemirror-themes-4.12.1.tgz#2101b1b5e06dd336a9e6a17f0865f301c88fb765"
+  integrity sha512-q3w+9Dc5pemj9J4dz74W6/adnevtPIkpeTP6fcjGsMbFZRnoZVd8CfZ7AOubCO0uGIejifU1C2MU9WQbzDEIHg==
+  dependencies:
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+
 "@uiw/react-codemirror@^4.10.4":
   version "4.10.4"
   resolved "https://registry.yarnpkg.com/@uiw/react-codemirror/-/react-codemirror-4.10.4.tgz#f26833d5cfc4c63de1858c587218efd9f85f18e2"

@@ -3,6 +3,7 @@ import {
   BreakpointsOptions,
   Components,
   createTheme as createMuiTheme,
+  PaletteOptions,
   responsiveFontSizes,
   ThemeOptions,
 } from "@mui/material/styles";
@@ -95,51 +96,59 @@ const components: Components = {
   },
 };
 
+const lightPalette: PaletteOptions = {
+  mode: "light",
+  primary: {
+    main: "#ffffff",
+    light: "#eeeeee",
+  },
+  secondary: {
+    main: "#000000",
+    light: "#333333",
+  },
+  error: {
+    main: red.A400,
+  },
+  action: {
+    disabledBackground: "000000",
+    disabled: "#FFFFFF",
+  },
+  background: {
+    default: "#FFFFFF",
+  },
+};
+
+const darkPalette: PaletteOptions = {
+  mode: "dark",
+  primary: {
+    main: "#000000",
+    light: "#333333",
+  },
+  secondary: {
+    main: "#ffffff",
+    light: "#eeeeee",
+  },
+  error: {
+    main: red.A400,
+  },
+  action: {
+    disabledBackground: "000000",
+    disabled: "#FFFFFF",
+  },
+  background: {
+    default: "#000000",
+  },
+};
+
 const themes: Record<string, ThemeOptions> = {
   light: {
-    palette: {
-      mode: "light",
-      primary: {
-        main: "#000000",
-      },
-      secondary: {
-        main: "#333333",
-      },
-      error: {
-        main: red.A400,
-      },
-      action: {
-        disabledBackground: "000000",
-        disabled: "#FFFFFF",
-      },
-      background: {
-        default: "#FFFFFF",
-      },
-    },
+    palette: lightPalette,
     typography,
     breakpoints,
     components,
   },
   dark: {
-    palette: {
-      mode: "dark",
-      primary: {
-        main: "#000000",
-      },
-      secondary: {
-        main: "#333333",
-      },
-      error: {
-        main: red.A400,
-      },
-      action: {
-        disabledBackground: "000000",
-        disabled: "#FFFFFF",
-      },
-      background: {
-        default: "#FFFFFF",
-      },
-    },
+    palette: darkPalette,
     typography,
     breakpoints,
     components,
