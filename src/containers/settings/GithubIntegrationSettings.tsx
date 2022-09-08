@@ -270,7 +270,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
               <>
                 {isChanged && !success && (
                   <Button
-                    color="primary"
+                    color="secondary"
                     variant="text"
                     onClick={handleCancelEdit}
                   >
@@ -278,6 +278,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
                   </Button>
                 )}
                 <Button
+                  color="secondary"
                   variant={!isValid || !!success ? "outlined" : "contained"}
                   disabled={!isValid || !!success}
                   onClick={handleSave}

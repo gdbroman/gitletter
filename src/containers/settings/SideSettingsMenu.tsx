@@ -67,8 +67,11 @@ export const SideSettingsMenu: FC = () => {
                 <Typography
                   variant="body2"
                   lineHeight="24px"
-                  sx={{
-                    color: path === currentPath ? "#000" : "#666",
+                  style={{
+                    color:
+                      path === currentPath
+                        ? theme.palette.secondary.light
+                        : theme.palette.grey[500],
                   }}
                 >
                   {label}

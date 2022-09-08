@@ -111,7 +111,7 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
             <Button
               variant="text"
               size="medium"
-              color="primary"
+              color="secondary"
               disabled={submitting.isOn}
               onClick={handleCancel}
             >
@@ -123,7 +123,7 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
               isChanged && isValid && !success ? "contained" : "outlined"
             }
             size="medium"
-            color="primary"
+            color="secondary"
             disabled={!isChanged || !isValid || !!success}
             loading={submitting.isOn}
             onClick={handleSubmit}
