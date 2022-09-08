@@ -1,9 +1,9 @@
-import styled from "@emotion/styled";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { FC, MouseEvent, useState } from "react";
 
@@ -16,7 +16,8 @@ const StyledRowButton = styled(Button)`
   min-width: 32px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  background-color: white;
+  color: ${({ theme }) => theme.palette.secondary.main};
+  background-color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 type Props = {
@@ -54,12 +55,16 @@ export const EditRowButton: FC<Props> = ({ onDuplicate, onDelete }) => {
         {onDuplicate && (
           <MenuItem disableRipple onClick={handleOnDuplicate}>
             <ContentCopyIcon />
-            <Typography variant="body1">Duplicate</Typography>
+            <Typography variant="body1" color="secondary.light">
+              Duplicate
+            </Typography>
           </MenuItem>
         )}
         <MenuItem disableRipple onClick={handleOnDelete}>
           <DeleteIcon />
-          <Typography variant="body1">Delete</Typography>
+          <Typography variant="body1" color="secondary.light">
+            Delete
+          </Typography>
         </MenuItem>
       </StyledMenu>
     </>

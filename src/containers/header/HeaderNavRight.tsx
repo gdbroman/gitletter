@@ -1,7 +1,7 @@
-import styled from "@emotion/styled";
 import LoadingButton from "@mui/lab/LoadingButton";
 import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
 import { useRef } from "react";
@@ -38,6 +38,7 @@ export const HeaderNavRight = () => {
       return (
         <LoadingButtonWithBlackSpinner
           variant="outlined"
+          color="secondary"
           ref={signInButtonRef}
           loading={loadingRef === signInButtonRef}
           onClick={() => signIn(signInButtonRef)}

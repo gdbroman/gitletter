@@ -8,9 +8,9 @@ import Typography from "@mui/material/Typography";
 import copy from "copy-to-clipboard";
 import { FC } from "react";
 
-import theme from "../../../styles/theme";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
+import { useThemeContext } from "../../contexts/theme";
 type Props = {
   newsletterId: string;
   open: boolean;
@@ -18,6 +18,7 @@ type Props = {
 };
 
 export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
+  const { theme } = useThemeContext();
   const copied = useToggle(false);
   const snippet = [
     `<form method="POST" action="https://gitletter.co/api/newsletter/${newsletterId}/subscribe">`,
@@ -46,7 +47,7 @@ export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
           maxWidth={theme.breakpoints.down("xs")}
           style={{
             position: "relative",
-            backgroundColor: "#eee",
+            backgroundColor: theme.palette.primary.light,
             borderRadius: 4,
           }}
         >

@@ -3,9 +3,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
-import { Theme, useTheme } from "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { FC, ReactNode } from "react";
+
+import { useThemeContext } from "../contexts/theme";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,7 +45,7 @@ export const ItemSelect: FC<Props> = ({
   onChange,
   ...rest
 }) => {
-  const theme = useTheme();
+  const { theme } = useThemeContext();
 
   const handleChange = (event: SelectChangeEvent<typeof value>) => {
     onChange(event.target.value);

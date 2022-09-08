@@ -14,7 +14,7 @@ import { useRef } from "react";
 import { FeedbackFooter } from "../src/components/FeedbackFooter";
 import Layout from "../src/components/Layout";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
-import theme from "../styles/theme";
+import { useThemeContext } from "../src/contexts/theme";
 import {
   calendlyLink,
   freeSubscriberLimit,
@@ -35,6 +35,7 @@ const LandingPage: NextPage = () => {
   const appHref = useAppHref();
   const session = useSession();
   const { signIn, loadingRef } = useSignIn();
+  const { theme } = useThemeContext();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const redirecting = useToggle(false);
@@ -91,13 +92,19 @@ const LandingPage: NextPage = () => {
           {siteDescription}
         </Typography>
         <Box display="flex" justifyContent="center" gap={2}>
-          <Button size="large" variant="outlined" onClick={bookDemo}>
+          <Button
+            size="large"
+            variant="outlined"
+            color="secondary"
+            onClick={bookDemo}
+          >
             Book demo
           </Button>
           {session.status === "authenticated" ? (
             <LoadingButton
               size="large"
               variant="contained"
+              color="secondary"
               endIcon={<ArrowForwardIcon />}
               style={{ fontSize: "1rem" }}
               ref={getStartedFreeButtonRef}
@@ -110,6 +117,7 @@ const LandingPage: NextPage = () => {
             <LoadingButton
               size="large"
               variant="contained"
+              color="secondary"
               startIcon={<GitHubIcon />}
               style={{ fontSize: "1rem" }}
               ref={getStartedFreeButtonRef}
@@ -124,15 +132,15 @@ const LandingPage: NextPage = () => {
         </Box>
         <Box my={10}>
           {/* <YoutubeDemo /> */}
-          <div
+          <Image
+            src="/demo/lightDemo.png"
+            width={1662}
+            height={1042}
             style={{
               boxShadow: "0 0 0 1px rgba(0,0,0,0.1)",
               borderRadius: "0.5rem",
-              overflow: "hidden",
             }}
-          >
-            <Image src="/demo/demo.png" width={1662} height={1042} />
-          </div>
+          />
         </Box>
         <Typography variant="h3" fontWeight="bold" textAlign="center" mb={4}>
           {siteTagline}
@@ -156,6 +164,7 @@ const LandingPage: NextPage = () => {
             button={
               <LoadingButton
                 size="large"
+                color="secondary"
                 fullWidth
                 variant="outlined"
                 ref={freeTierButtonRef}

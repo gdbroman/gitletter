@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
@@ -6,6 +5,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import { GithubIntegration } from "@prisma/client";
 import { useRouter } from "next/router";
@@ -270,7 +270,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
               <>
                 {isChanged && !success && (
                   <Button
-                    color="primary"
+                    color="secondary"
                     variant="text"
                     onClick={handleCancelEdit}
                   >
@@ -278,6 +278,7 @@ const GithubIntegrationSettingsCard: FC<GithubIntegrationSettingsCardProps> = ({
                   </Button>
                 )}
                 <Button
+                  color="secondary"
                   variant={!isValid || !!success ? "outlined" : "contained"}
                   disabled={!isValid || !!success}
                   onClick={handleSave}

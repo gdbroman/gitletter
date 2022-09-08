@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import HomeIcon from "@mui/icons-material/Home";
 import Avatar from "@mui/material/Avatar";
@@ -9,16 +8,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { styled } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { Session } from "next-auth/core/types";
 import { signOut, useSession } from "next-auth/react";
 import { FC, MouseEvent, useState } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { feedbackCopy } from "../../components/FeedbackFooter";
+import { DarkModeToggle } from "./DarkModeToggle";
 
 const HeaderMenuItem = styled(MenuItem)`
   && {
@@ -46,6 +47,7 @@ const AccountAvatar = ({ sessionData, size = 32 }: AccountAvatarProps) => (
 
 export const AccountAvatarMenu = () => {
   const session = useSession();
+  const router = useRouter();
   const appHref = useAppHref();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -56,6 +58,15 @@ export const AccountAvatarMenu = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    signOut();
+    handleClose();
+  };
+  const handleDashboardClick = () => {
+    router.push(appHref);
+    handleClose();
   };
 
   return (
@@ -84,7 +95,6 @@ export const AccountAvatarMenu = () => {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -136,20 +146,22 @@ export const AccountAvatarMenu = () => {
           </Box>
         </HeaderMenuItem>
         <Divider />
-        <Link href={appHref} passHref>
-          <MenuItem>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText>Dashboard</ListItemText>
-          </MenuItem>
-        </Link>
-        <MenuItem onClick={() => signOut()}>
+        <MenuItem onClick={handleDashboardClick}>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText>Dashboard</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
           <ListItemText>Sign out</ListItemText>
         </MenuItem>
+        <Divider />
+        <HeaderMenuItem disableRipple disableTouchRipple>
+          <DarkModeToggle />
+        </HeaderMenuItem>
         <Divider />
         <Box
           px={2}
@@ -159,7 +171,7 @@ export const AccountAvatarMenu = () => {
             lineHeight: 1,
           }}
         >
-          <Typography variant="caption" lineHeight={1}>
+          <Typography variant="caption" color="secondary" lineHeight={1}>
             {feedbackCopy}
           </Typography>
         </Box>

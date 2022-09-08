@@ -1,6 +1,6 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
 
-const VideoContainer = styled.div`
+const VideoContainer = styled("div")`
   position: relative;
   overflow: hidden;
   height: 0;

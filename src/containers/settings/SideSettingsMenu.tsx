@@ -1,16 +1,16 @@
-import styled from "@emotion/styled";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 
-import theme from "../../../styles/theme";
 import { useAppHref } from "../../../util/hooks/useAppHref";
+import { useThemeContext } from "../../contexts/theme";
 
 const StyledList = styled(List)`
   && {
@@ -20,16 +20,9 @@ const StyledList = styled(List)`
     padding: 0;
     gap: 8px;
 
-    @media screen and (max-width: ${theme.breakpoints.values.md}px) {
+    @media screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.values.md}px) {
       margin-bottom: 16px;
-    }
-  }
-`;
-
-const StyledListItem = styled(ListItem)`
-  && {
-    .MuiListItemButton-root {
-      color: #fff;
     }
   }
 `;
@@ -39,7 +32,7 @@ const StyledListItemButton = styled(ListItemButton)`
     padding: 8px 12px;
     border-radius: 6px;
     &:hover {
-      background-color: #eeeeee;
+      background-color: ${({ theme }) => theme.palette.primary.light};
     }
   }
 `;
@@ -61,6 +54,7 @@ export const SideSettingsMenu: FC = () => {
   const appHref = useAppHref();
 
   const currentPath = router.pathname.split("/")[4] ?? "";
+  const { theme } = useThemeContext();
   const breakpoint = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
@@ -68,19 +62,22 @@ export const SideSettingsMenu: FC = () => {
       {Object.entries(sideSettingsTabs).map(([path, { label }]) => (
         <>
           <Link href={`${appHref}/settings/${path}`} passHref key={path}>
-            <StyledListItem key={path} disablePadding>
+            <ListItem key={path} disablePadding>
               <StyledListItemButton disableRipple>
                 <Typography
                   variant="body2"
                   lineHeight="24px"
-                  sx={{
-                    color: path === currentPath ? "#000" : "#666",
+                  style={{
+                    color:
+                      path === currentPath
+                        ? theme.palette.secondary.light
+                        : theme.palette.grey[500],
                   }}
                 >
                   {label}
                 </Typography>
               </StyledListItemButton>
-            </StyledListItem>
+            </ListItem>
           </Link>
           {breakpoint && <Divider />}
         </>

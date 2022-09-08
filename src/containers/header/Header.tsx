@@ -1,20 +1,20 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
 import Box from "@mui/system/Box";
 import { FC } from "react";
 
 import { GitLetterLogo } from "../../components/GitLetterLogo";
 import { HeaderNavRight } from "./HeaderNavRight";
 
-const StyledHeader = styled.header`
+const StyledHeader = styled("header")`
   display: flex;
   height: 64px;
   min-height: 64px;
   padding: 8px;
   align-items: center;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.primary.light};
 `;
 
-const StyledNav = styled.nav`
+const StyledNav = styled("nav")`
   flex: 1;
   display: flex;
   align-items: center;

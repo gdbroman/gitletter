@@ -21,6 +21,7 @@ import {
   numberToStringWithSpaces,
   stripePriceToString,
 } from "../../../util/strings";
+import { useThemeContext } from "../../contexts/theme";
 import { productService } from "../../services/productService";
 
 type Props = {
@@ -31,6 +32,7 @@ type Props = {
 export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
   const router = useRouter();
   const appHref = useAppHref();
+  const { theme } = useThemeContext();
 
   const [productId, setProductId] = useState(initialProductId);
   const [error, setError] = useState("");
@@ -129,7 +131,7 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
             <Button
               variant="text"
               size="medium"
-              color="primary"
+              color="secondary"
               disabled={submitting.isOn}
               onClick={handleCancel}
             >
@@ -139,7 +141,7 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
           <LoadingButton
             variant={isChanged && isValid ? "contained" : "outlined"}
             size="medium"
-            color="primary"
+            color="secondary"
             disabled={!isChanged || !isValid}
             loading={submitting.isOn}
             onClick={handleSubmit}

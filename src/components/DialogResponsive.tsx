@@ -4,7 +4,7 @@ import { Breakpoint } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { FC, ReactNode } from "react";
 
-import theme from "../../styles/theme";
+import { useThemeContext } from "../contexts/theme";
 
 type Props = {
   open: boolean;
@@ -19,6 +19,7 @@ export const DialogResponsive: FC<Props> = ({
   breakPoint = "xs",
   onClose,
 }) => {
+  const { theme } = useThemeContext();
   const fullScreen = useMediaQuery(theme.breakpoints.down(breakPoint));
 
   return (
