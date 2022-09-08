@@ -132,15 +132,15 @@ const LandingPage: NextPage = () => {
         </Box>
         <Box my={10}>
           {/* <YoutubeDemo /> */}
-          <div
+          <Image
+            src="/demo/lightDemo.png"
+            width={1662}
+            height={1042}
             style={{
               boxShadow: "0 0 0 1px rgba(0,0,0,0.1)",
               borderRadius: "0.5rem",
-              overflow: "hidden",
             }}
-          >
-            <Image src="/demo/demo.png" width={1662} height={1042} />
-          </div>
+          />
         </Box>
         <Typography variant="h3" fontWeight="bold" textAlign="center" mb={4}>
           {siteTagline}
