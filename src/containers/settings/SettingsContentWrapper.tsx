@@ -1,11 +1,11 @@
 import { useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
 
+import { useThemeContext } from "../../contexts/theme";
 import { SideSettingsMenu } from "./SideSettingsMenu";
 
 export const SettingsContentWrapper = ({ children }) => {
-  const theme = useTheme();
+  const { theme } = useThemeContext();
   const breakpoint = useMediaQuery(theme.breakpoints.down("md"));
 
   return (

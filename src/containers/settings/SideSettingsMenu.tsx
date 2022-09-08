@@ -2,7 +2,7 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
+import { useThemeContext } from "../../contexts/theme";
 
 const StyledList = styled(List)`
   && {
@@ -53,7 +54,7 @@ export const SideSettingsMenu: FC = () => {
   const appHref = useAppHref();
 
   const currentPath = router.pathname.split("/")[4] ?? "";
-  const theme = useTheme();
+  const { theme } = useThemeContext();
   const breakpoint = useMediaQuery(theme.breakpoints.down("md"));
 
   return (

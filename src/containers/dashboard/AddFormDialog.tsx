@@ -3,7 +3,6 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import { useTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import copy from "copy-to-clipboard";
@@ -11,6 +10,7 @@ import { FC } from "react";
 
 import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
+import { useThemeContext } from "../../contexts/theme";
 type Props = {
   newsletterId: string;
   open: boolean;
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
-  const theme = useTheme();
+  const { theme } = useThemeContext();
   const copied = useToggle(false);
   const snippet = [
     `<form method="POST" action="https://gitletter.co/api/newsletter/${newsletterId}/subscribe">`,

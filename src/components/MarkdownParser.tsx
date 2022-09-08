@@ -1,14 +1,15 @@
-import { useTheme } from "@mui/material/styles";
 import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
+
+import { useThemeContext } from "../contexts/theme";
 
 type Props = {
   children: string;
 };
 
 export const MarkdownParser: FC<Props> = ({ children }) => {
-  const theme = useTheme();
+  const { theme } = useThemeContext();
 
   return (
     <ReactMarkdown

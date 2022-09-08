@@ -3,10 +3,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import { useTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import { FC } from "react";
 
+import { useThemeContext } from "../../contexts/theme";
 import { SendMenu, SendMenuProps } from "./SendMenu";
 
 export const composeControlsFooterHeight = "68px";
@@ -24,7 +24,7 @@ export const ComposeControls: FC<Props> = ({
   toggleTest,
   toggleSend,
 }) => {
-  const theme = useTheme();
+  const { theme } = useThemeContext();
 
   return (
     <footer
