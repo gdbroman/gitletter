@@ -122,7 +122,7 @@ const darkPalette: PaletteOptions = {
   mode: "dark",
   primary: {
     main: "#000000",
-    light: "#333333",
+    light: "#121212",
   },
   secondary: {
     main: "#ffffff",

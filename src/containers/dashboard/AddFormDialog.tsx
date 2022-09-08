@@ -47,7 +47,7 @@ export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
           maxWidth={theme.breakpoints.down("xs")}
           style={{
             position: "relative",
-            backgroundColor: theme.palette.grey[200],
+            backgroundColor: theme.palette.primary.light,
             borderRadius: 4,
           }}
         >

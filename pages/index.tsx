@@ -92,13 +92,19 @@ const LandingPage: NextPage = () => {
           {siteDescription}
         </Typography>
         <Box display="flex" justifyContent="center" gap={2}>
-          <Button size="large" variant="outlined" onClick={bookDemo}>
+          <Button
+            size="large"
+            variant="outlined"
+            color="secondary"
+            onClick={bookDemo}
+          >
             Book demo
           </Button>
           {session.status === "authenticated" ? (
             <LoadingButton
               size="large"
               variant="contained"
+              color="secondary"
               endIcon={<ArrowForwardIcon />}
               style={{ fontSize: "1rem" }}
               ref={getStartedFreeButtonRef}
@@ -111,6 +117,7 @@ const LandingPage: NextPage = () => {
             <LoadingButton
               size="large"
               variant="contained"
+              color="secondary"
               startIcon={<GitHubIcon />}
               style={{ fontSize: "1rem" }}
               ref={getStartedFreeButtonRef}
@@ -157,6 +164,7 @@ const LandingPage: NextPage = () => {
             button={
               <LoadingButton
                 size="large"
+                color="secondary"
                 fullWidth
                 variant="outlined"
                 ref={freeTierButtonRef}

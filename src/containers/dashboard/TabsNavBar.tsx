@@ -25,7 +25,7 @@ const StyledTab = styled(Tab)`
     }
     &:hover {
       .MuiBox-root {
-        background-color: ${({ theme }) => theme.palette.grey[200]};
+        background-color: ${({ theme }) => theme.palette.primary.light};
       }
     }
   }

@@ -9,7 +9,7 @@ const StyledFooter = styled("footer")`
   padding: 16px 64px;
   text-align: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.palette.grey[100]};
+  background-color: ${({ theme }) => theme.palette.primary.light};
 `;
 
 export const feedbackCopy = (

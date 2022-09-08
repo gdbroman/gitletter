@@ -55,12 +55,16 @@ export const EditRowButton: FC<Props> = ({ onDuplicate, onDelete }) => {
         {onDuplicate && (
           <MenuItem disableRipple onClick={handleOnDuplicate}>
             <ContentCopyIcon />
-            <Typography variant="body1">Duplicate</Typography>
+            <Typography variant="body1" color="secondary.light">
+              Duplicate
+            </Typography>
           </MenuItem>
         )}
         <MenuItem disableRipple onClick={handleOnDelete}>
           <DeleteIcon />
-          <Typography variant="body1">Delete</Typography>
+          <Typography variant="body1" color="secondary.light">
+            Delete
+          </Typography>
         </MenuItem>
       </StyledMenu>
     </>

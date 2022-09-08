@@ -32,7 +32,7 @@ const StyledListItemButton = styled(ListItemButton)`
     padding: 8px 12px;
     border-radius: 6px;
     &:hover {
-      background-color: ${({ theme }) => theme.palette.grey[200]};
+      background-color: ${({ theme }) => theme.palette.primary.light};
     }
   }
 `;
