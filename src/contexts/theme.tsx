@@ -13,7 +13,7 @@ import {
 } from "react";
 import { useCookies } from "react-cookie";
 
-import { ColorMode, createTheme } from "../../styles/theme";
+import { ColorMode, createTheme } from "../../styles/createTheme";
 
 interface IThemeContext {
   theme: Theme;

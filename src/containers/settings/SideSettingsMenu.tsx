@@ -26,14 +26,6 @@ const StyledList = styled(List)`
   }
 `;
 
-const StyledListItem = styled(ListItem)`
-  && {
-    .MuiListItemButton-root {
-      color: #fff;
-    }
-  }
-`;
-
 const StyledListItemButton = styled(ListItemButton)`
   && {
     padding: 8px 12px;
@@ -69,7 +61,7 @@ export const SideSettingsMenu: FC = () => {
       {Object.entries(sideSettingsTabs).map(([path, { label }]) => (
         <>
           <Link href={`${appHref}/settings/${path}`} passHref key={path}>
-            <StyledListItem key={path} disablePadding>
+            <ListItem key={path} disablePadding>
               <StyledListItemButton disableRipple>
                 <Typography
                   variant="body2"
@@ -81,7 +73,7 @@ export const SideSettingsMenu: FC = () => {
                   {label}
                 </Typography>
               </StyledListItemButton>
-            </StyledListItem>
+            </ListItem>
           </Link>
           {breakpoint && <Divider />}
         </>
