@@ -38,13 +38,15 @@ export const ThemeContextProvider: FC<IColorModeContextProvider> = ({
   const [cookies, setCookie] = useCookies(["color-mode"]);
 
   useEffect(() => {
-    setColorMode(cookies["color-mode"]);
+    if (cookies["color-mode"]) {
+      setColorMode(cookies["color-mode"]);
+    }
   }, [cookies]);
 
   const handleSetColorMode = useCallback(
-    (colorMode: ColorMode) => {
-      setColorMode(colorMode);
-      setCookie("color-mode", colorMode);
+    (newColorMode: ColorMode) => {
+      setColorMode(newColorMode);
+      setCookie("color-mode", newColorMode, { path: "/" });
     },
     [setCookie]
   );
