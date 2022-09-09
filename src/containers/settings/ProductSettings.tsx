@@ -126,7 +126,6 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
             <Button
               variant="text"
               size="medium"
-              color="secondary"
               disabled={submitting.isOn}
               onClick={handleCancel}
             >
@@ -136,7 +135,6 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
           <LoadingButton
             variant={isChanged && isValid ? "contained" : "outlined"}
             size="medium"
-            color="secondary"
             disabled={!isChanged || !isValid}
             loading={submitting.isOn}
             onClick={handleSubmit}

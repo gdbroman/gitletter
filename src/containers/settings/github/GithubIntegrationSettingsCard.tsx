@@ -129,16 +129,11 @@ export const GithubIntegrationSettingsCard: FC<
             {!(submitting || disconnecting) && (
               <>
                 {isChanged && !success && (
-                  <Button
-                    color="secondary"
-                    variant="text"
-                    onClick={handleCancelEdit}
-                  >
+                  <Button variant="text" onClick={handleCancelEdit}>
                     Cancel
                   </Button>
                 )}
                 <Button
-                  color="secondary"
                   variant={!isValid || !!success ? "outlined" : "contained"}
                   disabled={!isValid || !!success}
                   onClick={handleSave}

@@ -31,8 +31,6 @@ export const feedbackCopy = (
 
 export const FeedbackFooter: FC = () => (
   <StyledFooter>
-    <Typography variant="body2" color="secondary">
-      {feedbackCopy}
-    </Typography>
+    <Typography variant="body2">{feedbackCopy}</Typography>
   </StyledFooter>
 );
