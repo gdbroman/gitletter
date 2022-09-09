@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { NextPage } from "next/types";
 import { useSession } from "next-auth/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { FeedbackFooter } from "../src/components/FeedbackFooter";
 import Layout from "../src/components/Layout";
@@ -26,7 +26,7 @@ import {
   siteTagline,
 } from "../util/constants";
 import { useAppHref } from "../util/hooks/useAppHref";
-import { useSignIn } from "../util/hooks/useSignIn";
+import { signIn } from "../util/hooks/useSignIn";
 import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
 import { GAEventAction } from "../util/lib/googleAnalytics";
@@ -37,17 +37,18 @@ const LandingPage: NextPage = () => {
   const router = useRouter();
   const appHref = useAppHref();
   const session = useSession();
-  const { signIn, loadingRef } = useSignIn();
   const { theme } = useThemeContext();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const redirecting = useToggle(false);
+  const [loadingRef, setLoadingRef] = useState<ButtonRef | null>(null);
 
   const getStartedFreeButtonRef = useRef<HTMLButtonElement>(null);
   const freeTierButtonRef = useRef<HTMLButtonElement>(null);
   const fullAccessButtonRef = useRef<HTMLButtonElement>(null);
 
   const goToApp = () => {
+    setLoadingRef(getStartedFreeButtonRef);
     try {
       ga.sendEvent({
         action: GAEventAction.LOGIN,
@@ -57,14 +58,21 @@ const LandingPage: NextPage = () => {
     } catch (e) {
       console.error(e);
       redirecting.toggleOff();
+      setLoadingRef(null);
     }
   };
   const getStarted = (ref: ButtonRef, label: string) => {
-    signIn(ref);
-    ga.sendEvent({
-      action: GAEventAction.SIGN_UP,
-      label,
-    });
+    setLoadingRef(ref);
+    try {
+      signIn();
+      ga.sendEvent({
+        action: GAEventAction.SIGN_UP,
+        label,
+      });
+    } catch (e) {
+      console.error(e);
+      setLoadingRef(null);
+    }
   };
   const bookDemo = () => {
     ga.sendEvent({

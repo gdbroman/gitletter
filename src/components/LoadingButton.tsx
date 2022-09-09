@@ -10,21 +10,26 @@ type Props = {
   loading?: boolean;
 } & ComponentProps<typeof MuiButton>;
 
-export const LoadingButton: FC<Props> = ({ children, ...props }) => {
+export const LoadingButton: FC<Props> = ({ children, loading, ...props }) => {
   const { theme } = useThemeContext();
 
-  if (props.loading) {
-    <MuiLoadingButton
-      {...props}
-      style={{
-        color: theme.palette.primary.main,
-      }}
-    >
-      {children}
-    </MuiLoadingButton>;
-  }
-
-  return <MuiButton {...props}>{children}</MuiButton>;
+  return (
+    <>
+      {loading ? (
+        <MuiLoadingButton
+          loading
+          {...props}
+          style={{
+            color: theme.palette.primary.main,
+          }}
+        >
+          {children}
+        </MuiLoadingButton>
+      ) : (
+        <MuiButton {...props}>{children}</MuiButton>
+      )}
+    </>
+  );
 };
 
 export const LoadingButtonWithBlackSpinner = styled(LoadingButton)`

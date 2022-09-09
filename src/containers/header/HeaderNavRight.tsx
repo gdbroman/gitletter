@@ -2,16 +2,27 @@ import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-import { useSignIn } from "../../../util/hooks/useSignIn";
+import { signIn } from "../../../util/hooks/useSignIn";
+import { ButtonRef } from "../../../util/types";
 import { LoadingButtonWithBlackSpinner } from "../../components/LoadingButton";
 import { AccountAvatarMenu } from "./AccountAvatarMenu";
 
 export const HeaderNavRight = () => {
   const { status } = useSession();
-  const { signIn, loadingRef } = useSignIn();
+
   const signInButtonRef = useRef<HTMLButtonElement>(null);
+  const [loadingRef, setLoadingRef] = useState<ButtonRef | null>(null);
+
+  const logIn = () => {
+    setLoadingRef(signInButtonRef);
+    try {
+      signIn();
+    } catch {
+      setLoadingRef(null);
+    }
+  };
 
   switch (status) {
     case "loading":
@@ -32,7 +43,7 @@ export const HeaderNavRight = () => {
           variant="outlined"
           ref={signInButtonRef}
           loading={loadingRef === signInButtonRef}
-          onClick={() => signIn(signInButtonRef)}
+          onClick={logIn}
           style={{ marginRight: "6px" }}
         >
           Log in
