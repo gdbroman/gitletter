@@ -38,7 +38,6 @@ export const HeaderNavRight = () => {
       return (
         <LoadingButtonWithBlackSpinner
           variant="outlined"
-          color="secondary"
           ref={signInButtonRef}
           loading={loadingRef === signInButtonRef}
           onClick={() => signIn(signInButtonRef)}
