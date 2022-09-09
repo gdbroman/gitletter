@@ -143,7 +143,7 @@ const themes: Record<string, ThemeOptions> = {
         styleOverrides: {
           root: {
             "&:disabled": {
-              color: lightPalette.primary.main,
+              color: "#000000",
               opacity: 0.6,
             },
           },
@@ -162,7 +162,7 @@ const themes: Record<string, ThemeOptions> = {
         styleOverrides: {
           root: {
             "&:disabled": {
-              color: darkPalette.primary.main,
+              color: "#FFFFFF",
               opacity: 0.6,
             },
           },

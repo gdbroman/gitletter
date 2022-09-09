@@ -7,7 +7,8 @@ import { useThemeContext } from "../contexts/theme";
 
 type Props = {
   children: ReactNode;
-} & ComponentProps<typeof MuiLoadingButton>;
+  loading?: boolean;
+} & ComponentProps<typeof MuiButton>;
 
 export const LoadingButton: FC<Props> = ({ children, ...props }) => {
   const { theme } = useThemeContext();
