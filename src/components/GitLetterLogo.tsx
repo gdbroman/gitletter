@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
-  const { colorMode } = useThemeContext();
+  const { theme, isDarkMode } = useThemeContext();
   const appHref = useAppHref();
 
   return (
@@ -31,12 +31,12 @@ export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
           height={32}
           layout="fixed"
           style={{
-            filter: colorMode === "dark" ? "invert(1)" : "none",
+            filter: isDarkMode ? "invert(1)" : "none",
           }}
         />
         <Typography
           flex={1}
-          color="secondary"
+          color={theme.palette.primary.light}
           variant="h2"
           fontWeight="bold"
           noWrap

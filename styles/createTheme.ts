@@ -1,4 +1,4 @@
-import { red } from "@mui/material/colors";
+import { green, red } from "@mui/material/colors";
 import {
   BreakpointsOptions,
   Components,
@@ -151,7 +151,21 @@ const themes: Record<string, ThemeOptions> = {
     palette: darkPalette,
     typography,
     breakpoints,
-    components,
+    components: {
+      ...components,
+      MuiAlert: {
+        styleOverrides: {
+          standardSuccess: {
+            backgroundColor: green[800],
+            color: "white",
+          },
+          standardInfo: {
+            backgroundColor: "#3f51b5",
+            color: "white",
+          },
+        },
+      },
+    },
   },
 };
 

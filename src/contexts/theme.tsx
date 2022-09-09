@@ -18,6 +18,7 @@ import { ColorMode, createTheme } from "../../styles/createTheme";
 interface IThemeContext {
   theme: Theme;
   colorMode: ColorMode;
+  isDarkMode: boolean;
   setColorMode: (colorMode: ColorMode) => void;
 }
 
@@ -33,6 +34,7 @@ export const ThemeContextProvider: FC<IColorModeContextProvider> = ({
   const defaultColorMode: ColorMode = "light";
   const [colorMode, setColorMode] =
     useState<IThemeContext["colorMode"]>(defaultColorMode);
+  const isDarkMode = useMemo(() => colorMode === "dark", [colorMode]);
   const theme = useMemo(() => createTheme(colorMode), [colorMode]);
 
   const [cookies, setCookie] = useCookies(["color-mode"]);
@@ -56,6 +58,7 @@ export const ThemeContextProvider: FC<IColorModeContextProvider> = ({
       value={{
         theme,
         colorMode,
+        isDarkMode,
         setColorMode: handleSetColorMode,
       }}
     >

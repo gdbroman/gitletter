@@ -22,13 +22,13 @@ export const DarkModeToggle = () => {
     >
       <ToggleButton value={"light"} aria-label="light mode" style={{ flex: 1 }}>
         <LightModeIcon style={{ marginRight: 6 }} />
-        <Typography variant="caption" fontWeight="bold" color="secondary">
+        <Typography variant="caption" fontWeight="bold" color="primary">
           LIGHT
         </Typography>
       </ToggleButton>
       <ToggleButton value={"dark"} aria-label="dark mode" style={{ flex: 1 }}>
         <DarkModeIcon style={{ marginRight: 6 }} />
-        <Typography variant="caption" fontWeight="bold" color="secondary">
+        <Typography variant="caption" fontWeight="bold" color="primary">
           DARK
         </Typography>
       </ToggleButton>

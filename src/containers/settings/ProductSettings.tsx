@@ -106,18 +106,13 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
         <ul style={{ margin: 0 }}>
           <li>
             <Typography variant="body2" color="gray">
-              The free and paid plan both give full access to all features.
-            </Typography>
-          </li>
-          <li>
-            <Typography variant="body2" color="gray">
-              The free plan only allows up to{" "}
+              The FREE plan allows{" "}
               {numberToStringWithSpaces(freeSubscriberLimit)} subscribers.
             </Typography>
           </li>
           <li>
             <Typography variant="body2" color="gray">
-              The paid plan allows unlimited subscribers.
+              The PAID plan allows unlimited subscribers.
             </Typography>
           </li>
         </ul>

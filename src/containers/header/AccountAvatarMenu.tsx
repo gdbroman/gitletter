@@ -171,7 +171,7 @@ export const AccountAvatarMenu = () => {
             lineHeight: 1,
           }}
         >
-          <Typography variant="caption" color="secondary" lineHeight={1}>
+          <Typography variant="caption" color="primary" lineHeight={1}>
             {feedbackCopy}
           </Typography>
         </Box>

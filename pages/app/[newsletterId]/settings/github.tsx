@@ -10,7 +10,7 @@ import prisma from "../../../../prisma/prisma";
 import Layout from "../../../../src/components/Layout";
 import { ProtectedPage } from "../../../../src/components/ProtectedPage";
 import { Dashboard } from "../../../../src/containers/dashboard/Dashboard";
-import { GithubIntegrationSettings } from "../../../../src/containers/settings/GithubIntegrationSettings";
+import { GithubIntegrationSettings } from "../../../../src/containers/settings/github/GithubIntegrationSettings";
 import { SettingsContentWrapper } from "../../../../src/containers/settings/SettingsContentWrapper";
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {

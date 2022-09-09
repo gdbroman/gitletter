@@ -8,7 +8,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { useThemeContext } from "../../contexts/theme";
 
 export const Editor = ({ value, onChange, onBlur }) => {
-  const { colorMode } = useThemeContext();
+  const { isDarkMode } = useThemeContext();
 
   return (
     <Card variant="outlined">
@@ -16,7 +16,7 @@ export const Editor = ({ value, onChange, onBlur }) => {
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        theme={colorMode === "dark" ? githubDark : githubLight}
+        theme={isDarkMode ? githubDark : githubLight}
         extensions={[
           EditorView.lineWrapping,
           markdown({
