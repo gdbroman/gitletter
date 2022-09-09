@@ -33,7 +33,7 @@ export const ComposeControls: FC<Props> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.secondary.light,
       }}
     >
       <Box

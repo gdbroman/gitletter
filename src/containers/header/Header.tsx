@@ -11,7 +11,7 @@ const StyledHeader = styled("header")`
   min-height: 64px;
   padding: 8px;
   align-items: center;
-  border-bottom: 1px solid ${({ theme }) => theme.palette.primary.light};
+  border-bottom: 1px solid ${({ theme }) => theme.palette.secondary.light};
 `;
 
 const StyledNav = styled("nav")`

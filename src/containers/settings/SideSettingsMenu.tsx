@@ -32,7 +32,7 @@ const StyledListItemButton = styled(ListItemButton)`
     padding: 8px 12px;
     border-radius: 6px;
     &:hover {
-      background-color: ${({ theme }) => theme.palette.primary.light};
+      background-color: ${({ theme }) => theme.palette.secondary.light};
     }
   }
 `;
@@ -70,7 +70,7 @@ export const SideSettingsMenu: FC = () => {
                   style={{
                     color:
                       path === currentPath
-                        ? theme.palette.secondary.light
+                        ? theme.palette.primary.light
                         : theme.palette.grey[500],
                   }}
                 >

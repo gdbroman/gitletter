@@ -60,7 +60,7 @@ export const ThemeContextProvider: FC<IColorModeContextProvider> = ({
       }}
     >
       <Head>
-        <meta name="theme-color" content={theme.palette.primary.main} />
+        <meta name="theme-color" content={theme.palette.secondary.main} />
       </Head>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />

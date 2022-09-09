@@ -99,12 +99,12 @@ const components: Components = {
 const lightPalette: PaletteOptions = {
   mode: "light",
   primary: {
-    main: "#ffffff",
-    light: "#eeeeee",
-  },
-  secondary: {
     main: "#000000",
     light: "#333333",
+  },
+  secondary: {
+    main: "#ffffff",
+    light: "#eeeeee",
   },
   error: {
     main: red.A400,
@@ -121,12 +121,12 @@ const lightPalette: PaletteOptions = {
 const darkPalette: PaletteOptions = {
   mode: "dark",
   primary: {
-    main: "#000000",
-    light: "#121212",
-  },
-  secondary: {
     main: "#ffffff",
     light: "#eeeeee",
+  },
+  secondary: {
+    main: "#000000",
+    light: "#121212",
   },
   error: {
     main: red.A400,

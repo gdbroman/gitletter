@@ -34,7 +34,7 @@ export const MarkdownParser: FC<Props> = ({ children }) => {
             style={{
               margin: 0,
               paddingLeft: "2rem",
-              borderLeft: `4px solid ${theme.palette.secondary.main}`,
+              borderLeft: `4px solid ${theme.palette.primary.main}`,
             }}
             {...props}
           >

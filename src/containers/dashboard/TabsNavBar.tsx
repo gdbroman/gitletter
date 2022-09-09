@@ -28,7 +28,7 @@ const StyledTab = styled(Tab)`
     }
     &:hover {
       .MuiBox-root {
-        background-color: ${({ theme }) => theme.palette.primary.light};
+        background-color: ${({ theme }) => theme.palette.secondary.light};
       }
     }
   }
@@ -70,7 +70,7 @@ export const TabsNavBar: FC = () => {
           scrollButtons={false}
           TabIndicatorProps={{
             style: {
-              backgroundColor: theme.palette.secondary.light,
+              backgroundColor: theme.palette.primary.light,
             },
           }}
         >
