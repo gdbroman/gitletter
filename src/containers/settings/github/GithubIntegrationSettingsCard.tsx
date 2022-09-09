@@ -1,4 +1,3 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,8 +7,11 @@ import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
 import { ItemSelect } from "../../../components/ItemSelect";
+import {
+  LoadingButton,
+  LoadingButtonWithBlackSpinner,
+} from "../../../components/LoadingButton";
 import { CustomSnackbar } from "../../../components/Snackbar";
-import { LoadingButtonWithBlackSpinner } from "../../header/HeaderNavRight";
 
 type GithubIntegrationSettingsCardProps = {
   repo: string;

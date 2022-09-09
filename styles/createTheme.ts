@@ -63,15 +63,6 @@ const components: Components = {
     defaultProps: {
       disableElevation: true,
     },
-    styleOverrides: {
-      root: {
-        "&:disabled": {
-          opacity: 0.5,
-          cursor: "not-allowed",
-          color: "#000000",
-        },
-      },
-    },
   },
   MuiCheckbox: {
     styleOverrides: {
@@ -145,7 +136,20 @@ const themes: Record<string, ThemeOptions> = {
     palette: lightPalette,
     typography,
     breakpoints,
-    components,
+    components: {
+      ...components,
+      MuiButton: {
+        ...components.MuiButton,
+        styleOverrides: {
+          root: {
+            "&:disabled": {
+              color: lightPalette.primary.main,
+              opacity: 0.6,
+            },
+          },
+        },
+      },
+    },
   },
   dark: {
     palette: darkPalette,
@@ -153,6 +157,17 @@ const themes: Record<string, ThemeOptions> = {
     breakpoints,
     components: {
       ...components,
+      MuiButton: {
+        ...components.MuiButton,
+        styleOverrides: {
+          root: {
+            "&:disabled": {
+              color: darkPalette.primary.main,
+              opacity: 0.6,
+            },
+          },
+        },
+      },
       MuiAlert: {
         styleOverrides: {
           standardSuccess: {

@@ -1,20 +1,12 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import IconButton from "@mui/material/IconButton";
 import Skeleton from "@mui/material/Skeleton";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/system/Box";
 import { useSession } from "next-auth/react";
 import { useRef } from "react";
 
 import { useSignIn } from "../../../util/hooks/useSignIn";
+import { LoadingButtonWithBlackSpinner } from "../../components/LoadingButton";
 import { AccountAvatarMenu } from "./AccountAvatarMenu";
-
-export const LoadingButtonWithBlackSpinner = styled(LoadingButton)`
-  &:disabled .MuiLoadingButton-loadingIndicator {
-    color: #000000;
-    background-color: transparent;
-  }
-`;
 
 export const HeaderNavRight = () => {
   const { status } = useSession();

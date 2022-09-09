@@ -1,6 +1,5 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -13,6 +12,10 @@ import { useRef } from "react";
 
 import { FeedbackFooter } from "../src/components/FeedbackFooter";
 import Layout from "../src/components/Layout";
+import {
+  LoadingButton,
+  LoadingButtonWithBlackSpinner,
+} from "../src/components/LoadingButton";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
 import { useThemeContext } from "../src/contexts/theme";
 import {
@@ -155,7 +158,7 @@ const LandingPage: NextPage = () => {
             ]}
             fullWidth={mediumScreen}
             button={
-              <LoadingButton
+              <LoadingButtonWithBlackSpinner
                 size="large"
                 fullWidth
                 variant="outlined"
@@ -164,7 +167,7 @@ const LandingPage: NextPage = () => {
                 onClick={() => getStarted(freeTierButtonRef, "Indie writer")}
               >
                 Get started
-              </LoadingButton>
+              </LoadingButtonWithBlackSpinner>
             }
           />
           <SubscriptionCard

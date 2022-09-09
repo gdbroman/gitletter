@@ -1,4 +1,3 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -13,6 +12,7 @@ import { maxEmailAddressLength } from "../../../util/constants";
 import { getEmailAddress } from "../../../util/getEmailAddress";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
+import { LoadingButton } from "../../components/LoadingButton";
 import { CustomSnackbar } from "../../components/Snackbar";
 import { newsletterService } from "../../services/newsletterService";
 
@@ -107,27 +107,33 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
           </Typography>
         )}
         <Box display="flex" gap={1} justifyContent="end">
-          {isChanged && !success && (
-            <Button
-              variant="text"
-              size="medium"
-              disabled={submitting.isOn}
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
+          {submitting.isOn && (
+            <LoadingButton variant="contained" loading>
+              Save
+            </LoadingButton>
           )}
-          <LoadingButton
-            variant={
-              isChanged && isValid && !success ? "contained" : "outlined"
-            }
-            size="medium"
-            disabled={!isChanged || !isValid || !!success}
-            loading={submitting.isOn}
-            onClick={handleSubmit}
-          >
-            Save
-          </LoadingButton>
+          {!submitting.isOn && (
+            <>
+              {isChanged && !success && (
+                <Button
+                  variant="text"
+                  disabled={submitting.isOn}
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+              )}
+              <Button
+                variant={
+                  !isChanged || !isValid || !!success ? "outlined" : "contained"
+                }
+                disabled={!isChanged || !isValid || !!success}
+                onClick={handleSubmit}
+              >
+                Save
+              </Button>
+            </>
+          )}
         </Box>
       </Box>
       <CustomSnackbar

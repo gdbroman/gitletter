@@ -1,4 +1,3 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,6 +12,7 @@ import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { stringToMarkdownFileName } from "../../../util/strings";
 import { DialogResponsive } from "../../components/DialogResponsive";
+import { LoadingButton } from "../../components/LoadingButton";
 import { issueService } from "../../services/issueService";
 
 type Props = {

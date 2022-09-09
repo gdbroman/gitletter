@@ -1,4 +1,3 @@
-import LoadingButton from "@mui/lab/LoadingButton";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -15,6 +14,7 @@ import { freeSubscriberLimit } from "../../../util/constants";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";
+import { LoadingButton } from "../../components/LoadingButton";
 
 type Props = {
   subscriberCount: number;

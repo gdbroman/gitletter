@@ -1,5 +1,4 @@
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -21,7 +20,7 @@ import {
   numberToStringWithSpaces,
   stripePriceToString,
 } from "../../../util/strings";
-import { useThemeContext } from "../../contexts/theme";
+import { LoadingButton } from "../../components/LoadingButton";
 import { productService } from "../../services/productService";
 
 type Props = {
@@ -32,7 +31,6 @@ type Props = {
 export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
   const router = useRouter();
   const appHref = useAppHref();
-  const { theme } = useThemeContext();
 
   const [productId, setProductId] = useState(initialProductId);
   const [error, setError] = useState("");
