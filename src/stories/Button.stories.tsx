@@ -1,43 +1,53 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
 
-import { LoadingButton } from "../components/LoadingButton";
+import { Button } from "../components/Button";
+import { useThemeContext } from "../contexts/theme";
 
-// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: "LoadingButton",
-  component: LoadingButton,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
+  title: "Button",
+  component: Button,
   argTypes: {
     backgroundColor: { control: "color" },
   },
-} as ComponentMeta<typeof LoadingButton>;
+} as ComponentMeta<typeof Button>;
 
-// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof LoadingButton> = (args) => (
-  <LoadingButton {...args} />
-);
+const Template: ComponentStory<typeof Button> = (args) => {
+  const { isDarkMode, setColorMode } = useThemeContext();
 
-export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
-  primary: true,
-  label: "Button",
+  const toggleColorMode = () => {
+    setColorMode(isDarkMode ? "light" : "dark");
+  };
+
+  return <Button onClick={toggleColorMode} {...args} />;
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
+export const Contained = Template.bind({});
+Contained.args = {
   label: "Button",
+  variant: "contained",
+  color: "primary",
+  size: "medium",
+  loading: false,
+  disabled: false,
 };
 
-export const Large = Template.bind({});
-Large.args = {
-  size: "large",
+export const Outlined = Template.bind({});
+Outlined.args = {
   label: "Button",
+  variant: "outlined",
+  color: "primary",
+  size: "medium",
+  loading: false,
+  disabled: false,
 };
 
-export const Small = Template.bind({});
-Small.args = {
-  size: "small",
+export const Text = Template.bind({});
+Text.args = {
   label: "Button",
+  variant: "text",
+  color: "primary",
+  size: "medium",
+  loading: false,
+  disabled: false,
 };
