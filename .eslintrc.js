@@ -1,5 +1,9 @@
 module.exports = {
-  extends: ["react-app", "plugin:prettier/recommended"],
+  extends: [
+    "react-app",
+    "plugin:prettier/recommended",
+    "plugin:storybook/recommended",
+  ],
   plugins: ["unused-imports", "simple-import-sort"],
   rules: {
     "react/jsx-uses-react": "off",
