@@ -59,7 +59,7 @@ export default async function handle(
       );
     }
 
-    res.redirect(`${getAppBasePath(newsLetter.id)}/settings`);
+    res.redirect(`${getAppBasePath(newsLetter.id)}/settings/github`);
   } else {
     res.status(405).json({ message: "Method not allowed" });
   }
