@@ -34,7 +34,10 @@ export const MarkdownParser: FC<Props> = ({ children }) => {
             style={{
               margin: 0,
               paddingLeft: "2rem",
-              borderLeft: `4px solid ${theme.palette.primary.main}`,
+              borderLeft: `4px solid ${
+                // BUG: Theme is undefined when the email is rendered
+                theme ? theme.palette.primary.main : "#000"
+              }`,
             }}
             {...props}
           >
