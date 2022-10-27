@@ -84,7 +84,7 @@ const LandingPage: NextPage = () => {
 
   return (
     <Layout footer={<FeedbackFooter />}>
-      <Box mx="auto" my={6} textAlign="center" maxWidth={640}>
+      <Box mx="auto" my={6} textAlign="center" maxWidth={680}>
         <Typography variant="h1" fontWeight="bold">
           {siteH1}
         </Typography>
