@@ -97,7 +97,7 @@ const DraftsPage: NextPage<Props> = ({
           {!draftIssues.length ? (
             <EmptyTab
               emoji="📝"
-              title="No draftIssues found"
+              title="No drafts found"
               subtitle={
                 <>
                   Click <b>Compose</b> to get going
