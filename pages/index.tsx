@@ -12,10 +12,7 @@ import { useRef, useState } from "react";
 
 import { FeedbackFooter } from "../src/components/FeedbackFooter";
 import Layout from "../src/components/Layout";
-import {
-  LoadingButton,
-  LoadingButtonWithBlackSpinner,
-} from "../src/components/LoadingButton";
+import { LoadingButton } from "../src/components/LoadingButton";
 import { SubscriptionCard } from "../src/components/SubscriptionCard";
 import { useThemeContext } from "../src/contexts/theme";
 import {
@@ -166,7 +163,7 @@ const LandingPage: NextPage = () => {
             ]}
             fullWidth={mediumScreen}
             button={
-              <LoadingButtonWithBlackSpinner
+              <LoadingButton
                 size="large"
                 fullWidth
                 variant="outlined"
@@ -175,7 +172,7 @@ const LandingPage: NextPage = () => {
                 onClick={() => getStarted(freeTierButtonRef, "Indie writer")}
               >
                 Get started
-              </LoadingButtonWithBlackSpinner>
+              </LoadingButton>
             }
           />
           <SubscriptionCard

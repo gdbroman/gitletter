@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 
 import { signIn } from "../../../util/hooks/useSignIn";
 import { ButtonRef } from "../../../util/types";
-import { LoadingButtonWithBlackSpinner } from "../../components/LoadingButton";
+import { LoadingButton } from "../../components/LoadingButton";
 import { AccountAvatarMenu } from "./AccountAvatarMenu";
 
 export const HeaderNavRight = () => {
@@ -39,7 +39,7 @@ export const HeaderNavRight = () => {
       );
     default:
       return (
-        <LoadingButtonWithBlackSpinner
+        <LoadingButton
           variant="outlined"
           ref={signInButtonRef}
           loading={loadingRef === signInButtonRef}
@@ -47,7 +47,7 @@ export const HeaderNavRight = () => {
           style={{ marginRight: "6px" }}
         >
           Log in
-        </LoadingButtonWithBlackSpinner>
+        </LoadingButton>
       );
   }
 };

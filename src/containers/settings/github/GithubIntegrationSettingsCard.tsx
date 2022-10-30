@@ -7,10 +7,7 @@ import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
 import { ItemSelect } from "../../../components/ItemSelect";
-import {
-  LoadingButton,
-  LoadingButtonWithBlackSpinner,
-} from "../../../components/LoadingButton";
+import { LoadingButton } from "../../../components/LoadingButton";
 import { CustomSnackbar } from "../../../components/Snackbar";
 
 type GithubIntegrationSettingsCardProps = {
@@ -124,9 +121,9 @@ export const GithubIntegrationSettingsCard: FC<
               </LoadingButton>
             )}
             {disconnecting && (
-              <LoadingButtonWithBlackSpinner variant="outlined" loading>
+              <LoadingButton variant="outlined" loading>
                 Save
-              </LoadingButtonWithBlackSpinner>
+              </LoadingButton>
             )}
             {!(submitting || disconnecting) && (
               <>

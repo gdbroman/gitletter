@@ -3,6 +3,20 @@ import MuiButton from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { ComponentProps, FC, ReactNode } from "react";
 
+const StyledMuiLoadingButton = styled(MuiLoadingButton)`
+  && {
+    &:disabled .MuiLoadingButton-loadingIndicator {
+      ${({ theme, variant }) =>
+        variant === "contained"
+          ? `
+      color: ${theme.palette.secondary.main};
+      `
+          : `
+      color: ${theme.palette.primary.main};
+    `}
+  }
+`;
+
 type Props = {
   children: ReactNode;
   loading?: boolean;
@@ -11,18 +25,11 @@ type Props = {
 export const LoadingButton: FC<Props> = ({ children, loading, ...props }) => (
   <>
     {loading ? (
-      <MuiLoadingButton loading {...props}>
+      <StyledMuiLoadingButton {...props} loading>
         {children}
-      </MuiLoadingButton>
+      </StyledMuiLoadingButton>
     ) : (
       <MuiButton {...props}>{children}</MuiButton>
     )}
   </>
 );
-
-export const LoadingButtonWithBlackSpinner = styled(LoadingButton)`
-  &:disabled .MuiLoadingButton-loadingIndicator {
-    color: #000000;
-    background-color: transparent;
-  }
-`;
