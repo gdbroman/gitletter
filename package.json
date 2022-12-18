@@ -10,6 +10,9 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix",
     "db:reset": "prisma migrate reset --preview-feature"
   },
+  "engines": {
+    "node": "^16.13.0"
+  },
   "license": "MIT",
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.0",
