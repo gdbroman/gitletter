@@ -22,6 +22,7 @@ const StyledTab = styled(Tab)`
     box-sizing: border-box;
     height: 40px;
     padding: 12px 0;
+    opacity: 0.85;
     .MuiBox-root {
       padding: 8px 12px;
       border-radius: 6px;
