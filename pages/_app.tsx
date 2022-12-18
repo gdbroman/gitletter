@@ -3,15 +3,22 @@ import "../styles/nprogress.css";
 
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
+import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { FC, useEffect } from "react";
+import { useEffect } from "react";
 
 import { NewsletterContextProvider } from "../src/contexts/newsletter";
 import { ThemeContextProvider } from "../src/contexts/theme";
 import * as ga from "../util/lib/googleAnalytics";
 import { progressIndicator } from "../util/lib/progressIndicator";
 
-const App: FC<AppProps> = ({ Component, pageProps }) => {
+type AppPropsWithSession = AppProps & {
+  pageProps: AppProps["pageProps"] & {
+    session: Session;
+  };
+};
+
+const App = ({ Component, pageProps }: AppPropsWithSession) => {
   const router = useRouter();
 
   useEffect(() => {
