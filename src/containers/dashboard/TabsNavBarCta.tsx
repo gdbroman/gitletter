@@ -13,8 +13,9 @@ import { FC, MouseEvent, useState } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
-import { AddFormDialog } from "./AddFormDialog";
-import { AddSubscriberDialog } from "./AddSubscriberDialog";
+import { AddFormDialog } from "./dialogs/AddFormDialog";
+import { AddSubscriberDialog } from "./dialogs/AddSubscriberDialog";
+import { ImportSubscribersDialog } from "./dialogs/ImportSubscribersDialog";
 
 type Props = {
   newsletterId: string;
@@ -50,6 +51,7 @@ const ManageButtonMenu: FC<Props> = ({ newsletterId }) => {
   const menuOpen = Boolean(anchorEl);
   const addIntegrationDialogOpen = useToggle(false);
   const addSubscriberDialogOpen = useToggle(false);
+  const importSubscribersDialogOpen = useToggle(false);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -64,6 +66,10 @@ const ManageButtonMenu: FC<Props> = ({ newsletterId }) => {
   };
   const handleAddSubscriber = () => {
     addSubscriberDialogOpen.toggleOn();
+    handleClose();
+  };
+  const handleImportSubscribers = () => {
+    importSubscribersDialogOpen.toggleOn();
     handleClose();
   };
 
@@ -89,7 +95,7 @@ const ManageButtonMenu: FC<Props> = ({ newsletterId }) => {
           <AddIcon />
           <Typography variant="body1">Manually add subscriber</Typography>
         </MenuItem>
-        <MenuItem disabled disableRipple>
+        <MenuItem onClick={handleImportSubscribers} disableRipple>
           <FileDownloadIcon />
           <Typography variant="body1">Import subscribers</Typography>
         </MenuItem>
@@ -103,6 +109,11 @@ const ManageButtonMenu: FC<Props> = ({ newsletterId }) => {
         newsletterId={newsletterId}
         open={addSubscriberDialogOpen.isOn}
         onClose={addSubscriberDialogOpen.toggleOff}
+      />
+      <ImportSubscribersDialog
+        newsletterId={newsletterId}
+        open={importSubscribersDialogOpen.isOn}
+        onClose={importSubscribersDialogOpen.toggleOff}
       />
     </>
   );
