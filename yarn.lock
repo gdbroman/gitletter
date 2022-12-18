@@ -5924,6 +5924,11 @@ pac-resolver@^5.0.0:
     ip "^1.1.5"
     netmask "^2.0.2"
 
+papaparse@^5.3.0:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.3.2.tgz#d1abed498a0ee299f103130a6109720404fbd467"
+  integrity sha512-6dNZu0Ki+gyV0eBsFKJhYr+MdQYAzFUGlBMNj3GNrmHxmz1lfRa24CjFObPXtjcetlOv5Ad299MhIK0znp3afw==
+
 parent-module@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/parent-module/-/parent-module-1.0.1.tgz#691d2709e78c79fae3a156622452d00762caaaa2"
@@ -6184,6 +6189,13 @@ react-cookie@^4.1.1:
     "@types/hoist-non-react-statics" "^3.0.1"
     hoist-non-react-statics "^3.0.0"
     universal-cookie "^4.0.0"
+
+react-csv-reader@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/react-csv-reader/-/react-csv-reader-3.5.2.tgz#8eead2dbbdfc0474faa59a420da581e354105c75"
+  integrity sha512-SRjVAHaLOFy3s7R8iJdN0PHcIdLs+8MHy97fsZeSPD1feB/Fg2qidgALmu9DUHneMa0rkNDG/qeFp//r7HWH8Q==
+  dependencies:
+    papaparse "^5.3.0"
 
 react-dom@^18.1.0:
   version "18.2.0"

@@ -8,9 +8,9 @@ import Typography from "@mui/material/Typography";
 import copy from "copy-to-clipboard";
 import { FC } from "react";
 
-import { useToggle } from "../../../util/hooks/useToggle";
-import { DialogResponsive } from "../../components/DialogResponsive";
-import { useThemeContext } from "../../contexts/theme";
+import { useToggle } from "../../../../util/hooks/useToggle";
+import { DialogResponsive } from "../../../components/DialogResponsive";
+import { useThemeContext } from "../../../contexts/theme";
 type Props = {
   newsletterId: string;
   open: boolean;
@@ -30,6 +30,8 @@ export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
   const handleCopy = () => {
     copy(snippet);
     copied.toggleOn();
+    // Reset copied state after 1 seconds
+    setTimeout(copied.toggleOff, 1000);
   };
 
   return (

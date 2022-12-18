@@ -7,11 +7,11 @@ import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 
-import { useToggle } from "../../../util/hooks/useToggle";
-import { isValidEmail as isValidEmailFn } from "../../../util/strings";
-import { DialogResponsive } from "../../components/DialogResponsive";
-import { LoadingButton } from "../../components/LoadingButton";
-import { newsletterService } from "../../services/newsletterService";
+import { useToggle } from "../../../../util/hooks/useToggle";
+import { isValidEmail as isValidEmailFn } from "../../../../util/strings";
+import { DialogResponsive } from "../../../components/DialogResponsive";
+import { LoadingButton } from "../../../components/LoadingButton";
+import { newsletterService } from "../../../services/newsletterService";
 
 type Props = {
   newsletterId: string;
