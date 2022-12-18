@@ -180,6 +180,13 @@ const themes: Record<string, ThemeOptions> = {
           },
         },
       },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            color: "white",
+          },
+        },
+      },
     },
   },
 };
