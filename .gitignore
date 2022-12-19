@@ -13,6 +13,3 @@ yarn-error.log*
 # local env files
 .env*
 !.env.template
-
-# Sentry
-.sentryclirc
