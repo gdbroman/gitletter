@@ -5,7 +5,7 @@
     "dev": "next",
     "test": "jest",
     "build": "next build",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "vercel-build": "yarn test && prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix",
     "db:reset": "prisma migrate reset --preview-feature"
