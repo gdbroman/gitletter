@@ -94,7 +94,7 @@ const LandingPage: NextPage = () => {
           mr="auto"
           style={{
             fontSize: "2rem",
-            maxWidth: "480px",
+            maxWidth: "472px",
           }}
         >
           {siteDescription}
