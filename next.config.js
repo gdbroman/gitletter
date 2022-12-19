@@ -1,4 +1,9 @@
-module.exports = {
+const { withSentryConfig } = require("@sentry/nextjs");
+
+const moduleExports = {
+  sentry: {
+    hideSourceMaps: true,
+  },
   images: {
     domains: ["avatars.githubusercontent.com"],
   },
@@ -7,3 +12,9 @@ module.exports = {
     GITHUB_APP_URL: process.env.GITHUB_APP_URL,
   },
 };
+
+const sentryWebpackPluginOptions = {
+  silent: true,
+};
+
+module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
