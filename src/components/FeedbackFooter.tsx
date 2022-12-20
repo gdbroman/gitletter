@@ -18,14 +18,11 @@ export const feedbackCopy = (
     <Link href={gitLetterSocialLinks.twitter} target="_blank">
       Twitter
     </Link>{" "}
-    or{" "}
-    <Link
-      href={`mailto:${gitLetterSocialLinks.email}?subject=GitLetter question`}
-      target="_blank"
-    >
-      email
-    </Link>
-    .
+    or file a{" "}
+    <Link href={gitLetterSocialLinks.github} target="_blank">
+      GitHub
+    </Link>{" "}
+    issue.
   </>
 );
 

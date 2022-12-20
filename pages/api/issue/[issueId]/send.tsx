@@ -11,6 +11,7 @@ import { createOctokitClient } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
 import { EmailStyleWrapper } from "../../../../src/components/EmailStyleWrapper";
 import { MarkdownParser } from "../../../../src/components/MarkdownParser";
+import { gitLetterSocialLinks } from "../../../../util/constants";
 import { getEmailAddress } from "../../../../util/getEmailAddress";
 import { getPath } from "../../../../util/getRepoPath";
 import {
@@ -167,7 +168,7 @@ const writeToGithubFn = async (
   const path = getPath(repoDir, fileName);
   const gitLetterProfile = {
     name: `GitLetter`,
-    email: "hello@gitletter.co",
+    email: gitLetterSocialLinks.email,
   };
   return octokit.repos.createOrUpdateFileContents({
     owner: repoOwner,
