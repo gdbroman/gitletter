@@ -1,8 +1,8 @@
 export const siteTitle = "GitLetter";
-export const siteH1 = "The Newsletter Tool That Deploys to GitHub";
+export const siteH1 = "A Newsletter Tool That Deploys to GitHub";
 export const siteTagline = "Become Your Own Publisher";
 export const siteDescription =
-  "Keep your stack. And your writing, in one place.";
+  "Keep your stack. And your writing. In one place.";
 export const siteDomain = "gitletter.co";
 
 export const maxEmailAddressLength = 64;
