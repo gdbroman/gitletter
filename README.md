@@ -1,6 +1,6 @@
 # GitLetter
 
-GitLetter is a newsletter tool that deploys to GitHub. It lets you to keep your current website's stack and add a newsletter to it.
+GitLetter is a newsletter tool that deploys to GitHub. It lets you keep your current website's stack and add a newsletter to it.
 
 ## Dev setup
 
