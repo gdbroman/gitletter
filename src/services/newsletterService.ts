@@ -19,8 +19,14 @@ const subscribe = async (newsletterId: string, email: string) =>
     dontRedirect: true,
   });
 
+const unsubscribe = async (newsletterId: string, email: string) =>
+  fetchApi(`/newsletter/${newsletterId}/unsubscribe`, "POST", {
+    email,
+  });
+
 export const newsletterService = {
   getNewsletterByEmail,
   updateNewsletter,
   subscribe,
+  unsubscribe,
 };

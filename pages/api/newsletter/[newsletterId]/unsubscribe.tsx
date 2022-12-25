@@ -9,15 +9,18 @@ export default async function handle(
 ) {
   const newsletterId = req.query.newsletterId as string;
 
-  if (req.method === "GET") {
-    const email = req.query.email as string;
+  if (req.method === "POST") {
+    const { email } = req.body;
     const subscriber = await prisma.subscriber.findFirst({
       where: { email, newsletterId },
       select: { id: true },
     });
-    await prisma.subscriber.delete({
-      where: { id: subscriber.id },
-    });
+
+    if (subscriber) {
+      await prisma.subscriber.delete({
+        where: { id: subscriber.id },
+      });
+    }
 
     res.redirect(`${getAppBasePath(newsletterId)}/unsubscribed`);
   } else {
