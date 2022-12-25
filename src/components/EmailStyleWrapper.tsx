@@ -59,7 +59,7 @@ export const EmailStyleWrapper: FC<EmailStyleWrapperProps> = ({
                 <UnstyledLink
                   href={
                     emailAddress
-                      ? `${process.env.APP_URL}/api/newsletter/${newsletterId}/unsubscribe?email=${emailAddress}`
+                      ? `${process.env.APP_URL}/app/${newsletterId}/unsubscribe?email=${emailAddress}`
                       : "#"
                   }
                 >
