@@ -10,6 +10,6 @@ GitLetter is a newsletter tool that deploys to GitHub. It lets you add a newslet
 
 ## Contributing
 
-Feel free to open an issue or a PR if you find a bug or want to add a feature.
+Feel free to file an issue or open a PR if you find a bug or want to add a feature.
 
 For questions, you can DM me on Twitter [@gdbroman](https://twitter.com/gdbroman).
