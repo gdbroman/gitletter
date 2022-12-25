@@ -43,17 +43,24 @@ const UnsubscribedPage: NextPage<Props> = ({
 }) => {
   const router = useRouter();
   const [email, setEmail] = useState(router.query.email as string);
+  const [error, setError] = useState(false);
   const loading = useToggle();
-  const buttonDisabled = !isValidEmail(email) || loading.isOn;
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setEmail(e.target.value);
   };
 
   const onSubmit = async () => {
+    setError(false);
     loading.toggleOn();
-    await newsletterService.unsubscribe(newsletterId, email);
-    loading.toggleOff();
+    const res = await newsletterService.unsubscribe(newsletterId, email);
+    console.log("Res", res);
+    if (res) {
+      router.push(`/app/${newsletterId}/unsubscribed`);
+    } else {
+      setError(true);
+      loading.toggleOff();
+    }
   };
 
   return (
@@ -79,12 +86,17 @@ const UnsubscribedPage: NextPage<Props> = ({
         />
         <LoadingButton
           loading={loading.isOn}
-          variant={buttonDisabled ? "outlined" : "contained"}
-          disabled={buttonDisabled}
+          variant={!isValidEmail(email) ? "outlined" : "contained"}
+          disabled={!isValidEmail(email)}
           onClick={onSubmit}
         >
           Unsubscribe
         </LoadingButton>
+        {error && (
+          <Typography color="error">
+            Something went wrong. Please try again.
+          </Typography>
+        )}
       </Box>
     </Layout>
   );

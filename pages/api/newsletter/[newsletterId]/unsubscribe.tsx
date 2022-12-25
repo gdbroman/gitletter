@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../../prisma/prisma";
-import { getAppBasePath } from "../../../../util/hooks/useAppHref";
 
 export default async function handle(
   req: NextApiRequest,
@@ -20,10 +19,12 @@ export default async function handle(
       await prisma.subscriber.delete({
         where: { id: subscriber.id },
       });
+
+      return res.status(200).json({ message: "Unsubscribed" });
     }
 
-    res.redirect(`${getAppBasePath(newsletterId)}/unsubscribed`);
+    return res.status(404).json({ message: "Subscriber not found" });
   } else {
-    res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).json({ message: "Method not allowed" });
   }
 }
