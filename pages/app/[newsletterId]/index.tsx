@@ -1,20 +1,18 @@
 import { useRouter } from "next/router";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 
-import prisma from "../../../prisma/prisma";
 import { EmptyTab } from "../../../src/components/EmptyTab";
 import { EnhancedTable } from "../../../src/components/EnhancedTable";
 import Layout from "../../../src/components/Layout";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
 import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
 import { issueService } from "../../../src/services/issueService";
-import {
-  IssueWithParsedTitleAndStrippedDate,
-  stripDate,
-} from "../../../src/types/stripDate";
+import type { IssueWithParsedTitleAndStrippedDate } from "../../../src/types/stripDate";
+import { stripDate } from "../../../src/types/stripDate";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { getTitleFromContent } from "../../../util/strings";
+import { trpc } from "../../../util/trpc";
 
 type Props = {
   newsletterId: string;
@@ -39,14 +37,9 @@ export const getServerSideProps: GetServerSideProps = async ({
     return { props: emptyServerProps };
   }
 
-  const newsletter = await prisma.newsletter.findFirst({
-    where: { id: newsletterId },
-    select: {
-      id: true,
-      title: true,
-      issues: true,
-    },
-  });
+  const newsletter = trpc.newsletter.get.useQuery({
+    newsletterId,
+  }).data;
 
   if (!newsletter) {
     res.statusCode = 302;
@@ -74,6 +67,8 @@ const DraftsPage: NextPage<Props> = ({
 }) => {
   const router = useRouter();
   const appHref = useAppHref();
+  console.log("popp", newsletterTitle);
+  console.log("popp", draftIssues);
 
   const onItemClick = (issue: IssueWithParsedTitleAndStrippedDate) => {
     router.push(`${appHref}/compose?i=${issue.id}`);
@@ -94,7 +89,7 @@ const DraftsPage: NextPage<Props> = ({
       <Layout headerTitle={newsletterTitle}>
         <NextSeo title={`Drafts – ${newsletterTitle}`} />
         <Dashboard>
-          {!draftIssues.length ? (
+          {!draftIssues?.length ? (
             <EmptyTab
               emoji="📝"
               title="No drafts found"

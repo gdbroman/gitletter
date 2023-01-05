@@ -3,9 +3,10 @@ import Input from "@mui/material/Input";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
 import { useRouter } from "next/router";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import { ChangeEventHandler, useState } from "react";
+import type { ChangeEventHandler } from "react";
+import { useState } from "react";
 
 import prisma from "../../../prisma/prisma";
 import { FeedbackFooter } from "../../../src/components/FeedbackFooter";

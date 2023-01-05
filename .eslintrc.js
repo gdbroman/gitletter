@@ -1,7 +1,18 @@
 module.exports = {
-  extends: ["react-app", "plugin:prettier/recommended"],
-  plugins: ["unused-imports", "simple-import-sort"],
+  extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  plugins: [
+    "@typescript-eslint",
+    "prettier",
+    "unused-imports",
+    "simple-import-sort",
+  ],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: "./tsconfig.json",
+  },
   rules: {
+    "prettier/prettier": "error",
+    "@typescript-eslint/consistent-type-imports": "warn",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react-hooks/exhaustive-deps": "error",
