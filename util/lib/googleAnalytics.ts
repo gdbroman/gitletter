@@ -23,6 +23,8 @@ export enum GAEventAction {
 }
 
 export const sendPageView = (url: URL) => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   window.gtag("config", process.env.GOOGLE_ANALYTICS_TRACKING_ID, {
     page_path: url,
   });

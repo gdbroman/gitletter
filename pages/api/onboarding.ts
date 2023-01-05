@@ -11,9 +11,10 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const session = await unstableGetServerSession(req, res);
-  if (!session) return res.status(401).json({ message: "Unauthorized" });
+  if (!session || !session.user?.email)
+    return res.status(401).json({ message: "Unauthorized" });
 
-  const userEmail = session?.user?.email;
+  const userEmail = session.user.email;
   const existingNewsletter = await prisma.newsletter.findFirst({
     where: {
       author: { email: userEmail },
@@ -28,7 +29,7 @@ export default async function handle(
     console.info("ONBOARDING", `Creating newsletter for ${userEmail}.`);
     const newNewsletter = await prisma.newsletter.create({
       data: {
-        title: `${session?.user?.name.split(" ")[0]}'s letter`,
+        title: `${session.user.name?.split(" ")[0]}'s letter`,
         author: { connect: { email: userEmail } },
       },
     });
@@ -41,8 +42,8 @@ export default async function handle(
   const user = await prisma.user.findFirst({
     where: { email: userEmail },
   });
-  const isStripeCustomer = Boolean(user.stripeCustomerId);
-  const hasStripeProduct = Boolean(user.stripeProductId);
+  const isStripeCustomer = Boolean(user?.stripeCustomerId);
+  const hasStripeProduct = Boolean(user?.stripeProductId);
 
   if (isStripeCustomer) {
     console.info("ONBOARDING", `${userEmail} is a Stripe customer.`);
@@ -50,10 +51,10 @@ export default async function handle(
     console.info("ONBOARDING", `Creating a Stripe customer ${userEmail}.`);
     const customer = await stripe.customers.create({
       email: userEmail,
-      name: session?.user?.name,
+      name: session?.user?.name ?? userEmail,
     });
     await prisma.user.update({
-      where: { id: user.id },
+      where: { id: user?.id },
       data: { stripeCustomerId: customer.id },
     });
   }
@@ -64,7 +65,7 @@ export default async function handle(
     console.info("ONBOARDING", `Giving free Stripe product to ${userEmail}.`);
     const freeProductId = await getFreeProductId();
     await prisma.user.update({
-      where: { id: user.id },
+      where: { id: user?.id },
       data: { stripeProductId: freeProductId },
     });
   }

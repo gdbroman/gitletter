@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import NextErrorComponent from "next/error";
-import { NextPage } from "next/types";
+import type { NextPage } from "next/types";
 
 type Props = {
   statusCode: number;

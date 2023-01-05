@@ -1,8 +1,6 @@
-// pages/api/stripe-hooks
-
 import { buffer } from "micro";
-import { NextApiRequest, NextApiResponse } from "next/types";
-import Stripe from "stripe";
+import type { NextApiRequest, NextApiResponse } from "next/types";
+import type Stripe from "stripe";
 
 import { stripe } from "../../../prisma/modules/stripe";
 import prisma from "../../../prisma/prisma";
@@ -18,14 +16,14 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const reqBuffer = await buffer(req);
-  const signature = req.headers["stripe-signature"];
-  const signingSecret = process.env.STRIPE_SIGNING_SECRET;
+  const signature = req.headers["stripe-signature"] as string;
+  const signingSecret = process.env.STRIPE_SIGNING_SECRET as string;
 
   let event;
 
   try {
     event = stripe.webhooks.constructEvent(reqBuffer, signature, signingSecret);
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }

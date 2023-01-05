@@ -8,7 +8,8 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const session = await unstableGetServerSession(req, res);
-  if (!session) return res.status(401).json({ message: "Unauthorized" });
+  if (!session || !session.user?.email)
+    return res.status(401).json({ message: "Unauthorized" });
 
   if (req.method === "POST") {
     const { title, description } = req.body;
@@ -17,7 +18,7 @@ export default async function handle(
       data: {
         title,
         description,
-        author: { connect: { email: session?.user?.email } },
+        author: { connect: { email: session.user.email } },
       },
     });
 

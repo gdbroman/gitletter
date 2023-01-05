@@ -1,11 +1,9 @@
-import { GithubIntegration } from "@prisma/client";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GithubIntegration } from "@prisma/client";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 
-import {
-  getGithubRepos,
-  GithubReposInfo,
-} from "../../../../prisma/modules/github";
+import type { GithubReposInfo } from "../../../../prisma/modules/github";
+import { getGithubRepos } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
 import Layout from "../../../../src/components/Layout";
 import { ProtectedPage } from "../../../../src/components/ProtectedPage";
@@ -23,6 +21,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       githubIntegration: true,
     },
   });
+
+  if (!newsletter) {
+    return {
+      props: {},
+    };
+  }
 
   let githubReposInfo = null;
   if (newsletter.githubIntegration) {

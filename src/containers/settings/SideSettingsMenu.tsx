@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useThemeContext } from "../../contexts/theme";

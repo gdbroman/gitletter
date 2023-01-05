@@ -1,10 +1,8 @@
-import { OctokitResponse } from "@octokit/types";
+import type { OctokitResponse } from "@octokit/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import {
-  createOctokitClient,
-  GithubRepoData,
-} from "../../../../prisma/modules/github";
+import type { GithubRepoData } from "../../../../prisma/modules/github";
+import { createOctokitClient } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
 import { unstableGetServerSession } from "../../auth/getServerSession";
 
@@ -25,6 +23,14 @@ export default async function handler(
     },
   });
 
+  if (
+    !githubIntegration ||
+    !githubIntegration.repoName ||
+    !githubIntegration.repoOwner
+  ) {
+    return res.status(404).json({ message: "Not found" });
+  }
+
   const client = createOctokitClient(installationId);
   const repoContent: OctokitResponse<GithubRepoData> =
     await client.repos.getContent({
@@ -34,5 +40,6 @@ export default async function handler(
         githubIntegration.repoDir === "./" ? "" : githubIntegration.repoDir
       }${filePath}`,
     });
+
   res.send(repoContent.data);
 }

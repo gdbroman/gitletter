@@ -1,4 +1,5 @@
-import MuiAlert, { AlertColor, AlertProps } from "@mui/material/Alert";
+import type { AlertColor, AlertProps } from "@mui/material/Alert";
+import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import { forwardRef } from "react";
 

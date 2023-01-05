@@ -3,7 +3,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { FC, useCallback, useMemo, useState } from "react";
+import type { FC } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { useToggle } from "../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../components/DialogResponsive";

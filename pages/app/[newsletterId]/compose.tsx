@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { GithubIntegration, Issue } from "@prisma/client";
+import type { GithubIntegration, Issue } from "@prisma/client";
 import { useRouter } from "next/router";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const newsletterId = query.newsletterId as string;
   const issueId = query.i as string;
 
-  let issue: Issue = {} as Issue;
+  let issue: Issue | null = null;
   if (!newsletterId) {
     res.statusCode = 302;
     res.setHeader("location", "/404");
@@ -73,6 +73,13 @@ export const getServerSideProps: GetServerSideProps = async ({
         },
       },
     });
+
+    if (!newsletter) {
+      res.statusCode = 302;
+      res.setHeader("location", "/404");
+      return { props: { issue: {} } };
+    }
+
     const freeProductId = await getFreeProductId();
     const hasFreeProduct = newsletter.author.stripeProductId === freeProductId;
 
@@ -188,15 +195,15 @@ const ComposePage: NextPage<Props> = ({
           ) : null
         }
       >
-        <NextSeo title={title} />
+        <NextSeo title={title ?? "Untitled"} />
 
         {previewEmail.isOn ? (
           <Box display="flex" justifyContent="center">
             <EmailArticle
-              title={getTitleFromContent(content)}
+              title={getTitleFromContent(content) ?? "Untitled"}
               content={
                 <MarkdownParser
-                  children={stripFrontMatterFromContent(content)}
+                  content={stripFrontMatterFromContent(content)}
                 />
               }
             />
@@ -226,7 +233,7 @@ const ComposePage: NextPage<Props> = ({
             ) : (
               ""
             )}
-            {new Date(issue.sentAt).toLocaleString([], {
+            {new Date(issue.sentAt!).toLocaleString([], {
               year: "numeric",
               month: "numeric",
               day: "numeric",
@@ -245,7 +252,7 @@ const ComposePage: NextPage<Props> = ({
       />
       <SendTestEmailDialog
         issueId={issue.id}
-        defaultEmailAddress={data?.user?.email}
+        defaultEmailAddress={data?.user?.email ?? ""}
         open={sendTestEmail.isOn}
         onClose={sendTestEmail.toggleOff}
       />

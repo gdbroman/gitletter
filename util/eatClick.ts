@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 
 export function eatClick(e: MouseEvent) {
   e.preventDefault();

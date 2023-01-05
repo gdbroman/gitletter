@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";
 
 import { signIn } from "../../../util/hooks/useSignIn";
-import { ButtonRef } from "../../../util/types";
+import type { ButtonRef } from "../../../util/types";
 import { LoadingButton } from "../../components/LoadingButton";
 import { AccountAvatarMenu } from "./AccountAvatarMenu";
 

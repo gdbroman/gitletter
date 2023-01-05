@@ -1,9 +1,9 @@
 import "../styles/globals.css";
 import "../styles/nprogress.css";
 
-import { AppProps } from "next/app";
+import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { useEffect } from "react";
 
@@ -24,7 +24,7 @@ const App = ({ Component, pageProps }: AppPropsWithSession) => {
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
-    if (jssStyles) {
+    if (jssStyles?.parentElement) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);

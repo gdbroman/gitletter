@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next/types";
+import type { NextApiRequest, NextApiResponse } from "next/types";
 import { unstable_getServerSession } from "next-auth/next";
 
 import { options } from "./options";

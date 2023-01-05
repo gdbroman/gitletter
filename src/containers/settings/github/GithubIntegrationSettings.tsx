@@ -1,16 +1,20 @@
-import { GithubIntegration } from "@prisma/client";
+import type { GithubIntegration } from "@prisma/client";
 import { useRouter } from "next/router";
-import { FC, useMemo, useState } from "react";
+import type { FC } from "react";
+import { useMemo, useState } from "react";
 
-import { GithubReposInfo, RepoInfo } from "../../../../prisma/modules/github";
+import type {
+  GithubReposInfo,
+  RepoInfo,
+} from "../../../../prisma/modules/github";
 import { useToggle } from "../../../../util/hooks/useToggle";
 import { githubIntegrationService } from "../../../services/githubIntegrationService";
-import { Nullable } from "../../../types/general";
+import type { Nullable } from "../../../types/general";
 import { GithubIntegrationConnectionCard } from "./GithubIntegrationConnectionCard";
 import { GithubIntegrationSettingsCard } from "./GithubIntegrationSettingsCard";
 
 type Props = {
-  githubIntegration: GithubIntegration;
+  githubIntegration: GithubIntegration | undefined;
   githubReposInfo: GithubReposInfo;
 };
 
@@ -64,12 +68,15 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
     submitting.toggleOn();
     setError(null);
     setSuccess(null);
+    const installationId = githubIntegration?.installationId;
+    const repoData = githubReposData.get(repo);
+    if (!installationId || !repoData) return;
     try {
       const res = await githubIntegrationService.updateGithubIntegration(
-        githubIntegration?.installationId,
+        installationId,
         repo,
         dir,
-        githubReposData.get(repo)?.[0]?.owner
+        repoData[0]?.owner
       );
       if (res == null) {
         throw new Error("No response");
@@ -90,9 +97,11 @@ export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
   };
   const handleDisconnect = async () => {
     disconnecting.toggleOn();
+    const installationId = githubIntegration?.installationId;
+    if (!installationId) return;
     try {
       const res = await githubIntegrationService.deleteGithubIntegration(
-        githubIntegration?.installationId
+        installationId
       );
       if (res == null) {
         throw new Error("No response");

@@ -22,6 +22,8 @@ export default async function handle(
       },
     });
 
+    if (!user) return res.status(404).json({ message: "User not found" });
+
     await prisma.$disconnect();
 
     const lineItems = [
@@ -30,6 +32,14 @@ export default async function handle(
         quantity: 1,
       },
     ];
+
+    if (!user.stripeCustomerId) {
+      throw new Error("User does not have a Stripe customer ID.");
+    }
+
+    if (!user.newsletter) {
+      throw new Error("User does not have a newsletter.");
+    }
 
     const stripeSession = await stripe.checkout.sessions.create({
       customer: user.stripeCustomerId,

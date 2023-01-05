@@ -1,4 +1,4 @@
-import { GithubIntegration, Newsletter, Subscriber } from "@prisma/client";
+import type { GithubIntegration, Newsletter, Subscriber } from "@prisma/client";
 
 import { fetchApi } from "./util";
 

@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import copy from "copy-to-clipboard";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { useToggle } from "../../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../../components/DialogResponsive";

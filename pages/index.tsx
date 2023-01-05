@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { NextPage } from "next/types";
+import type { NextPage } from "next/types";
 import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";
 
@@ -28,7 +28,7 @@ import { useToggle } from "../util/hooks/useToggle";
 import * as ga from "../util/lib/googleAnalytics";
 import { GAEventAction } from "../util/lib/googleAnalytics";
 import { numberToStringWithSpaces } from "../util/strings";
-import { ButtonRef } from "../util/types";
+import type { ButtonRef } from "../util/types";
 
 const LandingPage: NextPage = () => {
   const router = useRouter();
@@ -134,6 +134,7 @@ const LandingPage: NextPage = () => {
         <Box my={10}>
           {/* <YoutubeDemo /> */}
           <Image
+            alt="GitLetter example screenshot"
             src="/demo/lightDemo.png"
             width={1662}
             height={1042}

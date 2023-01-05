@@ -13,9 +13,10 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Session } from "next-auth/core/types";
+import type { Session } from "next-auth/core/types";
 import { signOut, useSession } from "next-auth/react";
-import { FC, MouseEvent, useState } from "react";
+import type { FC, MouseEvent } from "react";
+import { useState } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { feedbackCopy } from "../../components/FeedbackFooter";
@@ -31,7 +32,7 @@ const HeaderMenuItem = styled(MenuItem)`
 `;
 
 type AccountAvatarProps = {
-  sessionData: Session;
+  sessionData: Session | null | undefined;
   size?: number;
 };
 
@@ -40,7 +41,7 @@ const AccountAvatar = ({ sessionData, size = 32 }: AccountAvatarProps) => (
     {sessionData?.user?.image ? (
       <Image src={sessionData?.user?.image} width={size} height={size} />
     ) : (
-      sessionData?.user?.name.charAt(0)
+      sessionData?.user?.name?.charAt(0) ?? "A"
     )}
   </Avatar>
 );
@@ -76,8 +77,8 @@ export const AccountAvatarMenu = () => {
         sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
       >
         <AvatarToolTip
-          userName={session.data?.user?.name}
-          userEmail={session.data?.user?.email}
+          userName={session.data?.user?.name ?? "Anonymous"}
+          userEmail={session.data?.user?.email ?? ""}
         >
           <IconButton
             onClick={handleClick}
@@ -138,10 +139,10 @@ export const AccountAvatarMenu = () => {
               fontWeight={600}
               noWrap
             >
-              {session.data?.user.name}
+              {session.data?.user?.name}
             </Typography>
             <Typography variant="body2" lineHeight={1.3} noWrap>
-              {session.data?.user.email}
+              {session.data?.user?.email}
             </Typography>
           </Box>
         </HeaderMenuItem>

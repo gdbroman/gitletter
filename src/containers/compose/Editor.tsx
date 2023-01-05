@@ -7,7 +7,13 @@ import CodeMirror from "@uiw/react-codemirror";
 
 import { useThemeContext } from "../../contexts/theme";
 
-export const Editor = ({ value, onChange, onBlur }) => {
+type Props = {
+  value: string | undefined;
+  onChange: (value: string) => void;
+  onBlur: () => void;
+};
+
+export const Editor = ({ value, onChange, onBlur }: Props) => {
   const { isDarkMode } = useThemeContext();
 
   return (

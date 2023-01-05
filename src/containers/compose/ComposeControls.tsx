@@ -4,10 +4,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { useThemeContext } from "../../contexts/theme";
-import { SendMenu, SendMenuProps } from "./SendMenu";
+import type { SendMenuProps } from "./SendMenu";
+import { SendMenu } from "./SendMenu";
 
 export const composeControlsFooterHeight = "68px";
 

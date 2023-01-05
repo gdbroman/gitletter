@@ -22,6 +22,10 @@ export default async function handle(
       select: { id: true },
     });
 
+    if (!result) {
+      return res.status(404).json({ message: "Newsletter not found" });
+    }
+
     res.status(200).json(result.id);
   } else {
     res.status(405).json({ message: "Method not allowed" });

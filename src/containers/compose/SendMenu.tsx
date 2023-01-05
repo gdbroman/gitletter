@@ -6,7 +6,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import React, { FC } from "react";
+import type { FC } from "react";
+import React from "react";
 
 export type SendMenuProps = {
   toggleTest: () => void;

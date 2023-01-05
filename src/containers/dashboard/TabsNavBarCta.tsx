@@ -4,12 +4,14 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import Menu, { MenuProps } from "@mui/material/Menu";
+import type { MenuProps } from "@mui/material/Menu";
+import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { alpha, styled } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, MouseEvent, useState } from "react";
+import type { FC, MouseEvent } from "react";
+import { useState } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";

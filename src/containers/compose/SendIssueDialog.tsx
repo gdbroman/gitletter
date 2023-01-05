@@ -6,9 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import { GithubIntegration } from "@prisma/client";
+import type { GithubIntegration } from "@prisma/client";
 import Link from "next/link";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { freeSubscriberLimit } from "../../../util/constants";
 import { useAppHref } from "../../../util/hooks/useAppHref";

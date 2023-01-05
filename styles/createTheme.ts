@@ -1,13 +1,15 @@
 import { green, red } from "@mui/material/colors";
-import {
+import type {
   BreakpointsOptions,
   Components,
-  createTheme as createMuiTheme,
   PaletteOptions,
-  responsiveFontSizes,
   ThemeOptions,
 } from "@mui/material/styles";
-import { TypographyOptions } from "@mui/material/styles/createTypography";
+import {
+  createTheme as createMuiTheme,
+  responsiveFontSizes,
+} from "@mui/material/styles";
+import type { TypographyOptions } from "@mui/material/styles/createTypography";
 
 const breakpoints: BreakpointsOptions = {
   values: {

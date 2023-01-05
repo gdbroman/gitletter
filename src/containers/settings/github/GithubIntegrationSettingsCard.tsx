@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
 
 import { ItemSelect } from "../../../components/ItemSelect";
 import { LoadingButton } from "../../../components/LoadingButton";
@@ -30,9 +29,7 @@ type GithubIntegrationSettingsCardProps = {
   handleDisconnect: () => void;
 };
 
-export const GithubIntegrationSettingsCard: FC<
-  GithubIntegrationSettingsCardProps
-> = ({
+export const GithubIntegrationSettingsCard = ({
   repo,
   repos,
   dir,
@@ -50,16 +47,16 @@ export const GithubIntegrationSettingsCard: FC<
   handleSave,
   handleCancelEdit,
   handleDisconnect,
-}) => (
+}: GithubIntegrationSettingsCardProps) => (
   <>
     <CustomSnackbar
-      message={success}
+      message={success!}
       severity="success"
       isOpen={!!success}
       onClose={() => setSuccess(null)}
     />
     <CustomSnackbar
-      message={error}
+      message={error!}
       severity="error"
       autoHideDuration={6000}
       isOpen={!!error}

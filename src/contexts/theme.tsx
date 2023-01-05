@@ -1,10 +1,10 @@
 import CssBaseline from "@mui/material/CssBaseline";
-import { Theme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import type { Theme } from "@mui/material/styles";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
+import type { FC, ReactNode } from "react";
 import {
   createContext,
-  FC,
-  ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -13,7 +13,8 @@ import {
 } from "react";
 import { useCookies } from "react-cookie";
 
-import { ColorMode, createTheme } from "../../styles/createTheme";
+import type { ColorMode } from "../../styles/createTheme";
+import { createTheme } from "../../styles/createTheme";
 
 interface IThemeContext {
   theme: Theme;

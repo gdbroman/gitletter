@@ -1,9 +1,9 @@
-import { Issue } from "@prisma/client";
+import type { Issue } from "@prisma/client";
 import inlineCss from "inline-css";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Session } from "next-auth/core/types";
+import type { Session } from "next-auth/core/types";
 import nodemailer from "nodemailer";
-import Mail from "nodemailer/lib/mailer";
+import type Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
 
 import prisma from "../../../../../prisma/prisma";
@@ -15,7 +15,7 @@ import {
   stripFrontMatterFromContent,
 } from "../../../../../util/strings";
 import { unstableGetServerSession } from "../../../auth/getServerSession";
-import { FetchedNewsletter } from "../send";
+import type { FetchedNewsletter } from "../send";
 
 export default async function handle(
   req: NextApiRequest,
@@ -30,6 +30,8 @@ export default async function handle(
   const issue = await prisma.issue.findFirst({
     where: { id: issueId },
   });
+  if (!issue) return res.status(404).json({ message: "Issue not found" });
+
   const newsletter = await prisma.newsletter.findFirst({
     where: { id: issue.newsletterId },
     select: {
@@ -47,6 +49,8 @@ export default async function handle(
       },
     },
   });
+  if (!newsletter)
+    return res.status(404).json({ message: "Newsletter not found" });
 
   if (req.method === "POST") {
     sendTestEmail(session, issue, newsletter, email);
@@ -62,8 +66,8 @@ const sendTestEmail = async (
   newsletter: FetchedNewsletter,
   email: string
 ) => {
-  const userEmail = session.user.email;
-  const userFullName = session.user.name;
+  const userEmail = session.user?.email;
+  const userFullName = session.user?.name;
 
   const transport = nodemailer.createTransport({
     host: "smtp.sendgrid.net",
@@ -85,7 +89,7 @@ const sendTestEmail = async (
   const htmlString = ReactDOMServer.renderToStaticMarkup(
     <EmailStyleWrapper
       title={title}
-      content={<MarkdownParser children={rawContent} />}
+      content={<MarkdownParser content={rawContent} />}
       newsletterId={issue.newsletterId}
       newsletterTitle={newsletter.title}
       emailAddress={email}

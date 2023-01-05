@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 import { siteDomain } from "../../util/constants";
 
@@ -102,7 +102,7 @@ const UnstyledLink = ({
   </a>
 );
 
-const FooterSection = ({ children }) => (
+const FooterSection = ({ children }: { children: ReactNode }) => (
   <tr
     style={{
       textAlign: "center",

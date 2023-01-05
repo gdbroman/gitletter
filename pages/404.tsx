@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { NextPage } from "next/types";
+import type { NextPage } from "next/types";
 
 import { FeedbackFooter } from "../src/components/FeedbackFooter";
 import Layout from "../src/components/Layout";

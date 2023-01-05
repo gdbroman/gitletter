@@ -1,7 +1,7 @@
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 
 import { getTimeAgoString } from "../../util/strings";
-import {
+import type {
   IssueWithParsedTitleAndStrippedDate,
   SubscriberWithStrippedDate,
 } from "./stripDate";
@@ -83,19 +83,17 @@ export type EnhancedTableHeadProps = {
   onRequestSort: (event: MouseEvent, property: HeadCellType) => void;
 };
 
-export type EnhancedTableProps = {
-  type: TableType;
-  items: IssueWithParsedTitleAndStrippedDate[] | SubscriberWithStrippedDate[];
+type ItemType<T extends TableType> = T extends "subscribers"
+  ? SubscriberWithStrippedDate
+  : IssueWithParsedTitleAndStrippedDate;
+
+export type EnhancedTableProps<T extends TableType> = {
+  type: T;
+  items: ItemType<T>[];
   disablePagination?: boolean;
-  onItemClick?: (
-    item: IssueWithParsedTitleAndStrippedDate | SubscriberWithStrippedDate
-  ) => void;
-  onItemDuplicate?: (
-    item: IssueWithParsedTitleAndStrippedDate | SubscriberWithStrippedDate
-  ) => void;
-  onItemDelete: (
-    item: IssueWithParsedTitleAndStrippedDate | SubscriberWithStrippedDate
-  ) => void;
+  onItemClick?: (item: ItemType<T>) => void;
+  onItemDuplicate?: (item: ItemType<T>) => void;
+  onItemDelete: (item: ItemType<T>) => void;
 };
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {

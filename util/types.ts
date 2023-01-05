@@ -1,3 +1,3 @@
-import { Ref } from "react";
+import type { Ref } from "react";
 
 export type ButtonRef = Ref<HTMLButtonElement>;

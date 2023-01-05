@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import { FC } from "react";
+import type { FC } from "react";
 
 import prisma from "../../../prisma/prisma";
 import { FeedbackFooter } from "../../../src/components/FeedbackFooter";
@@ -17,6 +17,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       title: true,
     },
   });
+
+  if (!newsletter) {
+    return {
+      props: {},
+    };
+  }
 
   return {
     props: { newsletterTitle: newsletter.title },
