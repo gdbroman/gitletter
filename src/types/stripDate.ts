@@ -1,4 +1,5 @@
-import { Issue, Newsletter, Subscriber } from "@prisma/client";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import type { Issue, Newsletter, Subscriber } from "@prisma/client";
 
 export type IssueWithStrippedDate = Issue & {
   sentAt: string;
@@ -29,6 +30,7 @@ type StripDate = (
 export const stripDate: StripDate = (obj) => {
   const newObj = {};
   Object.keys(obj).forEach((key) => {
+    // @ts-ignore
     let value = obj[key];
     if (value !== null) {
       // If array, loop...
@@ -47,6 +49,7 @@ export const stripDate: StripDate = (obj) => {
         value = stripDate(value);
       }
     }
+    // @ts-ignore
     newObj[key] = value;
   });
 

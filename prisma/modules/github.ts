@@ -1,6 +1,7 @@
 import { createAppAuth } from "@octokit/auth-app";
-import { Octokit, RestEndpointMethodTypes } from "@octokit/rest";
-import { OctokitResponse } from "@octokit/types";
+import type { RestEndpointMethodTypes } from "@octokit/rest";
+import { Octokit } from "@octokit/rest";
+import type { OctokitResponse } from "@octokit/types";
 
 export type GithubRepoData =
   RestEndpointMethodTypes["repos"]["getContent"]["response"]["data"];
@@ -12,12 +13,12 @@ export type GithubReposInfo = [string, RepoInfo[]][];
 
 export async function getGithubRepos(installationId: string) {
   const client = createOctokitClient(installationId);
-  const repos = await client.paginate(
+  const repos = (await client.paginate(
     client.apps.listReposAccessibleToInstallation
-  );
+  )) as any;
 
   const githubReposInfo: GithubReposInfo = await Promise.all(
-    repos.map(async (repo) => {
+    repos.map(async (repo: any) => {
       let infos: RepoInfo[] = [];
       const repoContentData = [
         {
@@ -77,17 +78,17 @@ async function getRepoDirectoriesRecursively(
   client: Octokit,
   repo: any,
   path = ""
-) {
+): Promise<any[]> {
   // Only recurse two levels deep
   if (path.split("/").length > 2) {
     return [];
   }
 
-  const repoContent: OctokitResponse<GithubRepoData> = await fetchRepoContent(
+  const repoContent = (await fetchRepoContent(
     client,
     repo,
     path
-  );
+  )) as OctokitResponse<GithubRepoData>;
   const directories = Array.isArray(repoContent.data)
     ? repoContent.data.filter((item) => item.type === "dir")
     : [];

@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 type SubscriptionCardProps = {
   title: string;

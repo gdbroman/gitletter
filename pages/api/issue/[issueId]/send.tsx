@@ -1,10 +1,10 @@
-import { Issue } from "@prisma/client";
+import type { Issue } from "@prisma/client";
 import inlineCss from "inline-css";
 import { Base64 } from "js-base64";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Session } from "next-auth/core/types";
+import type { Session } from "next-auth/core/types";
 import nodemailer from "nodemailer";
-import Mail from "nodemailer/lib/mailer";
+import type Mail from "nodemailer/lib/mailer";
 import ReactDOMServer from "react-dom/server";
 
 import { createOctokitClient } from "../../../../prisma/modules/github";
@@ -25,10 +25,10 @@ export type FetchedNewsletter = {
   subscribers: { email: string }[];
   githubIntegration: {
     installationId: string;
-    repoDir: string;
-    repoName: string;
-    repoOwner: string;
-  };
+    repoDir: string | null;
+    repoName: string | null;
+    repoOwner: string | null;
+  } | null;
 };
 
 export default async function handle(
@@ -44,6 +44,8 @@ export default async function handle(
   const issue = await prisma.issue.findFirst({
     where: { id: issueId },
   });
+  if (!issue) return res.status(404).json({ message: "Issue not found" });
+
   const newsletter = await prisma.newsletter.findFirst({
     where: { id: issue.newsletterId },
     select: {
@@ -61,14 +63,21 @@ export default async function handle(
       },
     },
   });
+  if (!newsletter)
+    return res.status(404).json({ message: "Newsletter not found" });
 
   if (req.method === "POST") {
     sendMail(session, issue, newsletter);
 
     let deployed = null;
+    const ghI = newsletter.githubIntegration;
     if (writeToGithub) {
-      const { repoName, repoDir, repoOwner, installationId } =
-        newsletter.githubIntegration;
+      if (!ghI || !ghI.repoDir || !ghI.repoName || !ghI.repoOwner)
+        return res
+          .status(400)
+          .json({ message: "Newsletter is not connected to a github repo" });
+
+      const { repoName, repoDir, repoOwner, installationId } = ghI;
 
       try {
         const octoKitResponse = await writeToGithubFn(
@@ -79,7 +88,7 @@ export default async function handle(
           issue.fileName,
           issue.content
         );
-        deployed = octoKitResponse.data.content.html_url;
+        deployed = octoKitResponse.data.content?.html_url;
       } catch {
         console.error("Error writing to github");
       }
@@ -105,8 +114,8 @@ const sendMail = async (
   issue: Issue,
   newsletter: FetchedNewsletter
 ) => {
-  const userEmail = session.user.email;
-  const userFullName = session.user.name;
+  const userEmail = session.user?.email;
+  const userFullName = session.user?.name;
 
   const transport = nodemailer.createTransport({
     host: "smtp.sendgrid.net",
@@ -117,7 +126,7 @@ const sendMail = async (
     },
   });
 
-  const title = getTitleFromContent(issue.content);
+  const title = getTitleFromContent(issue.content) ?? "Untitled";
   const rawContent = stripFrontMatterFromContent(issue.content);
   const defaultMailOptions: Mail.Options = {
     subject: title,
@@ -130,7 +139,7 @@ const sendMail = async (
     const htmlString = ReactDOMServer.renderToStaticMarkup(
       <EmailStyleWrapper
         title={title}
-        content={<MarkdownParser children={rawContent} />}
+        content={<MarkdownParser content={rawContent} />}
         newsletterId={issue.newsletterId}
         newsletterTitle={newsletter.title}
         emailAddress={subscriber.email}
@@ -144,7 +153,7 @@ const sendMail = async (
       to: subscriber.email,
       html: htmlWithInlineStyling,
     };
-    transport.sendMail(mailOptions, (err, info) => {
+    transport.sendMail(mailOptions, (err: any, info: any) => {
       if (err) {
         console.error(err);
       } else {

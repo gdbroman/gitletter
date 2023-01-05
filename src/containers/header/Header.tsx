@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/system/Box";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { GitLetterLogo } from "../../components/GitLetterLogo";
 import { HeaderNavRight } from "./HeaderNavRight";

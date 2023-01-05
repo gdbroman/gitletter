@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
-import { Breakpoint } from "@mui/material/styles";
+import type { Breakpoint } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 import { useThemeContext } from "../contexts/theme";
 

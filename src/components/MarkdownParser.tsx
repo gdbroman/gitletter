@@ -1,23 +1,23 @@
-import { FC } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 
 import { useThemeContext } from "../contexts/theme";
 
 type Props = {
-  children: string;
+  content: string;
 };
 
-export const MarkdownParser: FC<Props> = ({ children }) => {
+export const MarkdownParser = ({ content }: Props) => {
   const { theme } = useThemeContext();
 
   return (
     <ReactMarkdown
       remarkPlugins={[gfm]}
-      children={children}
+      // eslint-disable-next-line react/no-children-prop
+      children={content}
       components={{
         a: (props) => {
-          const isTwitter = props.href.startsWith("https://twitter.com/");
+          const isTwitter = props.href?.startsWith("https://twitter.com/");
 
           if (isTwitter) {
             // TODO: build a custom twitter component that is rendered in emails

@@ -6,7 +6,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { ChangeEvent, FC, useMemo, useState } from "react";
+import type { ChangeEvent, FC } from "react";
+import { useMemo, useState } from "react";
 
 import { maxEmailAddressLength } from "../../../util/constants";
 import { getEmailAddress } from "../../../util/getEmailAddress";
@@ -140,7 +141,7 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
         message={success}
         severity="success"
         isOpen={!!success}
-        onClose={() => setSuccess(undefined)}
+        onClose={() => setSuccess("")}
       />
     </Card>
   );

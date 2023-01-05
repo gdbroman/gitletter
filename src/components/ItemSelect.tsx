@@ -2,10 +2,11 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
-import { Theme } from "@mui/material/styles";
+import type { SelectChangeEvent, SelectProps } from "@mui/material/Select";
+import Select from "@mui/material/Select";
+import type { Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 import { useThemeContext } from "../contexts/theme";
 
@@ -20,7 +21,11 @@ const MenuProps = {
   },
 };
 
-const getStyles = (item: string, selectedItem: string, theme: Theme) => {
+const getStyles = (
+  item: string,
+  selectedItem: string | undefined,
+  theme: Theme
+) => {
   return {
     fontWeight:
       selectedItem?.indexOf(item) === -1
@@ -48,7 +53,7 @@ export const ItemSelect: FC<Props> = ({
   const { theme } = useThemeContext();
 
   const handleChange = (event: SelectChangeEvent<typeof value>) => {
-    onChange(event.target.value);
+    onChange(event.target.value ?? "");
   };
 
   return (
@@ -61,7 +66,7 @@ export const ItemSelect: FC<Props> = ({
         input={<OutlinedInput label={label} fullWidth />}
         sx={{ width: 300 }}
         value={value}
-        onChange={handleChange}
+        onChange={handleChange as any}
         {...rest}
       >
         {items.map((item) => (

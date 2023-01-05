@@ -5,7 +5,7 @@ export const fetchApi = async <T>(
   method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH" = "GET",
   body?: any,
   headers?: any
-): Promise<T> => {
+): Promise<T | null> => {
   const response = await fetch(`${process.env.APP_URL}/api${endpoint}`, {
     headers: ["POST", "PUT"].includes(method) ? jsonHeader : headers,
     method,

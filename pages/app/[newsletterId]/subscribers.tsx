@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 import { useCallback } from "react";
 
@@ -10,10 +10,8 @@ import Layout from "../../../src/components/Layout";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
 import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
 import { subscriberService } from "../../../src/services/subscriberService";
-import {
-  stripDate,
-  SubscriberWithStrippedDate,
-} from "../../../src/types/stripDate";
+import type { SubscriberWithStrippedDate } from "../../../src/types/stripDate";
+import { stripDate } from "../../../src/types/stripDate";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 
 type Props = {

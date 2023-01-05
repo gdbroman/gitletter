@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import { FC } from "react";
+import type { FC } from "react";
 
 const StyledAlert = styled(Alert)`
   .MuiAlert-message {

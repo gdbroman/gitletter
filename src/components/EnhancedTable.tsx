@@ -10,22 +10,22 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { visuallyHidden } from "@mui/utils";
-import { ChangeEvent, FC, MouseEvent, useState } from "react";
+import type { ChangeEvent, FC, MouseEvent } from "react";
+import { useState } from "react";
 
-import {
-  DefaultOrderBy,
+import type {
   EnhancedTableHeadProps,
   EnhancedTableProps,
-  getComparator,
-  getItemValues,
-  HeadCells,
   HeadCellType,
   Order,
 } from "../types/enhancedTable";
+import type { TableType } from "../types/enhancedTable";
 import {
-  IssueWithParsedTitleAndStrippedDate,
-  SubscriberWithStrippedDate,
-} from "../types/stripDate";
+  DefaultOrderBy,
+  getComparator,
+  getItemValues,
+  HeadCells,
+} from "../types/enhancedTable";
 import { EditRowButton } from "./EditRowButton";
 
 const StyledTableRow = styled(TableRow)`
@@ -84,14 +84,14 @@ export const EnhancedTableHead: FC<EnhancedTableHeadProps> = ({
   );
 };
 
-export const EnhancedTable: FC<EnhancedTableProps> = ({
+export const EnhancedTable = <T extends TableType>({
   type,
   items,
   disablePagination,
   onItemClick,
   onItemDuplicate,
   onItemDelete,
-}) => {
+}: EnhancedTableProps<T>) => {
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<HeadCellType>(DefaultOrderBy[type]);
   const [page, setPage] = useState(0);
@@ -134,42 +134,36 @@ export const EnhancedTable: FC<EnhancedTableProps> = ({
               .slice()
               .sort(getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map(
-                (
-                  item:
-                    | IssueWithParsedTitleAndStrippedDate
-                    | SubscriberWithStrippedDate
-                ) => (
-                  <StyledTableRow
-                    hover
-                    key={item.id}
-                    style={{ cursor: onItemClick ? "pointer" : "default" }}
-                    onClick={onItemClick ? () => onItemClick(item) : undefined}
+              .map((item) => (
+                <StyledTableRow
+                  hover
+                  key={item.id}
+                  style={{ cursor: onItemClick ? "pointer" : "default" }}
+                  onClick={onItemClick ? () => onItemClick(item) : undefined}
+                >
+                  <TableCell component="th" scope="row" style={{ flex: 1 }}>
+                    {getItemValues(item, type)[0]}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    style={{
+                      display: "flex",
+                      padding: "0 16px 0 0",
+                      alignItems: "center",
+                    }}
                   >
-                    <TableCell component="th" scope="row" style={{ flex: 1 }}>
-                      {getItemValues(item, type)[0]}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      style={{
-                        display: "flex",
-                        padding: "0 16px 0 0",
-                        alignItems: "center",
-                      }}
-                    >
-                      <span id="value">{getItemValues(item, type)[1]}</span>
-                      <EditRowButton
-                        onDuplicate={
-                          onItemDuplicate
-                            ? () => onItemDuplicate(item)
-                            : undefined
-                        }
-                        onDelete={() => onItemDelete(item)}
-                      />
-                    </TableCell>
-                  </StyledTableRow>
-                )
-              )}
+                    <span id="value">{getItemValues(item, type)[1]}</span>
+                    <EditRowButton
+                      onDuplicate={
+                        onItemDuplicate
+                          ? () => onItemDuplicate(item)
+                          : undefined
+                      }
+                      onDelete={() => onItemDelete(item)}
+                    />
+                  </TableCell>
+                </StyledTableRow>
+              ))}
             {emptyRows > 0 && (
               <StyledTableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />

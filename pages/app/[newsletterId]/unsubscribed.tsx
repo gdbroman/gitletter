@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 
 import prisma from "../../../prisma/prisma";
@@ -15,6 +15,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       title: true,
     },
   });
+
+  if (!newsletter) {
+    return {
+      props: {},
+    };
+  }
 
   return {
     props: { newsletterTitle: newsletter.title },

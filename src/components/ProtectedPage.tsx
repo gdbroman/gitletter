@@ -2,11 +2,12 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import type { ReactNode } from "react";
 import { useEffect, useMemo } from "react";
 
 import Layout from "./Layout";
 
-export const ProtectedPage = ({ children }) => {
+export const ProtectedPage = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { status } = useSession();
   const loading = useMemo(() => status === "loading", [status]);

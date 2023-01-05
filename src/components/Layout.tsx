@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { NextSeo } from "next-seo";
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 import { siteDescription, siteTagline } from "../../util/constants";
 import { Header } from "../containers/header/Header";

@@ -10,26 +10,27 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const session = await unstableGetServerSession(req, res);
-  if (!session) return res.status(401).json({ message: "Unauthorized" });
+  if (!session || !session.user?.email)
+    return res.status(401).json({ message: "Unauthorized" });
 
   const { installation_id } = req.query;
 
   if (req.method === "GET") {
     let newsLetter = await prisma.newsletter.findFirst({
       where: {
-        author: { email: session?.user?.email },
+        author: { email: session.user.email },
       },
     });
 
     if (newsLetter) {
       console.info("Existing newsletter found", JSON.stringify(newsLetter));
     } else {
-      const firstName = session?.user?.name?.split(" ")[0];
+      const firstName = session.user.name?.split(" ")[0];
       newsLetter = await prisma.newsletter.create({
         data: {
           title: `${firstName}'s Newsletter`,
           description: `Hey friends! I'm ${firstName}. In this newsletter we explore...`,
-          author: { connect: { email: session?.user?.email } },
+          author: { connect: { email: session.user.email } },
         },
       });
       console.info(

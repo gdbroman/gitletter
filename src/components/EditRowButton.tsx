@@ -5,7 +5,8 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { FC, MouseEvent, useState } from "react";
+import type { FC, MouseEvent } from "react";
+import { useState } from "react";
 
 import { eatClick } from "../../util/eatClick";
 import { StyledMenu } from "../containers/dashboard/TabsNavBarCta";
@@ -38,7 +39,7 @@ export const EditRowButton: FC<Props> = ({ onDuplicate, onDelete }) => {
     setAnchorEl(null);
   };
   const handleOnDuplicate = (event: MouseEvent<HTMLElement>) => {
-    onDuplicate();
+    onDuplicate?.();
     handleOnClose(event);
   };
   const handleOnDelete = (event: MouseEvent<HTMLElement>) => {

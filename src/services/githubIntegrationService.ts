@@ -1,6 +1,6 @@
-import { GithubIntegration } from "@prisma/client";
+import type { GithubIntegration } from "@prisma/client";
 
-import { GithubReposInfo } from "../../prisma/modules/github";
+import type { GithubReposInfo } from "../../prisma/modules/github";
 import { fetchApi } from "./util";
 
 const getGithubIntegration = async (installationId: string) =>

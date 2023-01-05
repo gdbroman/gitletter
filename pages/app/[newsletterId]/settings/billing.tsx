@@ -1,9 +1,10 @@
-import { GithubIntegration } from "@prisma/client";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GithubIntegration } from "@prisma/client";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 
-import { GithubReposInfo } from "../../../../prisma/modules/github";
-import { getProducts, Product } from "../../../../prisma/modules/stripe";
+import type { GithubReposInfo } from "../../../../prisma/modules/github";
+import type { Product } from "../../../../prisma/modules/stripe";
+import { getProducts } from "../../../../prisma/modules/stripe";
 import prisma from "../../../../prisma/prisma";
 import Layout from "../../../../src/components/Layout";
 import { ProtectedPage } from "../../../../src/components/ProtectedPage";
@@ -25,6 +26,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       },
     },
   });
+
+  if (!newsletter) {
+    return {
+      props: {},
+    };
+  }
 
   const products = await getProducts();
 

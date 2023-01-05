@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import type { ReactNode } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { newsletterService } from "../services/newsletterService";
@@ -10,7 +11,11 @@ interface INewsletterContext {
 
 const NewsletterContext = createContext<INewsletterContext>({});
 
-export const NewsletterContextProvider = ({ children }) => {
+export const NewsletterContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const router = useRouter();
   const { status, data } = useSession();
 
@@ -28,7 +33,7 @@ export const NewsletterContextProvider = ({ children }) => {
           const newsletterId = await newsletterService.getNewsletterByEmail(
             userEmail
           );
-          setNewsletterId(newsletterId);
+          if (newsletterId) setNewsletterId(newsletterId);
         }
       }
     };

@@ -5,7 +5,8 @@
     "dev": "next",
     "test": "jest",
     "build": "next build",
-    "vercel-build": "yarn test && prisma generate && prisma migrate deploy && next build",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix",
     "db:reset": "prisma migrate reset --preview-feature"
@@ -68,20 +69,18 @@
     "@typescript-eslint/parser": "^5.8.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.7.0",
+    "eslint-config-next": "13.1.1",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",
-    "prettier": "^2.1.1",
+    "prettier": "^2.8.1",
     "prisma": "^4.2.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.9.4"
   }
 }

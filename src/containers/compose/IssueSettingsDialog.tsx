@@ -5,7 +5,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
+import type { ChangeEvent, FC } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { eatClick } from "../../../util/eatClick";
 import { useAppHref } from "../../../util/hooks/useAppHref";

@@ -6,13 +6,15 @@ import Card from "@mui/material/Card";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
-import { ChangeEvent, FC, useMemo, useState } from "react";
+import type { FC } from "react";
+import { useMemo, useState } from "react";
 
-import { Product } from "../../../prisma/modules/stripe";
+import type { Product } from "../../../prisma/modules/stripe";
 import { freeSubscriberLimit } from "../../../util/constants";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
@@ -44,7 +46,7 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
     [initialProductId, productId]
   );
 
-  const handleOnChangeProduct = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChangeProduct = (event: SelectChangeEvent<string>) => {
     setProductId(event.target.value);
   };
   const handleCancel = () => {
@@ -59,10 +61,13 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
       if (!sessionId) {
         throw new Error();
       }
+      if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
+        throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined.");
+      }
       const stripe = await loadStripe(
         process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
       );
-      await stripe.redirectToCheckout({ sessionId });
+      await stripe?.redirectToCheckout({ sessionId });
     } catch {
       setError("Something went wrong.");
     } finally {

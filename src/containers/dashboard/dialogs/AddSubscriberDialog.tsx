@@ -5,7 +5,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-import { FC, useMemo, useState } from "react";
+import type { FC } from "react";
+import { useMemo, useState } from "react";
 
 import { useToggle } from "../../../../util/hooks/useToggle";
 import { isValidEmail as isValidEmailFn } from "../../../../util/strings";

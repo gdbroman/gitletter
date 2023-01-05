@@ -1,10 +1,15 @@
 import { useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
+import type { ReactNode } from "react";
 
 import { useThemeContext } from "../../contexts/theme";
 import { SideSettingsMenu } from "./SideSettingsMenu";
 
-export const SettingsContentWrapper = ({ children }) => {
+export const SettingsContentWrapper = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const { theme } = useThemeContext();
   const breakpoint = useMediaQuery(theme.breakpoints.down("md"));
 

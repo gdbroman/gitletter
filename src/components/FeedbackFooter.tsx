@@ -1,7 +1,7 @@
 import { Link } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
+import type { FC } from "react";
 
 import { gitLetterSocialLinks } from "../../util/constants";
 

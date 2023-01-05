@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { GetServerSideProps, NextPage } from "next/types";
+import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
 
 import prisma from "../../../prisma/prisma";
@@ -9,10 +9,8 @@ import Layout from "../../../src/components/Layout";
 import { ProtectedPage } from "../../../src/components/ProtectedPage";
 import { Dashboard } from "../../../src/containers/dashboard/Dashboard";
 import { issueService } from "../../../src/services/issueService";
-import {
-  IssueWithParsedTitleAndStrippedDate,
-  stripDate,
-} from "../../../src/types/stripDate";
+import type { IssueWithParsedTitleAndStrippedDate } from "../../../src/types/stripDate";
+import { stripDate } from "../../../src/types/stripDate";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { getTitleFromContent } from "../../../util/strings";
 
@@ -94,7 +92,7 @@ const DraftsPage: NextPage<Props> = ({
       <Layout headerTitle={newsletterTitle}>
         <NextSeo title={`Drafts – ${newsletterTitle}`} />
         <Dashboard>
-          {!draftIssues.length ? (
+          {!draftIssues?.length ? (
             <EmptyTab
               emoji="📝"
               title="No drafts found"

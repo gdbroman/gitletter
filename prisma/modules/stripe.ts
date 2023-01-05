@@ -1,5 +1,9 @@
 import Stripe from "stripe";
 
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("Missing Stripe secret key");
+}
+
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-08-01",
 });
@@ -22,9 +26,9 @@ export const getProducts = async (): Promise<Product[]> => {
     return {
       id: product.id,
       name: product.name,
-      price: price.unit_amount,
+      price: price.unit_amount ?? 0,
       priceId: price.id,
-      interval: price.recurring.interval,
+      interval: price.recurring?.interval ?? "month",
       currency: price.currency,
     };
   });
