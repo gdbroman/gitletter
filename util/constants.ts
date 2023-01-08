@@ -1,5 +1,5 @@
 export const siteTitle = "GitLetter";
-export const siteH1 = "A Newsletter Tool That Deploys to GitHub";
+export const siteH1 = "The Newsletter Tool That Writes to GitHub";
 export const siteTagline = "Become Your Own Publisher";
 export const siteDescription =
   "Keep your stack. And your writing. All on GitHub.";
