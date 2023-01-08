@@ -183,7 +183,7 @@ const writeToGithubFn = async (
     owner: repoOwner,
     repo: repoName,
     path,
-    message: `feat: Added ${fileName} programatically`,
+    message: `Added ${fileName} programatically.`,
     content: contentEncoded,
     committer: gitLetterProfile,
     author: gitLetterProfile,
