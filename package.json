@@ -8,15 +8,12 @@
     "postinstall": "prisma generate",
     "vercel-build": "prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore",
     "db:reset": "prisma migrate reset --preview-feature"
-  },
-  "engines": {
-    "node": "^16.13.0"
   },
   "license": "MIT",
   "dependencies": {
-    "@codemirror/lang-markdown": "^6.0.0",
+    "@codemirror/lang-markdown": "^6.0.5",
     "@codemirror/language-data": "^6.1.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -30,17 +27,16 @@
     "@next-auth/prisma-adapter": "^1.0.3",
     "@octokit/auth-app": "^3.6.1",
     "@octokit/rest": "^18.12.0",
-    "@prisma/client": "^4.2.1",
-    "@sentry/nextjs": "^7.27.0",
+    "@prisma/client": "^4.9.0",
     "@stripe/stripe-js": "^1.35.0",
-    "@uiw/codemirror-theme-github": "^4.12.1",
-    "@uiw/react-codemirror": "^4.10.4",
+    "@uiw/codemirror-theme-github": "^4.19.7",
+    "@uiw/react-codemirror": "^4.19.7",
     "copy-to-clipboard": "^3.3.1",
     "inline-css": "^3.0.0",
     "js-base64": "^3.7.2",
     "micro": "^9.4.1",
     "next": "^12.1.6",
-    "next-auth": "4.10.3",
+    "next-auth": "^4.18.8",
     "next-seo": "^5.4.0",
     "nodemailer": "^6.7.5",
     "nprogress": "^0.2.0",
@@ -80,7 +76,7 @@
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",
     "prettier": "^2.8.1",
-    "prisma": "^4.2.1",
+    "prisma": "^4.9.0",
     "typescript": "^4.9.4"
   }
 }

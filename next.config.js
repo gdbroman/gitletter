@@ -1,10 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { withSentryConfig } = require("@sentry/nextjs");
-
-const moduleExports = {
-  sentry: {
-    hideSourceMaps: true,
-  },
+module.exports = {
   images: {
     domains: ["avatars.githubusercontent.com"],
   },
@@ -13,9 +7,3 @@ const moduleExports = {
     GITHUB_APP_URL: process.env.GITHUB_APP_URL,
   },
 };
-
-const sentryWebpackPluginOptions = {
-  silent: true,
-};
-
-module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
