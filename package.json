@@ -8,7 +8,7 @@
     "postinstall": "prisma generate",
     "vercel-build": "prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern='!.*' --quiet --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore",
     "db:reset": "prisma migrate reset --preview-feature"
   },
   "license": "MIT",
