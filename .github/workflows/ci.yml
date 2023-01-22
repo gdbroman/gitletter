@@ -1,11 +1,8 @@
-name: ESLint
-on:
-  push:
-    branches:
-      - '*'
-      - '!main'
+name: CI
+on: [pull_request]
 jobs:
-  eslint:
+  build:
+    name: Lint and tsc
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -19,8 +16,10 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - name: Install packages
+    - name: Install modules
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install
     - name: Run ESLint
       run: yarn lint
+    - name: Compile TypeScript
+      run: yarn tsc
