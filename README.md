@@ -1,15 +1,18 @@
 # GitLetter
 
-GitLetter is a newsletter tool that deploys to GitHub. It lets you add a newsletter to your current website while keeping your stack.
+GitLetter is a newsletter tool that deploys to GitHub.
 
 ## Dev setup
 
-1. Run `yarn` to install all dependencies.
-2. Copy-paste `.env.template` and rename it to `.env`.
-3. Run `yarn dev` to start a development server.
+
+```bash
+yarn
+cp .env.template .env
+yarn dev
+```
 
 ## Contributing
 
-Feel free to file an issue or open a PR if you find a bug or want to add a feature.
+Have a bug or suggestion? Feel free to [file an issue](https://github.com/gdbroman/gitletter/issues) or open a PR.
 
-For questions, you can DM me on Twitter [@gdbroman](https://twitter.com/gdbroman).
+You can also always DM me on Twitter [@gdbroman](https://twitter.com/gdbroman).
