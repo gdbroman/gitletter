@@ -2,7 +2,7 @@ name: CI
 on: [pull_request]
 jobs:
   build:
-    name: Lint and tsc
+    name: Lint, tsc and tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -12,3 +12,5 @@ jobs:
       run: yarn lint
     - name: Compile TypeScript
       run: yarn tsc
+    - name: Run tests
+      run: yarn test
