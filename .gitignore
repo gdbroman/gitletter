@@ -15,3 +15,7 @@ yarn-error.log*
 # local env files
 .env*
 !.env.template
+
+#storybook
+storybook-static
+build-storybook.log
