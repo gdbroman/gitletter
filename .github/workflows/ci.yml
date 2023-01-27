@@ -2,15 +2,17 @@ name: CI
 on: [pull_request]
 jobs:
   build:
-    name: Lint, tsc and tests
+    name: Lint, compile, unit test, and deploy to Chromatic
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Install modules
-      run: yarn install
+      run: yarn
     - name: Run ESLint
       run: yarn lint
     - name: Compile TypeScript
       run: yarn tsc
-    - name: Run tests
+    - name: Run unit tests
       run: yarn test
+    - name: Deploy to Chromatic
+      run: yarn chromatic --project-token ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
