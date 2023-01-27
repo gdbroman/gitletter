@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 import { ItemSelect } from "../../../components/ItemSelect";
 import { LoadingButton } from "../../../components/LoadingButton";
-import { CustomSnackbar } from "../../../components/Snackbar";
+import { Snackbar } from "../../../components/Snackbar";
 
 type GithubIntegrationSettingsCardProps = {
   repo: string;
@@ -49,13 +49,13 @@ export const GithubIntegrationSettingsCard = ({
   handleDisconnect,
 }: GithubIntegrationSettingsCardProps) => (
   <>
-    <CustomSnackbar
+    <Snackbar
       message={success!}
       severity="success"
       isOpen={!!success}
       onClose={() => setSuccess(null)}
     />
-    <CustomSnackbar
+    <Snackbar
       message={error!}
       severity="error"
       autoHideDuration={6000}

@@ -9,7 +9,9 @@
     "vercel-build": "prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore",
-    "db:reset": "prisma migrate reset --preview-feature"
+    "db:reset": "prisma migrate reset --preview-feature",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "license": "MIT",
   "dependencies": {
@@ -51,7 +53,16 @@
     "stripe": "^10.6.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
     "@octokit/types": "^6.35.0",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-interactions": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@storybook/react": "^6.5.16",
+    "@storybook/testing-library": "^0.0.13",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@types/gtag.js": "^0.0.11",
@@ -64,6 +75,7 @@
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.3.0",
     "eslint": "^7.7.0",
     "eslint-config-next": "13.1.1",
     "eslint-config-prettier": "^6.11.0",
@@ -72,6 +84,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react-hooks": "^4.1.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-storybook": "^0.6.10",
     "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "^28.1.2",
     "jest-environment-jsdom": "^28.1.2",

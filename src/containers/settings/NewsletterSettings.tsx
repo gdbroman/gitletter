@@ -14,7 +14,7 @@ import { getEmailAddress } from "../../../util/getEmailAddress";
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useToggle } from "../../../util/hooks/useToggle";
 import { LoadingButton } from "../../components/LoadingButton";
-import { CustomSnackbar } from "../../components/Snackbar";
+import { Snackbar } from "../../components/Snackbar";
 import { newsletterService } from "../../services/newsletterService";
 
 type Props = {
@@ -137,7 +137,7 @@ export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
           )}
         </Box>
       </Box>
-      <CustomSnackbar
+      <Snackbar
         message={success}
         severity="success"
         isOpen={!!success}
