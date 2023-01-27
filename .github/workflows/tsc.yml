@@ -1,0 +1,13 @@
+name: tsc
+on: [pull_request]
+jobs:
+  build:
+    name: Compile TypeScript
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Install modules
+      run: yarn
+    - name: Compile TypeScript
+      run: yarn tsc
