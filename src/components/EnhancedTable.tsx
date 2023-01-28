@@ -10,7 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { visuallyHidden } from "@mui/utils";
-import type { ChangeEvent, FC, MouseEvent } from "react";
+import type { ChangeEvent, MouseEvent } from "react";
 import { useState } from "react";
 
 import type {
@@ -45,12 +45,12 @@ const StyledTableRow = styled(TableRow)`
   }
 `;
 
-export const EnhancedTableHead: FC<EnhancedTableHeadProps> = ({
+export const EnhancedTableHead = ({
   headCells,
   order,
   orderBy,
   onRequestSort,
-}) => {
+}: EnhancedTableHeadProps) => {
   const createSortHandler = (property: HeadCellType) => (event: MouseEvent) => {
     onRequestSort(event, property);
   };

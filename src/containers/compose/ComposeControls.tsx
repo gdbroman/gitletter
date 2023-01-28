@@ -4,7 +4,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import type { FC } from "react";
 
 import { useThemeContext } from "../../contexts/theme";
 import type { SendMenuProps } from "./SendMenu";
@@ -18,13 +17,13 @@ type Props = SendMenuProps & {
   togglePreview: () => void;
 };
 
-export const ComposeControls: FC<Props> = ({
+export const ComposeControls = ({
   isPreview,
   toggleSettings,
   togglePreview,
   toggleTest,
   toggleSend,
-}) => {
+}: Props) => {
   const { theme } = useThemeContext();
 
   return (

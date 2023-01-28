@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type SubscriptionCardProps = {
   title: string;
@@ -12,13 +12,13 @@ type SubscriptionCardProps = {
   fullWidth?: boolean;
 };
 
-export const SubscriptionCard: FC<SubscriptionCardProps> = ({
+export const SubscriptionCard = ({
   title,
   price,
   features,
   button,
   fullWidth,
-}) => (
+}: SubscriptionCardProps) => (
   <Card style={{ width: fullWidth ? "100%" : "auto", maxWidth: "480px" }}>
     <Box px={4} py={3} textAlign="center">
       <Typography variant="h5" fontWeight="medium">

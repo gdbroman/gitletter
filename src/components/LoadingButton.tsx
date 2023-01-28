@@ -1,7 +1,7 @@
 import MuiLoadingButton from "@mui/lab/LoadingButton";
 import MuiButton from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import type { ComponentProps, FC, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 const StyledMuiLoadingButton = styled(MuiLoadingButton)`
   && {
@@ -14,6 +14,7 @@ const StyledMuiLoadingButton = styled(MuiLoadingButton)`
           : `
       color: ${theme.palette.primary.main};
     `}
+    }
   }
 `;
 
@@ -22,7 +23,7 @@ type Props = {
   loading?: boolean;
 } & ComponentProps<typeof MuiButton>;
 
-export const LoadingButton: FC<Props> = ({ children, loading, ...props }) => (
+export const LoadingButton = ({ children, loading, ...props }: Props) => (
   <>
     {loading ? (
       <StyledMuiLoadingButton {...props} loading>

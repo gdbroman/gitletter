@@ -1,6 +1,5 @@
 import type { GithubIntegration } from "@prisma/client";
 import { useRouter } from "next/router";
-import type { FC } from "react";
 import { useMemo, useState } from "react";
 
 import type {
@@ -18,10 +17,10 @@ type Props = {
   githubReposInfo: GithubReposInfo;
 };
 
-export const GithubIntegrationSettings: FC<Nullable<Props>> = ({
+export const GithubIntegrationSettings = ({
   githubIntegration,
   githubReposInfo,
-}) => {
+}: Nullable<Props>) => {
   const router = useRouter();
 
   const initialValues = useMemo(

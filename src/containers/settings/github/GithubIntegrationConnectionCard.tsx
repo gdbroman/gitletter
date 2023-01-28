@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-import type { FC } from "react";
 
 const StyledAlert = styled(Alert)`
   .MuiAlert-message {
@@ -16,7 +15,7 @@ const StyledAlert = styled(Alert)`
   }
 `;
 
-export const GithubIntegrationConnectionCard: FC = () => (
+export const GithubIntegrationConnectionCard = () => (
   <Card variant="outlined">
     <StyledAlert
       severity="info"

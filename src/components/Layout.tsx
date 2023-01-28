@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import { NextSeo } from "next-seo";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { siteDescription, siteTagline } from "../../util/constants";
 import { Header } from "../containers/header/Header";
@@ -21,7 +21,7 @@ type Props = {
   footer?: ReactNode;
 };
 
-const Layout: FC<Props> = ({ headerTitle, children, footer }) => (
+const Layout = ({ headerTitle, children, footer }: Props) => (
   <Box display="flex" flexDirection="column" height="100%">
     <NextSeo
       title={`GitLetter · ${siteTagline}`}

@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import type { GetServerSideProps, NextPage } from "next/types";
 import { NextSeo } from "next-seo";
-import type { FC } from "react";
 
 import prisma from "../../../prisma/prisma";
 import { FeedbackFooter } from "../../../src/components/FeedbackFooter";
@@ -35,7 +34,7 @@ type ResultBoxProps = {
   body: string;
 };
 
-export const ResultBox: FC<ResultBoxProps> = ({ title, emoji, body }) => (
+export const ResultBox = ({ title, emoji, body }: ResultBoxProps) => (
   <Box my={8} mx="auto" textAlign="center" maxWidth="500px">
     <Typography variant="h1" fontWeight="bold">
       {`${title} `}

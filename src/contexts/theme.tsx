@@ -2,7 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import type { Theme } from "@mui/material/styles";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 import {
   createContext,
   useCallback,
@@ -29,9 +29,9 @@ interface IColorModeContextProvider {
 
 const ThemeContext = createContext<IThemeContext>({} as IThemeContext);
 
-export const ThemeContextProvider: FC<IColorModeContextProvider> = ({
+export const ThemeContextProvider = ({
   children,
-}) => {
+}: IColorModeContextProvider) => {
   const defaultColorMode: ColorMode = "light";
   const [colorMode, setColorMode] =
     useState<IThemeContext["colorMode"]>(defaultColorMode);

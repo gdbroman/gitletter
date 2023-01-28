@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type Props = {
   emoji: string;
@@ -8,7 +8,7 @@ type Props = {
   subtitle: ReactNode;
 };
 
-export const EmptyTab: FC<Props> = ({ emoji, title, subtitle }) => (
+export const EmptyTab = ({ emoji, title, subtitle }: Props) => (
   <Box display="flex" flexDirection="column" gap={2} my={10} textAlign="center">
     <Typography variant="h1">
       <span role="img" aria-label={emoji}>
