@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { alpha, styled } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import type { FC, MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { useState } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
@@ -23,7 +23,7 @@ type Props = {
   newsletterId: string;
 };
 
-export const TabsNavBarCta: FC<Props> = ({ newsletterId }) => {
+export const TabsNavBarCta = ({ newsletterId }: Props) => {
   const router = useRouter();
   const appHref = useAppHref();
 
@@ -48,7 +48,7 @@ export const TabsNavBarCta: FC<Props> = ({ newsletterId }) => {
   }
 };
 
-const ManageButtonMenu: FC<Props> = ({ newsletterId }) => {
+const ManageButtonMenu = ({ newsletterId }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
   const addIntegrationDialogOpen = useToggle(false);

@@ -6,7 +6,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import type { ChangeEvent, FC } from "react";
+import type { ChangeEvent } from "react";
 import { useMemo, useState } from "react";
 
 import { maxEmailAddressLength } from "../../../util/constants";
@@ -22,7 +22,7 @@ type Props = {
   title: string;
 };
 
-export const NewsletterSettings: FC<Props> = ({ id, title: initialTitle }) => {
+export const NewsletterSettings = ({ id, title: initialTitle }: Props) => {
   const router = useRouter();
   const session = useSession();
   const appHref = useAppHref();

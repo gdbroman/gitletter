@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import type { FC } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useThemeContext } from "../../contexts/theme";
@@ -49,7 +48,7 @@ const sideSettingsTabs = {
   },
 };
 
-export const SideSettingsMenu: FC = () => {
+export const SideSettingsMenu = () => {
   const router = useRouter();
   const appHref = useAppHref();
 

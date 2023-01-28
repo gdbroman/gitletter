@@ -7,7 +7,11 @@ import { useEffect, useMemo } from "react";
 
 import Layout from "./Layout";
 
-export const ProtectedPage = ({ children }: { children: ReactNode }) => {
+type Props = {
+  children: ReactNode;
+};
+
+export const ProtectedPage = ({ children }: Props) => {
   const router = useRouter();
   const { status } = useSession();
   const loading = useMemo(() => status === "loading", [status]);

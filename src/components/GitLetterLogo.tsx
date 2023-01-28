@@ -2,7 +2,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
 import Image from "next/image";
 import Link from "next/link";
-import type { FC } from "react";
 
 import { useAppHref } from "../../util/hooks/useAppHref";
 import { useThemeContext } from "../contexts/theme";
@@ -11,7 +10,7 @@ type Props = {
   title?: string;
 };
 
-export const GitLetterLogo: FC<Props> = ({ title = "GitLetter" }) => {
+export const GitLetterLogo = ({ title = "GitLetter" }: Props) => {
   const { theme, isDarkMode } = useThemeContext();
   const appHref = useAppHref();
 

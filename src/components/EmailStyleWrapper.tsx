@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { siteDomain } from "../../util/constants";
 
@@ -9,7 +9,7 @@ type EmailArticleProps = {
   content: ReactNode;
 };
 
-export const EmailArticle: FC<EmailArticleProps> = ({ title, content }) => (
+export const EmailArticle = ({ title, content }: EmailArticleProps) => (
   <td
     style={{
       fontSize: "18px",
@@ -32,13 +32,13 @@ type EmailStyleWrapperProps = EmailArticleProps & {
   emailAddress?: string;
 };
 
-export const EmailStyleWrapper: FC<EmailStyleWrapperProps> = ({
+export const EmailStyleWrapper = ({
   title,
   content,
   newsletterId,
   newsletterTitle,
   emailAddress,
-}) => {
+}: EmailStyleWrapperProps) => {
   return (
     <table
       style={{

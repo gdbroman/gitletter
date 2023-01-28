@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import type { Breakpoint } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { useThemeContext } from "../contexts/theme";
 
@@ -13,12 +13,12 @@ type Props = {
   onClose: () => void;
 };
 
-export const DialogResponsive: FC<Props> = ({
+export const DialogResponsive = ({
   open,
   children,
   breakPoint = "xs",
   onClose,
-}) => {
+}: Props) => {
   const { theme } = useThemeContext();
   const fullScreen = useMediaQuery(theme.breakpoints.down(breakPoint));
 

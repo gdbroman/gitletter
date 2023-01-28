@@ -6,7 +6,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import type { FC } from "react";
 import React from "react";
 
 export type SendMenuProps = {
@@ -14,7 +13,7 @@ export type SendMenuProps = {
   toggleSend: () => void;
 };
 
-export const SendMenu: FC<SendMenuProps> = ({ toggleTest, toggleSend }) => {
+export const SendMenu = ({ toggleTest, toggleSend }: SendMenuProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

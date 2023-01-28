@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import type { FC, MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { useState } from "react";
 
 import { eatClick } from "../../util/eatClick";
@@ -26,7 +26,7 @@ type Props = {
   onDelete: () => void;
 };
 
-export const EditRowButton: FC<Props> = ({ onDuplicate, onDelete }) => {
+export const EditRowButton = ({ onDuplicate, onDelete }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
 

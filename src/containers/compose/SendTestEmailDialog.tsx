@@ -3,7 +3,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import type { FC } from "react";
 import { useCallback, useMemo, useState } from "react";
 
 import { useToggle } from "../../../util/hooks/useToggle";
@@ -18,12 +17,12 @@ type Props = {
   onClose: () => void;
 };
 
-export const SendTestEmailDialog: FC<Props> = ({
+export const SendTestEmailDialog = ({
   issueId,
   defaultEmailAddress,
   open,
   onClose,
-}) => {
+}: Props) => {
   const sending = useToggle(false);
   const [email, setEmail] = useState<string>(defaultEmailAddress);
   const isEmailValid = useMemo(() => {

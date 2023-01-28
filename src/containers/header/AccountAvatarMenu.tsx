@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import type { Session } from "next-auth/core/types";
 import { signOut, useSession } from "next-auth/react";
-import type { FC, MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { useState } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
@@ -187,11 +187,11 @@ type AvatarToolTipProps = {
   children: JSX.Element;
 };
 
-const AvatarToolTip: FC<AvatarToolTipProps> = ({
+const AvatarToolTip = ({
   userName,
   userEmail,
   children,
-}) => (
+}: AvatarToolTipProps) => (
   <Tooltip
     enterDelay={500}
     title={

@@ -10,7 +10,6 @@ import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import type { FC } from "react";
 
 import { useAppHref } from "../../../util/hooks/useAppHref";
 import { useThemeContext } from "../../contexts/theme";
@@ -54,7 +53,7 @@ const tabs = {
   },
 };
 
-export const TabsNavBar: FC = () => {
+export const TabsNavBar = () => {
   const router = useRouter();
   const appHref = useAppHref();
   const { theme } = useThemeContext();

@@ -8,7 +8,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import type { GithubIntegration } from "@prisma/client";
 import Link from "next/link";
-import type { FC } from "react";
 
 import { freeSubscriberLimit } from "../../../util/constants";
 import { useAppHref } from "../../../util/hooks/useAppHref";
@@ -26,7 +25,7 @@ type Props = {
   onSubmit: (writeToGithub: boolean) => void;
 };
 
-export const SendIssueDialog: FC<Props> = ({
+export const SendIssueDialog = ({
   subscriberCount,
   hasFreeProduct,
   githubIntegration,
@@ -34,7 +33,7 @@ export const SendIssueDialog: FC<Props> = ({
   loading,
   onCancel,
   onSubmit,
-}) => {
+}: Props) => {
   const appHref = useAppHref();
 
   const needsToUpgradePlan =

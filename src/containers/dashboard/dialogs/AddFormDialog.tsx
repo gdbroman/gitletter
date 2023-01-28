@@ -6,18 +6,18 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import copy from "copy-to-clipboard";
-import type { FC } from "react";
 
 import { useToggle } from "../../../../util/hooks/useToggle";
 import { DialogResponsive } from "../../../components/DialogResponsive";
 import { useThemeContext } from "../../../contexts/theme";
+
 type Props = {
   newsletterId: string;
   open: boolean;
   onClose: () => void;
 };
 
-export const AddFormDialog: FC<Props> = ({ newsletterId, open, onClose }) => {
+export const AddFormDialog = ({ newsletterId, open, onClose }: Props) => {
   const { theme } = useThemeContext();
   const copied = useToggle(false);
   const snippet = [

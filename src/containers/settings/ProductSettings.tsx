@@ -11,7 +11,6 @@ import Select from "@mui/material/Select";
 import Typography from "@mui/material/Typography";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
-import type { FC } from "react";
 import { useMemo, useState } from "react";
 
 import type { Product } from "../../../prisma/modules/stripe";
@@ -30,7 +29,7 @@ type Props = {
   products: Product[];
 };
 
-export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
+export const ProductSettings = ({ initialProductId, products }: Props) => {
   const router = useRouter();
   const appHref = useAppHref();
 
@@ -56,11 +55,13 @@ export const ProductSettings: FC<Props> = ({ initialProductId, products }) => {
     submitting.toggleOn();
     setError("");
     try {
-      const priceId = products.find(({ id }) => id === productId)!.priceId;
+      const product = products.find(({ id }) => id === productId);
+      if (!product) throw new Error();
+
+      const priceId = product.priceId;
       const sessionId = await productService.createSession(priceId);
-      if (!sessionId) {
-        throw new Error();
-      }
+      if (!sessionId) throw new Error();
+
       if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
         throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined.");
       }

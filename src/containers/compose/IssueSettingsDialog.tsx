@@ -5,7 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import type { ChangeEvent, FC } from "react";
+import type { ChangeEvent } from "react";
 import { useCallback, useMemo, useState } from "react";
 
 import { eatClick } from "../../../util/eatClick";
@@ -23,12 +23,12 @@ type Props = {
   onClose: () => void;
 };
 
-export const IssueSettingsDialog: FC<Props> = ({
+export const IssueSettingsDialog = ({
   issueId,
   initialFileName,
   open,
   onClose,
-}) => {
+}: Props) => {
   const appHref = useAppHref();
 
   const [fileName, setFileName] = useState(initialFileName);

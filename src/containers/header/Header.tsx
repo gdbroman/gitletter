@@ -1,6 +1,5 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/system/Box";
-import type { FC } from "react";
 
 import { GitLetterLogo } from "../../components/GitLetterLogo";
 import { HeaderNavRight } from "./HeaderNavRight";
@@ -26,7 +25,7 @@ type Props = {
   title?: string;
 };
 
-export const Header: FC<Props> = ({ title }) => (
+export const Header = ({ title }: Props) => (
   <StyledHeader>
     <StyledNav>
       <Box display="flex" ml={1} flex={1} minWidth={0}>

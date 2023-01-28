@@ -5,7 +5,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-import type { FC } from "react";
 import { useMemo, useState } from "react";
 
 import { useToggle } from "../../../../util/hooks/useToggle";
@@ -20,11 +19,7 @@ type Props = {
   onClose: () => void;
 };
 
-export const AddSubscriberDialog: FC<Props> = ({
-  newsletterId,
-  open,
-  onClose,
-}) => {
+export const AddSubscriberDialog = ({ newsletterId, open, onClose }: Props) => {
   const router = useRouter();
 
   const adding = useToggle(false);

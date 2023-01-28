@@ -6,7 +6,7 @@ import type { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 import Select from "@mui/material/Select";
 import type { Theme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { useThemeContext } from "../contexts/theme";
 
@@ -42,14 +42,14 @@ type Props = Omit<SelectProps, "onChange"> & {
   onChange: (value: string) => void;
 };
 
-export const ItemSelect: FC<Props> = ({
+export const ItemSelect = ({
   items,
   label,
   helperText,
   value,
   onChange,
   ...rest
-}) => {
+}: Props) => {
   const { theme } = useThemeContext();
 
   const handleChange = (event: SelectChangeEvent<typeof value>) => {
