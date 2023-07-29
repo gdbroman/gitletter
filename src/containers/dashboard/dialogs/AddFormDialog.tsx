@@ -21,7 +21,7 @@ export const AddFormDialog = ({ newsletterId, open, onClose }: Props) => {
   const { theme } = useThemeContext();
   const copied = useToggle(false);
   const snippet = [
-    `<form method="POST" action="https://gitletter.co/api/newsletter/${newsletterId}/subscribe">`,
+    `<form method="POST" action="https://gitletter.vercel.app/api/newsletter/${newsletterId}/subscribe">`,
     '  <input type="email" name="email" placeholder="Your email address..." />',
     "  <button>Subscribe</button>",
     "</form>",

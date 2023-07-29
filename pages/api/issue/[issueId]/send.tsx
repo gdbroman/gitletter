@@ -11,7 +11,7 @@ import { createOctokitClient } from "../../../../prisma/modules/github";
 import prisma from "../../../../prisma/prisma";
 import { EmailStyleWrapper } from "../../../../src/components/EmailStyleWrapper";
 import { MarkdownParser } from "../../../../src/components/MarkdownParser";
-import { gitLetterSocialLinks } from "../../../../util/constants";
+import { gitLetterSocialLinks, siteDomain } from "../../../../util/constants";
 import { getEmailAddress } from "../../../../util/getEmailAddress";
 import { getPath } from "../../../../util/getRepoPath";
 import {
@@ -146,7 +146,7 @@ const sendMail = async (
       />
     );
     const htmlWithInlineStyling = await inlineCss(htmlString, {
-      url: "https://gitletter.co",
+      url: `https://${siteDomain}`,
     });
     const mailOptions: Mail.Options = {
       ...defaultMailOptions,
