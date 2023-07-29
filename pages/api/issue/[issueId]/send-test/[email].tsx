@@ -9,6 +9,7 @@ import ReactDOMServer from "react-dom/server";
 import prisma from "../../../../../prisma/prisma";
 import { EmailStyleWrapper } from "../../../../../src/components/EmailStyleWrapper";
 import { MarkdownParser } from "../../../../../src/components/MarkdownParser";
+import { siteDomain } from "../../../../../util/constants";
 import { getEmailAddress } from "../../../../../util/getEmailAddress";
 import {
   getTitleFromContent,
@@ -96,7 +97,7 @@ const sendTestEmail = async (
     />
   );
   const htmlWithInlineStyling = await inlineCss(htmlString, {
-    url: "https://gitletter.co",
+    url: `https://${siteDomain}`,
   });
   const mailOptions: Mail.Options = {
     ...defaultMailOptions,
