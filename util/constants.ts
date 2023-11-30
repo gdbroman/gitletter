@@ -11,7 +11,6 @@ export const calendlyLink = "https://calendly.com/gdbroman";
 
 export const gitLetterSocialLinks = {
   github: "https://github.com/gdbroman/gitletter",
-  twitter: "https://twitter.com/gitletterco",
   email: `hello@${siteDomain}`,
 };
 
